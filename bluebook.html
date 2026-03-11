@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filovent — Bluebook</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+    <style>
+        :root {
+            --sidebar-width: 290px;
+            --navy: #0d2240;
+            --ocean: #1a4a7a;
+            --sky: #e8f2fc;
+            --sand: #f7f4ee;
+            --wave: #2a7ac4;
+            --coral: #d94f3d;
+            --seafoam: #1a9b72;
+            --gold: #c9913a;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --border: #e2e6ed;
+            --text: #1a2233;
+            --text-2: #4a5568;
+            --text-3: #8898aa;
+            --sidebar-bg: #0d2240;
+            --sidebar-border: rgba(255,255,255,0.09);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            display: flex; min-height: 100vh;
+            background: var(--bg);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+
+        /* ─── SIDEBAR ─────────────────────────────── */
+        #sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            display: flex; flex-direction: column;
+            position: fixed; height: 100vh; z-index: 1000;
+            box-shadow: 3px 0 20px rgba(13,34,64,0.18);
+        }
+        .sidebar-header {
+            padding: 22px 18px 16px;
+            border-bottom: 1px solid var(--sidebar-border);
+        }
+        .sidebar-header .tagline {
+            font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: rgba(255,255,255,0.38); margin-top: 8px; font-weight: 500;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .sidebar-header .tagline::before { content: "📘"; font-size: 0.7rem; }
+        .sidebar-body { overflow-y: auto; flex-grow: 1; padding: 6px 0 20px; }
+
+        .search-box { position: relative; padding: 10px 14px 0; }
+        .search-box i { position: absolute; left: 26px; top: 21px; color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+        .search-box input {
+            width: 100%; padding: 8px 54px 8px 32px;
+            border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.07); color: white;
+            font-size: 0.83rem; outline: none; transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .search-box input::placeholder { color: rgba(255,255,255,0.3); }
+        .search-box input:focus { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.1); }
+        .search-kbd {
+            position: absolute; right: 22px; top: 18px;
+            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
+            font-size: 0.6rem; font-family: 'Inter', sans-serif; font-weight: 600;
+            padding: 2px 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);
+            letter-spacing: 0.02em; pointer-events: none;
+        }
+
+        .accordion-button {
+            font-weight: 600; color: rgba(255,255,255,0.75) !important;
+            padding: 9px 16px;
+            background: transparent !important; box-shadow: none !important;
+            font-size: 0.8rem; font-family: 'Inter', sans-serif;
+            transition: color 0.15s, background 0.15s;
+        }
+        .accordion-button:hover { color: white !important; background: rgba(255,255,255,0.04) !important; }
+        .accordion-button::after { filter: brightness(0) invert(1); opacity: 0.3; width: 12px; height: 12px; background-size: 12px; }
+        .accordion-button:not(.collapsed) { color: white !important; background: rgba(255,255,255,0.06) !important; }
+        .accordion-button:not(.collapsed)::after { opacity: 0.6; }
+        .accordion-item { border: none; border-bottom: 1px solid var(--sidebar-border); background: transparent; }
+        .accordion-body { padding: 2px 0 8px; }
+
+        .acc-section-label {
+            font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: rgba(255,255,255,0.22); font-weight: 700;
+            padding: 12px 16px 4px;
+        }
+
+        .dest-link {
+            display: block; padding: 6px 16px 6px 32px;
+            color: rgba(255,255,255,0.48); text-decoration: none;
+            font-size: 0.8rem; transition: all 0.15s; position: relative;
+            border-radius: 0 6px 6px 0; margin-right: 8px;
+        }
+        .dest-link:hover { color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.06); }
+        .dest-link.active {
+            color: white; font-weight: 600;
+            background: rgba(42,122,196,0.32);
+        }
+        .dest-link.active::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            height: 100%; width: 3px; background: var(--wave);
+        }
+
+        .sidebar-tools {
+            padding: 12px 14px 8px;
+            border-top: 1px solid var(--sidebar-border);
+        }
+        .sidebar-tools .tools-label {
+            font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: rgba(255,255,255,0.28); font-weight: 600; margin-bottom: 6px;
+            padding-left: 4px;
+        }
+        .tool-link {
+            display: flex; align-items: center; gap: 9px;
+            padding: 9px 12px; border-radius: 8px;
+            color: rgba(255,255,255,0.6) !important; text-decoration: none;
+            font-size: 0.82rem; font-weight: 500; transition: 0.16s;
+            margin-bottom: 3px;
+        }
+        .tool-link:hover { background: rgba(255,255,255,0.07); color: white !important; }
+        .tool-link i { font-size: 0.9rem; width: 16px; text-align: center; }
+
+        /* ─── MAIN ─────────────────────────────── */
+        #main {
+            margin-left: var(--sidebar-width);
+            flex: 1; padding: 32px 36px;
+            min-height: 100vh;
+        }
+
+        .section-panel { display: none; }
+        .section-panel.active { display: block; }
+
+        .page-header {
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid var(--border);
+        }
+        .page-header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.85rem; font-weight: 800;
+            color: var(--navy); line-height: 1.2;
+        }
+        .page-header .subtitle {
+            font-size: 0.88rem; color: var(--text-3); margin-top: 6px;
+        }
+
+        /* ─── CARDS ─────────────────────────────── */
+        .info-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .info-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.05rem; font-weight: 800;
+            color: var(--navy); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .info-card p { font-size: 0.88rem; line-height: 1.7; color: var(--text-2); margin-bottom: 8px; }
+        .info-card p:last-child { margin-bottom: 0; }
+
+        /* ─── TABLE PRIX ─────────────────────────────── */
+        .price-table {
+            width: 100%; border-collapse: collapse; font-size: 0.84rem;
+            margin-top: 12px;
+        }
+        .price-table th {
+            background: var(--navy); color: white;
+            padding: 9px 14px; text-align: left;
+            font-weight: 600; font-size: 0.78rem;
+            letter-spacing: 0.03em;
+        }
+        .price-table th:not(:first-child) { text-align: center; }
+        .price-table td {
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+        .price-table td:not(:first-child) { text-align: center; font-weight: 500; }
+        .price-table tr:hover td { background: var(--sky); }
+        .price-table .low { color: var(--seafoam); }
+        .price-table .mid { color: var(--gold); }
+        .price-table .high { color: var(--coral); }
+        .price-table .section-row td {
+            background: var(--sky);
+            font-weight: 700; color: var(--wave);
+            font-size: 0.76rem; letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-top: 2px solid var(--border);
+        }
+
+        /* ─── GLOSSAIRE MULTILINGUE ─────────────────────────────── */
+        .vocab-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 14px; margin-top: 4px;
+        }
+        .vocab-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 14px 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .vocab-card .term-fr {
+            font-weight: 700; color: var(--navy); font-size: 0.92rem;
+            margin-bottom: 6px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .vocab-card .term-fr::before { content: "🇫🇷"; font-size: 0.85rem; }
+        .vocab-card .translations { font-size: 0.82rem; line-height: 1.8; }
+        .vocab-card .translations .lang {
+            display: flex; gap: 6px; color: var(--text-2);
+        }
+        .vocab-card .translations .lang .flag { flex-shrink: 0; }
+        .vocab-card .def {
+            font-size: 0.8rem; color: var(--text-3);
+            margin-top: 6px; padding-top: 6px;
+            border-top: 1px solid var(--border);
+            line-height: 1.5;
+        }
+
+        /* ─── SHIPYARDS ─────────────────────────────── */
+        .shipyard-section { margin-bottom: 28px; }
+        .shipyard-section h3 {
+            font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800;
+            color: var(--navy); margin-bottom: 12px;
+            padding-bottom: 8px; border-bottom: 2px solid var(--wave);
+        }
+        .range-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .range-col h4 {
+            font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+            font-weight: 700; margin-bottom: 8px; padding: 5px 10px;
+            border-radius: 6px;
+        }
+        .range-col.cruise h4 { background: rgba(26,155,114,0.12); color: var(--seafoam); }
+        .range-col.medium h4 { background: rgba(201,145,58,0.12); color: var(--gold); }
+        .range-col.perf h4 { background: rgba(217,79,61,0.12); color: var(--coral); }
+        .range-col ul { list-style: none; padding: 0; }
+        .range-col ul li {
+            font-size: 0.83rem; padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-2);
+        }
+        .range-col ul li strong { color: var(--text); }
+
+        .perf-factors {
+            background: linear-gradient(135deg, #f0f6ff, #e8f4ee);
+            border: 1px solid #c8dff5; border-radius: 10px;
+            padding: 14px 18px; margin-bottom: 16px;
+        }
+        .perf-factors h4 { font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .perf-factors ul { list-style: none; padding: 0; }
+        .perf-factors ul li {
+            font-size: 0.82rem; padding: 3px 0;
+            color: var(--text-2);
+            display: flex; gap: 6px; align-items: baseline;
+        }
+        .perf-factors ul li::before { content: "▸"; color: var(--wave); flex-shrink: 0; }
+
+        /* ─── FAQ FLUVIAL ─────────────────────────────── */
+        .faq-item {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 13px 18px; cursor: pointer;
+            font-weight: 600; font-size: 0.87rem; color: var(--navy);
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.15s;
+        }
+        .faq-q:hover { background: var(--sky); }
+        .faq-q .faq-icon { font-size: 0.7rem; color: var(--text-3); transition: transform 0.2s; }
+        .faq-q.open .faq-icon { transform: rotate(180deg); }
+        .faq-a {
+            display: none;
+            padding: 0 18px 14px;
+            font-size: 0.85rem; line-height: 1.7;
+            color: var(--text-2);
+            border-top: 1px solid var(--border);
+        }
+        .faq-a.open { display: block; }
+        .faq-a ul { padding-left: 16px; margin-top: 6px; }
+        .faq-a ul li { margin-bottom: 4px; }
+
+        /* ─── SUNSAIL/MOORINGS ─────────────────────────────── */
+        .brand-header {
+            display: flex; gap: 16px; align-items: stretch;
+            margin-bottom: 20px;
+        }
+        .brand-badge {
+            flex: 1; border-radius: 12px; padding: 16px 20px;
+            font-size: 0.84rem; line-height: 1.6;
+        }
+        .brand-badge.sunsail { background: rgba(42,122,196,0.08); border: 1px solid rgba(42,122,196,0.2); }
+        .brand-badge.moorings { background: rgba(13,34,64,0.06); border: 1px solid rgba(13,34,64,0.15); }
+        .brand-badge h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+
+        .included-list { list-style: none; padding: 0; }
+        .included-list li {
+            padding: 5px 0; font-size: 0.84rem; color: var(--text-2);
+            display: flex; gap: 8px; align-items: baseline;
+            border-bottom: 1px solid var(--border);
+        }
+        .included-list li:last-child { border-bottom: none; }
+        .included-list li .check { color: var(--seafoam); font-weight: 700; flex-shrink: 0; }
+        .included-list li .cross { color: var(--coral); font-weight: 700; flex-shrink: 0; }
+
+        .boarding-table {
+            width: 100%; border-collapse: collapse; font-size: 0.81rem;
+        }
+        .boarding-table th {
+            background: var(--navy); color: white;
+            padding: 7px 10px; text-align: left; font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .boarding-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+        .boarding-table tr:hover td { background: var(--sky); }
+        .boarding-table .region-caribbean { color: var(--coral); font-weight: 600; }
+        .boarding-table .region-med { color: var(--wave); font-weight: 600; }
+        .boarding-table .region-exotic { color: var(--seafoam); font-weight: 600; }
+
+        /* ─── LUXURY CREWED ─────────────────────────────── */
+        .flow-diagram {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--navy); border-radius: 10px;
+            padding: 14px 20px; margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .flow-step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 8px 14px;
+            color: white; font-size: 0.82rem; font-weight: 600;
+            text-align: center;
+        }
+        .flow-step small { display: block; font-size: 0.68rem; color: rgba(255,255,255,0.5); font-weight: 400; margin-top: 2px; }
+        .flow-arrow { color: rgba(255,255,255,0.35); font-size: 1rem; }
+
+        .glossary-luxury {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px; margin-bottom: 24px;
+        }
+        .gloss-item {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 13px 16px;
+        }
+        .gloss-item .term {
+            font-weight: 700; color: var(--wave); font-size: 0.88rem;
+            margin-bottom: 6px;
+        }
+        .gloss-item p { font-size: 0.81rem; line-height: 1.6; color: var(--text-2); margin: 0; }
+
+        .steps-list { counter-reset: steps; list-style: none; padding: 0; }
+        .steps-list li {
+            counter-increment: steps;
+            display: flex; gap: 14px; align-items: flex-start;
+            padding: 10px 0; border-bottom: 1px solid var(--border);
+            font-size: 0.85rem; color: var(--text-2); line-height: 1.6;
+        }
+        .steps-list li::before {
+            content: counter(steps);
+            background: var(--wave); color: white;
+            width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.72rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 2px;
+        }
+
+        /* ─── TABS (Bootstrap override) ─────────────────────────────── */
+        .nav-tabs { border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+        .nav-tabs .nav-link {
+            color: var(--text-3); font-size: 0.83rem; font-weight: 500;
+            border: none; border-bottom: 2px solid transparent;
+            padding: 8px 14px; margin-bottom: -2px;
+            transition: 0.15s;
+        }
+        .nav-tabs .nav-link:hover { color: var(--navy); border-color: transparent; }
+        .nav-tabs .nav-link.active {
+            color: var(--wave); font-weight: 700;
+            border-bottom-color: var(--wave);
+            background: transparent;
+        }
+
+        /* ─── SEARCH HIGHLIGHT ─────────────────────────────── */
+        .highlight { background: #ffe066; border-radius: 2px; padding: 0 1px; }
+
+        /* ─── BADGE ─────────────────────────────── */
+        .tag { display: inline-block; font-size: 0.7rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 20px; margin-right: 4px; }
+        .tag-blue { background: rgba(42,122,196,0.12); color: var(--wave); }
+        .tag-green { background: rgba(26,155,114,0.12); color: var(--seafoam); }
+        .tag-red { background: rgba(217,79,61,0.12); color: var(--coral); }
+        .tag-gold { background: rgba(201,145,58,0.12); color: var(--gold); }
+
+        /* ─── ALERT ─────────────────────────────── */
+        .alert-tip {
+            background: rgba(42,122,196,0.07); border-left: 3px solid var(--wave);
+            border-radius: 0 8px 8px 0; padding: 10px 14px;
+            font-size: 0.83rem; color: var(--text-2); margin-bottom: 14px;
+        }
+        .alert-warn {
+            background: rgba(201,145,58,0.08); border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0; padding: 10px 14px;
+            font-size: 0.83rem; color: var(--text-2); margin-bottom: 14px;
+        }
+        .alert-tip strong, .alert-warn strong { color: var(--navy); }
+
+        /* ─── AGENTS TABLE ─────────────────────────────── */
+        .agents-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .agents-table th { background: var(--navy); color: white; padding: 8px 12px; font-size: 0.76rem; }
+        .agents-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .agents-table tr:hover td { background: var(--sky); }
+        .agents-table td:first-child { font-weight: 600; color: var(--navy); }
+
+        /* ─── SEARCH RESULTS ─────────────────────────────── */
+        #search-results {
+            position: absolute; top: 48px; left: 14px; right: 14px;
+            background: #1a3050; border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px; z-index: 200; max-height: 280px; overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .search-result-item {
+            padding: 9px 14px; cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: background 0.12s;
+        }
+        .search-result-item:hover { background: rgba(255,255,255,0.07); }
+        .search-result-item .res-title { color: white; font-size: 0.82rem; font-weight: 600; }
+        .search-result-item .res-context { color: rgba(255,255,255,0.4); font-size: 0.73rem; margin-top: 2px; }
+        #search-results-empty { padding: 12px 14px; color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ SIDEBAR -->
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div style="font-family:'Syne',sans-serif; font-size:1.28rem; font-weight:800; color:white; letter-spacing:-0.02em;">
+            📘 Bluebook
+        </div>
+        <div class="tagline">Filovent · Formation Commerciale</div>
+    </div>
+
+    <div class="sidebar-body">
+        <div class="search-box" style="position:relative;">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchInput" placeholder="Rechercher…" autocomplete="off">
+            <span class="search-kbd">Ctrl+K</span>
+            <div id="search-results" style="display:none;"></div>
+        </div>
+
+        <div style="height:8px;"></div>
+
+        <div class="accordion" id="sidebarAccordion">
+            <!-- Section 1 : Budgeting -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc1">
+                        💰 Budgeting
+                    </button>
+                </h2>
+                <div id="acc1" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="budgeting-prix">Fourchettes de prix</a>
+                        <a href="#" class="dest-link" data-section="budgeting-extras">Extras & dépenses annexes</a>
+                        <a href="#" class="dest-link" data-section="budgeting-tips">Comment parler budget</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 : Vocabulaire nautique EN -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc2">
+                        ⚓ Sailing Vocabulary
+                    </button>
+                </h2>
+                <div id="acc2" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="vocab-rigging">Gréement & accastillage</a>
+                        <a href="#" class="dest-link" data-section="vocab-interior">Intérieur du bateau</a>
+                        <a href="#" class="dest-link" data-section="vocab-cockpit">Cockpit</a>
+                        <a href="#" class="dest-link" data-section="vocab-hull">Coque & sous l'eau</a>
+                        <a href="#" class="dest-link" data-section="vocab-mooring">Amarrage & mouillage</a>
+                        <a href="#" class="dest-link" data-section="vocab-sails">Voiles</a>
+                        <a href="#" class="dest-link" data-section="vocab-safety">Sécurité</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 : Lexique marin FR -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc3">
+                        🔤 Lexique marin français
+                    </button>
+                </h2>
+                <div id="acc3" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="lexique-general">Termes généraux</a>
+                        <a href="#" class="dest-link" data-section="lexique-grement">Gréement & accastillage</a>
+                        <a href="#" class="dest-link" data-section="lexique-navigation">Navigation & allures</a>
+                        <a href="#" class="dest-link" data-section="lexique-mouillage">Mouillage & instruments</a>
+                        <a href="#" class="dest-link" data-section="lexique-divers">Divers</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4 : Chantiers navals -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc4">
+                        🏗️ Chantiers & Modèles
+                    </button>
+                </h2>
+                <div id="acc4" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="shipyards-perf">Performance & critères</a>
+                        <a href="#" class="dest-link" data-section="shipyards-monohull">Monocoques</a>
+                        <a href="#" class="dest-link" data-section="shipyards-catamaran">Catamarans</a>
+                        <a href="#" class="dest-link" data-section="shipyards-comparatif">Comparatifs 40 & 45 & 50 ft</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5 : Fluvial -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc5">
+                        🚢 Fluvial — Questions pratiques
+                    </button>
+                </h2>
+                <div id="acc5" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="fluvial-navigation">La navigation</a>
+                        <a href="#" class="dest-link" data-section="fluvial-ecluses">Les écluses</a>
+                        <a href="#" class="dest-link" data-section="fluvial-activites">Activités & vie à bord</a>
+                        <a href="#" class="dest-link" data-section="fluvial-equipement">Équipement & ravitaillement</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6 : Sunsail & Moorings -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc6">
+                        ⛵ Sunsail & The Moorings
+                    </button>
+                </h2>
+                <div id="acc6" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="sunsail-presentation">Présentation</a>
+                        <a href="#" class="dest-link" data-section="sunsail-produits">Produits & flotte</a>
+                        <a href="#" class="dest-link" data-section="sunsail-boarding">Boarding times</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7 : Luxury crewed -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc7">
+                        👑 Luxury Crewed Charter
+                    </button>
+                </h2>
+                <div id="acc7" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="luxury-glossaire">Glossaire & acteurs</a>
+                        <a href="#" class="dest-link" data-section="luxury-recherche">Recherche & devis</a>
+                        <a href="#" class="dest-link" data-section="luxury-reservation">Réservation MYBA</a>
+                        <a href="#" class="dest-link" data-section="luxury-preparation">Préparation croisière</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-tools">
+        <div class="tools-label">Navigation</div>
+        <a href="index.html" class="tool-link">
+            <i class="bi bi-house"></i> Accueil plateforme
+        </a>
+        <a href="greenbook.html" class="tool-link">
+            <i class="bi bi-book"></i> Greenbook
+        </a>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN CONTENT -->
+<div id="main">
+
+<!-- ══════════════════════ ACCUEIL ══════════════════════ -->
+<div class="section-panel active" id="panel-home">
+    <div class="page-header">
+        <h1>📘 Bluebook Filovent</h1>
+        <div class="subtitle">Formation commerciale — Vocabulaire, budgets, chantiers, loueurs et charter luxe</div>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--gold);" onclick="showSection('budgeting-prix')">
+                <h3>💰 Budgeting</h3>
+                <p>Fourchettes de prix par type de bateau, saisonnalité, extras et méthode pour aborder le budget client.</p>
+                <span class="tag tag-gold">Indispensable</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--wave);" onclick="showSection('vocab-rigging')">
+                <h3>⚓ Sailing Vocabulary</h3>
+                <p>Vocabulaire nautique multilingue (FR/EN/DE/IT/ES) avec illustrations par thème.</p>
+                <span class="tag tag-blue">FR · EN · DE · IT · ES</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--wave);" onclick="showSection('lexique-general')">
+                <h3>🔤 Lexique marin français</h3>
+                <p>Définitions complètes des termes techniques de la voile, navigation et manœuvres.</p>
+                <span class="tag tag-blue">Technique</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--coral);" onclick="showSection('shipyards-perf')">
+                <h3>🏗️ Chantiers & Modèles</h3>
+                <p>Gammes monocoques et catamarans, critères de performance, comparatifs 40/45/50 ft.</p>
+                <span class="tag tag-red">Expertise produit</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--seafoam);" onclick="showSection('fluvial-navigation')">
+                <h3>🚢 Fluvial</h3>
+                <p>Questions pratiques sur la navigation fluviale : écluses, amarrage, équipement, activités.</p>
+                <span class="tag tag-green">Sans permis</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--wave);" onclick="showSection('sunsail-presentation')">
+                <h3>⛵ Sunsail & The Moorings</h3>
+                <p>Présentation, flotte, inclusions, boarding times et spécificités des deux marques leaders.</p>
+                <span class="tag tag-blue">Loueurs premium</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="info-card" style="cursor:pointer;border-left:3px solid var(--gold);" onclick="showSection('luxury-glossaire')">
+                <h3>👑 Luxury Crewed Charter</h3>
+                <p>Acteurs (Broker/Central Agent/MYBA), processus de réservation, contrat MYBA, APA.</p>
+                <span class="tag tag-gold">+20 000 €/semaine</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ BUDGETING ══════════════════════ -->
+<div class="section-panel" id="panel-budgeting-prix">
+    <div class="page-header">
+        <h1>💰 Fourchettes de prix — Bateaux</h1>
+        <div class="subtitle">Ces prix sont indicatifs et varient selon destination, âge du bateau et armateur.</div>
+    </div>
+    <div class="alert-tip">
+        <strong>Saisonnalité :</strong> <span class="tag tag-red">Haute</span> = juillet-août en Med / fluvial ou déc-jan en Caraïbes &nbsp;|&nbsp;
+        <span class="tag tag-gold">Médiane</span> = mai-juin-sept en Med ou fév-mai en Caraïbes &nbsp;|&nbsp;
+        <span class="tag tag-green">Basse</span> = avril-oct en Med, juin-nov en Caraïbes
+    </div>
+    <div class="alert-warn">
+        <strong>Prix du week-end ≈ 2/3 du prix semaine (65%)</strong> — Possible en basse/mi-saison sur demande, ou en haute saison en last minute.
+    </div>
+    <div class="info-card">
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>Type de bateau</th>
+                    <th class="low">Basse saison</th>
+                    <th class="mid">Mi-saison</th>
+                    <th class="high">Haute saison</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="section-row"><td colspan="4">🚤 Bateaux fluviaux</td></tr>
+                <tr><td>Pénichette 8 m (1-2 cabines)</td><td class="low">700 €</td><td class="mid">1 200 €</td><td class="high">1 500 €</td></tr>
+                <tr><td>Pénichette 10 m (2 cabines)</td><td class="low">900 €</td><td class="mid">1 500 €</td><td class="high">1 800 €</td></tr>
+                <tr><td>Pénichette 12 m (2-3 cabines)</td><td class="low">1 500 €</td><td class="mid">2 000 €</td><td class="high">3 000 €</td></tr>
+                <tr><td>Pénichette 15 m (4-5 cabines)</td><td class="low">1 800 €</td><td class="mid">2 500 €</td><td class="high">4 000 €</td></tr>
+                <tr class="section-row"><td colspan="4">⛵ Monocoques</td></tr>
+                <tr><td>Monocoque 30 ft (2-3 cabines)</td><td class="low">800 €</td><td class="mid">1 500 €</td><td class="high">3 000 €</td></tr>
+                <tr><td>Monocoque 40 ft (2-3 cabines)</td><td class="low">1 200 €</td><td class="mid">2 000 €</td><td class="high">4 000 €</td></tr>
+                <tr><td>Monocoque 45 ft (3-4 cabines)</td><td class="low">1 500 €</td><td class="mid">2 500 €</td><td class="high">5 000 €</td></tr>
+                <tr><td>Monocoque 50 ft (4-5 cabines)</td><td class="low">2 000 €</td><td class="mid">3 500 €</td><td class="high">7 000 €</td></tr>
+                <tr class="section-row"><td colspan="4">⛵⛵ Catamarans</td></tr>
+                <tr><td>Catamaran 40 ft</td><td class="low">2 000 €</td><td class="mid">4 500 €</td><td class="high">6 000 €</td></tr>
+                <tr><td>Catamaran 45 ft</td><td class="low">3 000 €</td><td class="mid">5 000 €</td><td class="high">9 000 €</td></tr>
+                <tr><td>Catamaran 50 ft</td><td class="low">4 000 €</td><td class="mid">8 000 €</td><td class="high">15 000 €</td></tr>
+                <tr class="section-row"><td colspan="4">👑 Avec équipage</td></tr>
+                <tr><td>Catamaran 60 ft <span class="tag tag-gold">ÉQUIPAGE</span></td><td class="low">15 000 €</td><td class="mid">30 000 €</td><td class="high">30 000 €</td></tr>
+                <tr><td>Yacht 100 ft <span class="tag tag-gold">ÉQUIPAGE</span></td><td class="low">50 000 €</td><td class="mid">50 000 €</td><td class="high">50 000 €</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-budgeting-extras">
+    <div class="page-header">
+        <h1>💰 Extras & Dépenses annexes</h1>
+        <div class="subtitle">À intégrer dans le budget total du client</div>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>👨‍✈️ Skipper / Hôtesse</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span> Grèce / Croatie : ~200 €/jour ou 1 400 €/semaine</li>
+                    <li><span class="check">▸</span> France : ~300 €/jour ou 2 100 €/semaine</li>
+                    <li><span class="check">▸</span> Hôtesse : généralement 10% moins cher que skipper</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>⛽ Carburant</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span> Voilier monocoque : ~10 €/heure</li>
+                    <li><span class="check">▸</span> Catamaran : ~20 €/heure (2 moteurs)</li>
+                    <li><span class="check">▸</span> Pénichette : 10-15 €/heure → ~350 €/semaine</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>🍽️ Nourriture & boissons</h3>
+                <p>~30 €/personne/jour en moyenne (varie selon le coût de vie de la destination).</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>⚓ Ports & marinas</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span> Monocoque : 50 à 150 €/nuit selon taille, destination, saison</li>
+                    <li><span class="check">▸</span> Catamaran : 100 à 300 €/nuit</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>📋 Transit log & nettoyage</h3>
+                <p>Pack obligatoire : 100 à 300 € selon taille et destination.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-budgeting-tips">
+    <div class="page-header">
+        <h1>💰 Comment aborder le budget client</h1>
+    </div>
+    <div class="info-card">
+        <h3>💬 Formules recommandées</h3>
+        <div class="alert-tip" style="margin-bottom:10px;">
+            <strong>« Quel budget souhaitez-vous consacrer à cette croisière ? Approximativement ? »</strong>
+        </div>
+        <div class="alert-tip" style="margin-bottom:10px;">
+            <strong>« Si vous me donnez une enveloppe budgétaire, cela m'aidera beaucoup dans mes recherches. »</strong>
+        </div>
+    </div>
+    <div class="info-card">
+        <h3>🎯 Si le client refuse de donner un budget</h3>
+        <p>Donnez-lui des ordres de grandeur et demandez-lui son avis. Vous saurez ainsi rapidement s'il vaut la peine d'approfondir la recherche.</p>
+        <p>Exemple : <em>« Pour un catamaran 45 ft en Méditerranée en juillet, comptez entre 5 000 et 9 000 € la semaine pour la location, plus environ 2 000-3 000 € d'extras. Ça vous convient ? »</em></p>
+    </div>
+</div>
+
+<!-- ══════════════════════ SAILING VOCABULARY ══════════════════════ -->
+<div class="section-panel" id="panel-vocab-rigging">
+    <div class="page-header">
+        <h1>⚓ Gréement & Accastillage</h1>
+        <div class="subtitle">Rigging and chandlery — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Les haubans</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Shrouds</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Leichentücher</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Sartie</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Obenque</div>
+            </div>
+            <div class="def">Câbles métalliques reliant le haut du mât aux côtés du bateau, le maintenant érigé.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La bôme</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Boom</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Baum</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Boma</div>
+                <div class="lang"><span class="flag">🇪🇸</span> La botavara</div>
+            </div>
+            <div class="def">Poutre horizontale reliée au bas du mât, sur laquelle est attachée la grand-voile.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Une latte</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Batten</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Segellatte</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Listello</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Los sables</div>
+            </div>
+            <div class="def">Fine tige enfilée dans des étuis pour maintenir la meilleure forme de la voile.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La barre</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Helm / Wheel</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Steuer</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Barra</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Timón</div>
+            </div>
+            <div class="def">Barre franche (bâton) ou à roue (volant), permettant de diriger le bateau.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le pataras</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Backstay</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Der Achterstag</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Il paterazzo</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Estay de popa</div>
+            </div>
+            <div class="def">Câble reliant la tête du mât à l'arrière du bateau pour maintenir le mât vertical.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Lazy-jack</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Lazy-jack</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Lazy-jack</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Lazy-jack</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Lazy-jack</div>
+            </div>
+            <div class="def">Réseau de bouts permettant de guider la grand-voile lors du hissage, de l'affalage ou de la prise de ris.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Lazy-bag</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Lazy-bag</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Lazy-bag</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Lazy-bag</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Lazy-bag</div>
+            </div>
+            <div class="def">Sac qui entoure la bôme, facilitant le rangement de la voile lors de l'affalage.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le davier</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Bow roller</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Bugrolle</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Prua ancora</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Rodillo de proa</div>
+            </div>
+            <div class="def">Pièce métallique à l'avant guidant la chaîne loin de la coque.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Les chandeliers</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Stanchions</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Relingsstütze</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Supporto per ringhiera</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Soporte de barandilla</div>
+            </div>
+            <div class="def">Tiges métalliques verticales fixées sur le pont, supportant les filières.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Les filières</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Lifeline</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Spinne</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Funi metalliche</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Cables metálicos</div>
+            </div>
+            <div class="def">Câbles métalliques longeant l'extérieur du pont pour s'y accrocher et éviter de tomber.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Les barres de flèche</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Crosstrees / Spreaders</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Saling</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Pennaccino</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Cruceta</div>
+            </div>
+            <div class="def">Barres horizontales à différentes hauteurs du mât, écartant les haubans pour une meilleure tenue.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">L'étai</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Forestay</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Vorstag</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Strallo di prua</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Estay de proa</div>
+            </div>
+            <div class="def">Câble reliant la tête du mât à l'avant du bateau. Le génois sur enrouleur s'enroule autour de ce câble.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-interior">
+    <div class="page-header">
+        <h1>🛋️ Intérieur du bateau</h1>
+        <div class="subtitle">Interior of the boat — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Le carré</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Saloon</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Salon</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Quadrato</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Salón</div>
+            </div>
+            <div class="def">Salon du bateau. Le canapé peut être convertible en lit (carré convertible) et la table peut se baisser.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La VHF</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> VHF (Very High Frequency)</div>
+                <div class="lang"><span class="flag">🇩🇪</span> VHF/UHF</div>
+                <div class="lang"><span class="flag">🇮🇹</span> VHF</div>
+                <div class="lang"><span class="flag">🇪🇸</span> VHF</div>
+            </div>
+            <div class="def">Radio permettant de communiquer avec un port, les secours ou d'autres bateaux.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La table à cartes</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Chart table</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Kartentisch</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Tavolo da carteggio</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Mesa de cartas</div>
+            </div>
+            <div class="def">Table à l'intérieur sous laquelle sont rangées les cartes nautiques et divers papiers.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le hublot</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Porthole</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Bullauge</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Oblò</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Portilla</div>
+            </div>
+            <div class="def">Fenêtre étanche d'un bateau.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-cockpit">
+    <div class="page-header">
+        <h1>🎡 Cockpit</h1>
+        <div class="subtitle">Vocabulaire multilingue du cockpit</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Le bimini</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Bimini</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Bimini</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Bimini</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Bimini</div>
+            </div>
+            <div class="def">Protection décapotable protégeant le cockpit du soleil.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La capote de descente</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Sprayhood</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Sprayhood</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Tettuccio di discesa</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Toldo de descenso</div>
+            </div>
+            <div class="def">Capote dépliable conçue pour protéger des embruns l'entrée de la descente et les personnes dans le cockpit.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La jupe arrière</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Swimming platform</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Heckplattform</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Specchio di poppa</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Espejo de popa</div>
+            </div>
+            <div class="def">Tableau arrière parfois basculant, juste au-dessus de la surface de l'eau, formant une plateforme de bain.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le pare-battage / défense</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Fender</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Fender</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Parabordo</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Defensas</div>
+            </div>
+            <div class="def">Boudin gonflable attaché aux côtés du bateau pour protéger la coque au port ou au mouillage.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le piano</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> The piano (clam cleats)</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Das Klavier</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Il piano</div>
+                <div class="lang"><span class="flag">🇪🇸</span> El piano</div>
+            </div>
+            <div class="def">Ensemble de taquets coinceurs permettant de bloquer un cordage. Nom dû à sa ressemblance avec les touches d'un piano.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le winch</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Winch</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Die Winsch</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Vericello</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Cabrestante</div>
+            </div>
+            <div class="def">Treuil autour duquel on enroule une drisse ou une écoute pour démultiplier la force de traction.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La descente</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Companionway</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Niedergang</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Discesa</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Descenso</div>
+            </div>
+            <div class="def">Ouverture à l'avant du cockpit dans un monocoque, permettant d'entrer dans le carré.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le compas</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Compass</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Kompass</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Conpasso</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Brujula</div>
+            </div>
+            <div class="def">Grosse boussole que le barreur observe pendant qu'il barre pour garder son cap.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-hull">
+    <div class="page-header">
+        <h1>⚓ Coque & Sous l'eau</h1>
+        <div class="subtitle">Hull — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Les safrans</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Rudder</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Ruder</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Pala del timone</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Pala de timón</div>
+            </div>
+            <div class="def">Partie immergée du gouvernail. Un monocoque a 1 ou 2 safrans, un catamaran en a 2.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La carène</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Underwater hull</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Der Kiel (immergé)</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Lo scafo (immersione)</div>
+                <div class="lang"><span class="flag">🇪🇸</span> El casco (sumergido)</div>
+            </div>
+            <div class="def">Partie immergée de la coque. Chaque année, on sort le bateau pour la nettoyer et la repeindre avec de l'antifouling (carénage).</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La coque</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> The hull</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Der Rumpf</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Lo scafo</div>
+                <div class="lang"><span class="flag">🇪🇸</span> El casco</div>
+            </div>
+            <div class="def">Le corps du bateau.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La quille</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Keel</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Der Kiel</div>
+                <div class="lang"><span class="flag">🇮🇹</span> La chiglia</div>
+                <div class="lang"><span class="flag">🇪🇸</span> La quilla</div>
+            </div>
+            <div class="def">Lame verticale lestée : 1) éviter la dérive, 2) éviter de trop gîter et de chavirer grâce à son contrepoids.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-mooring">
+    <div class="page-header">
+        <h1>⚓ Amarrage & Mouillage</h1>
+        <div class="subtitle">Mooring — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Le taquet</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Cleat</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Klampe</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Galloccia</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Cornamusa</div>
+            </div>
+            <div class="def">Dispositif sur le navire ou le ponton permettant de bloquer un cordage.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La ligne de vie</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Safety line</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Strecktau</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Lina di Vita</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Guardamancebos</div>
+            </div>
+            <div class="def">Sangle longeant chaque côté du pont sur laquelle on peut accrocher un harnais.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">L'annexe</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Dinghy / Tender</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Beiboot</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Tender</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Embarcación auxiliar</div>
+            </div>
+            <div class="def">Petit bateau gonflable permettant de rejoindre la côte quand on est au mouillage.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">La bouée de mouillage</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Mooring buoy</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Ankerboje</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Boa di ormeggio</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Boya de fondeo</div>
+            </div>
+            <div class="def">Bouée reliée à un corps-mort en béton sous l'eau, pour mouiller en sécurité sans ancre.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">L'écoute</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Sheet</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Schot</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Scotta</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Escota</div>
+            </div>
+            <div class="def">Bout (cordage) servant à régler l'angle d'une voile par rapport au vent. Border = tirer, choquer = relâcher.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Moteur hors-bord</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Outboard motor</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Außenbordmotor</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Motore fuoribordo</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Motor fueraborda</div>
+            </div>
+            <div class="def">Petit moteur (~2,5 cv) fixé à l'arrière de l'annexe. Souvent en option.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le gilet autogonflant</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Self-inflating life jacket</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Selbstaufblasbare Weste</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Gilet autogonfiante</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Chaleco autoinflable</div>
+            </div>
+            <div class="def">Gilet porté dégonflé qui se déclenche automatiquement à la pression lorsqu'on tombe à l'eau.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le pont en teck</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Teak deck</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Teakdeck</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Ponte in teak</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Cubierta de teca</div>
+            </div>
+            <div class="def">Bois très résistant et antidérapant couvrant le pont. Élément luxueux et recherché.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-sails">
+    <div class="page-header">
+        <h1>🌬️ Voiles</h1>
+        <div class="subtitle">Sails — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">Grand-voile sur enrouleur</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Furling mainsail</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Rollgroßsegel</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Randa avvolgibile</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Mayor enrollable</div>
+            </div>
+            <div class="def">Se déroule et s'enroule à l'intérieur du mât. Peu performante car la voile est souple. Simple d'utilisation.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Grand-voile lattée</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Battened mainsail</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Gelattetes Großsegel</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Randa steccata</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Vela mayor de sables</div>
+            </div>
+            <div class="def">Se plie sur la bôme, rigide grâce aux lattes. Plus performante mais plus complexe à affaler. Range dans le lazy-bag.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le génois</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Genoa</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Genua</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Genoa</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Génova</div>
+            </div>
+            <div class="def">Voile secondaire à l'avant, généralement sur enrouleur. Si elle recouvre partiellement la grand-voile, c'est un génois, sinon un foc.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Foc autovireur</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Self-tacking jib</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Selbstwendende Fock</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Fiocco autovirante</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Foque autovirante</div>
+            </div>
+            <div class="def">Alternative au génois, plus petite, l'arrière fixé sur un chariot coulissant lors du virement. Pratique mais peu performant.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Le spinnaker (spi)</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Spinnaker</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Spinnaker</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Spinnaker</div>
+                <div class="lang"><span class="flag">🇪🇸</span> Spinnaker (spi)</div>
+            </div>
+            <div class="def">Grosse voile avant gonflée comme un parachute par vent arrière. Voile fragile, coûteuse, souvent en option.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Spi symétrique vs asymétrique</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Symmetrical vs Asymmetric spinnaker</div>
+            </div>
+            <div class="def"><strong>Symétrique :</strong> triangle arrondi, vent arrière strict. <strong>Asymétrique (gennaker) :</strong> moins creux, plus facile, grand largue.</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-vocab-safety">
+    <div class="page-header">
+        <h1>🆘 Sécurité</h1>
+        <div class="subtitle">Safety — Vocabulaire multilingue</div>
+    </div>
+    <div class="vocab-grid">
+        <div class="vocab-card">
+            <div class="term-fr">La gaffe</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Boat hook</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Bootshaken</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Una gaffa</div>
+                <div class="lang"><span class="flag">🇪🇸</span> El bichero</div>
+            </div>
+            <div class="def">Longue tige avec crochet servant à récupérer un cordage, une bouée, ou repousser un autre bateau.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Bouée "fer à cheval"</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Horseshoe lifebuoy</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Hufeisenboje</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Boa a ferro di cavallo</div>
+            </div>
+            <div class="def">Bouée à lancer à un équipier tombé à l'eau. Nom dû à sa forme en U.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Fusées de détresse</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Hand flares</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Seenotsignalfackeln</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Razzi di segnalazione</div>
+            </div>
+            <div class="def">Feu émettant une fumée rouge permettant aux autres bateaux ou aux secours de localiser un bateau en danger.</div>
+        </div>
+        <div class="vocab-card">
+            <div class="term-fr">Feu à retournement</div>
+            <div class="translations">
+                <div class="lang"><span class="flag">🇬🇧</span> Floating rescue light</div>
+                <div class="lang"><span class="flag">🇩🇪</span> Umkehrlicht</div>
+                <div class="lang"><span class="flag">🇮🇹</span> Boetta luminosa</div>
+            </div>
+            <div class="def">Lampe flottante s'allumant automatiquement une fois lancée à l'eau. Sert à localiser un homme à la mer de nuit.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ LEXIQUE MARIN FR ══════════════════════ -->
+<div class="section-panel" id="panel-lexique-general">
+    <div class="page-header">
+        <h1>🔤 Lexique — Termes généraux</h1>
+    </div>
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="info-card">
+                <h3>📐 Mesures & dimensions</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span><div><strong>Mille marin / mille nautique</strong> : 1 852 mètres. 1 nœud = 1 mille à l'heure. Un voilier navigue en moyenne à ~6 nœuds (10 km/h).</div></li>
+                    <li><span class="check">▸</span><div><strong>Un pied (foot/feet)</strong> : 30 cm. Aide-mémoire : 30 ft = 9 m, 40 ft = 12 m, 50 ft = 15 m, 60 ft = 18 m.</div></li>
+                    <li><span class="check">▸</span><div><strong>Tirant d'eau (draft)</strong> : hauteur de la partie immergée. Plus c'est profond, plus le bateau est performant au près.</div></li>
+                    <li><span class="check">▸</span><div><strong>Maître-bau (baumax)</strong> : largeur maximale du bateau.</div></li>
+                    <li><span class="check">▸</span><div><strong>Longueur hors-tout (LOA)</strong> : longueur totale incluant les parties hors de l'eau.</div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="info-card">
+                <h3>🧭 Orientation & parties du bateau</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span><div><strong>Tribord (starboard)</strong> : droite du bateau (face à la proue).</div></li>
+                    <li><span class="check">▸</span><div><strong>Bâbord (port-side)</strong> : gauche du bateau.</div></li>
+                    <li><span class="check">▸</span><div><strong>Proue / étrave (bow)</strong> : avant du bateau.</div></li>
+                    <li><span class="check">▸</span><div><strong>Poupe (stern)</strong> : arrière du bateau.</div></li>
+                    <li><span class="check">▸</span><div><strong>Cockpit</strong> : partie extérieure à l'arrière depuis laquelle s'effectuent les manœuvres.</div></li>
+                    <li><span class="check">▸</span><div><strong>Pont (deck)</strong> : partie extérieure supérieure du bateau.</div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="info-card">
+                <h3>🚤 Types de bateaux</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span><div><strong>Monocoque ≠ catamaran</strong> : navire à une ou deux coques.</div></li>
+                    <li><span class="check">▸</span><div><strong>Sloop</strong> : voilier à un mât avec grand-voile et génois. Le plus courant.</div></li>
+                    <li><span class="check">▸</span><div><strong>Ketch</strong> : voilier à 2 mâts, celui de devant étant le plus grand.</div></li>
+                    <li><span class="check">▸</span><div><strong>Caïque / gulet</strong> : grand bateau en bois traditionnel turc, loué avec équipage.</div></li>
+                    <li><span class="check">▸</span><div><strong>Flybridge</strong> : poste de pilotage surélevé sur certains catamarans.</div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lexique-grement">
+    <div class="page-header">
+        <h1>🔤 Lexique — Gréement & Accastillage</h1>
+    </div>
+    <div class="info-card">
+        <h3>Éléments du gréement</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Gréement courant</strong> : cordages servant aux manœuvres. <strong>Gréement dormant</strong> : câbles fixes (haubans).</div></li>
+            <li><span class="check">▸</span><div><strong>Haubans (shrouds)</strong> : câbles métalliques du haut du mât aux côtés. L'étai va à l'avant, le pataras à l'arrière.</div></li>
+            <li><span class="check">▸</span><div><strong>Écoute (sheet)</strong> : bout réglant l'angle d'une voile. Border = tirer en tension. Choquer = relâcher.</div></li>
+            <li><span class="check">▸</span><div><strong>Drisse (halyard)</strong> : bout servant à hisser ou affaler une voile.</div></li>
+            <li><span class="check">▸</span><div><strong>Chariot de grand-voile (traveller)</strong> : point d'attache de l'écoute de GV sur un rail transversal.</div></li>
+            <li><span class="check">▸</span><div><strong>Hale-bas (boom vang)</strong> : maintient la bôme vers le bas pour éviter qu'elle s'incline.</div></li>
+            <li><span class="check">▸</span><div><strong>Balancine (topping lift)</strong> : bout reliant l'extrémité de la bôme à la tête de mât.</div></li>
+            <li><span class="check">▸</span><div><strong>Bloqueur / taquet coinceur (clam cleat)</strong> : petit appareil permettant de tirer une drisse mais l'empêchant de reculer.</div></li>
+            <li><span class="check">▸</span><div><strong>Winch</strong> : treuil autour duquel on enroule une drisse pour démultiplier la force. On tourne avec une manivelle (crank).</div></li>
+            <li><span class="check">▸</span><div><strong>Guindant (luff)</strong> : bord avant d'une voile (côté mât pour la grand-voile).</div></li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>Accastillage sous l'eau</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Dérive (fin)</strong> : lame verticale relevable évitant la dérive. Un dériveur intégral ou lesté en est équipé.</div></li>
+            <li><span class="check">▸</span><div><strong>Quille (keel)</strong> : dérive fixe lestée. Deux utilités : éviter la dérive et éviter de chavirer (contrepoids).</div></li>
+            <li><span class="check">▸</span><div><strong>Biquille</strong> : deux quilles permettant de s'échouer par marée basse en restant à plat.</div></li>
+            <li><span class="check">▸</span><div><strong>Propulseur d'étrave (bow thruster)</strong> : petite hélice à l'avant facilitant les manœuvres de port.</div></li>
+            <li><span class="check">▸</span><div><strong>Guindeau (anchor winch)</strong> : treuil électrique pour l'ancre, commandé depuis l'avant.</div></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lexique-navigation">
+    <div class="page-header">
+        <h1>🔤 Lexique — Navigation & Allures</h1>
+    </div>
+    <div class="info-card">
+        <h3>⚡ Actions de navigation</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Hisser ≠ affaler</strong> : sortir une voile / ranger une voile.</div></li>
+            <li><span class="check">▸</span><div><strong>Border ≠ choquer</strong> : tirer sur une écoute (mettre en tension) / relâcher la tension.</div></li>
+            <li><span class="check">▸</span><div><strong>Abattre ≠ lofer</strong> : s'éloigner du vent / se rapprocher du vent (face au vent).</div></li>
+            <li><span class="check">▸</span><div><strong>Virer de bord (to tack)</strong> : passer de bâbord amures à tribord amures en passant par face au vent.</div></li>
+            <li><span class="check">▸</span><div><strong>Louvoyer (to tack upwind)</strong> : faire des zigzags pour remonter au vent en tirant des bords.</div></li>
+            <li><span class="check">▸</span><div><strong>Empanner (to gybe)</strong> : virer de bord en passant par vent arrière. La bôme peut être brutale. À éviter sur les grands bateaux.</div></li>
+            <li><span class="check">▸</span><div><strong>Prendre un ris (to reef)</strong> : réduire la surface de voilure par gros temps pour ne pas trop gîter.</div></li>
+            <li><span class="check">▸</span><div><strong>Gîter (to heel)</strong> : le bateau penche du côté opposé au vent.</div></li>
+            <li><span class="check">▸</span><div><strong>Talonner (to strike)</strong> : toucher le fond avec la quille. La caution sera généralement perdue.</div></li>
+            <li><span class="check">▸</span><div><strong>Chavirer (to capsize)</strong> : retourner le bateau sous l'effet du vent ou d'une vague.</div></li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>💨 Vent & allures</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Être bâbord / tribord amures</strong> : avoir le vent venant de bâbord / tribord.</div></li>
+            <li><span class="check">▸</span><div><strong>Remonter au vent (upwind)</strong> : naviguer au près contre le vent.</div></li>
+            <li><span class="check">▸</span><div><strong>Être bout au vent (head to wind)</strong> : face au vent, position nécessaire pour hisser/affaler la GV.</div></li>
+            <li><span class="check">▸</span><div><strong>Vent apparent ≠ vent réel</strong> : vent perçu par le bateau en mouvement ≠ vent si le bateau était immobile.</div></li>
+            <li><span class="check">▸</span><div><strong>Risée</strong> : accélération passagère du vent.</div></li>
+            <li><span class="check">▸</span><div><strong>Pétole (dead calm)</strong> : absence totale de vent.</div></li>
+            <li><span class="check">▸</span><div><strong>Échelle de Beaufort</strong> : échelle de force du vent de 0 (calme) à 12 (ouragan).</div></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lexique-mouillage">
+    <div class="page-header">
+        <h1>🔤 Lexique — Mouillage & Instruments</h1>
+    </div>
+    <div class="info-card">
+        <h3>⚓ Mouillage</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Mouiller (to moor)</strong> : s'arrêter en jetant l'ancre, en s'amarrant au port ou à une bouée.</div></li>
+            <li><span class="check">▸</span><div><strong>Un mouillage</strong> : lieu sympathique où mouiller (crique, baie, plage...).</div></li>
+            <li><span class="check">▸</span><div><strong>Corps-mort / bouée (mooring buoy)</strong> : bouée reliée à un béton sous l'eau, plus sûr qu'une ancre qui peut déraper.</div></li>
+            <li><span class="check">▸</span><div><strong>Haussières / amarres (mooring lines)</strong> : cordages servant à attacher le bateau au quai.</div></li>
+            <li><span class="check">▸</span><div><strong>Pendille (front mooring line)</strong> : amarre reliée au fond appartenant au port, attachant l'avant du bateau.</div></li>
+            <li><span class="check">▸</span><div><strong>Échouage</strong> : se poser volontairement sur le fond à marée basse (nécessite un dériveur, biquille ou quille relevable).</div></li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>🔭 Instruments de navigation</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>GPS traceur</strong> : géolocalisation montrant notre position sur une carte (≠ GPS classique qui ne donne que les coordonnées).</div></li>
+            <li><span class="check">▸</span><div><strong>Anémomètre</strong> : donne la vitesse et l'angle du vent (apparent et réel).</div></li>
+            <li><span class="check">▸</span><div><strong>Sondeur (depth meter)</strong> : donne la profondeur du fond sous le niveau de l'eau.</div></li>
+            <li><span class="check">▸</span><div><strong>Pilote automatique (autopilot)</strong> : maintient automatiquement un cap donné. Présent sur la plupart des bateaux de plaisance >10 m.</div></li>
+            <li><span class="check">▸</span><div><strong>Répétiteurs</strong> : petits écrans dans le cockpit relayant les instruments.</div></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lexique-divers">
+    <div class="page-header">
+        <h1>🔤 Lexique — Divers</h1>
+    </div>
+    <div class="info-card">
+        <h3>🛠️ Équipements divers</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><div><strong>Annexe + moteur hors-bord</strong> : petit bateau gonflable motorisé permettant de rejoindre la côte depuis le mouillage.</div></li>
+            <li><span class="check">▸</span><div><strong>Dessalinisateur (water maker)</strong> : fabrique de l'eau douce à partir d'eau de mer. Indispensable dans les destinations exotiques.</div></li>
+            <li><span class="check">▸</span><div><strong>Réservoir à eaux noires (black water tank)</strong> : stocke les déjections. Vanne à fermer au port.</div></li>
+            <li><span class="check">▸</span><div><strong>Pompe de cale (bilge pump)</strong> : évacue l'eau infiltrée dans les fonds.</div></li>
+            <li><span class="check">▸</span><div><strong>Fardage (windage)</strong> : prise au vent du bateau. Fort sur les catamarans, peut gêner les manœuvres.</div></li>
+            <li><span class="check">▸</span><div><strong>Erre (headway)</strong> : mouvement inertiel d'un bateau sans propulsion.</div></li>
+            <li><span class="check">▸</span><div><strong>Avarie (damage)</strong> : panne, problème technique ou accident en navigation.</div></li>
+        </ul>
+    </div>
+    <div class="alert-tip">
+        <strong>Conseil :</strong> utiliser Google Images ouvert en parallèle lors de l'apprentissage du lexique. Pour les manœuvres, privilégier les vidéos YouTube.
+        <br>Ressource : <a href="https://www.lavoilepourlesnuls.com/voilier/" target="_blank">lavoilepourlesnuls.com</a>
+    </div>
+</div>
+
+<!-- ══════════════════════ SHIPYARDS ══════════════════════ -->
+<div class="section-panel" id="panel-shipyards-perf">
+    <div class="page-header">
+        <h1>🏗️ Critères de performance</h1>
+        <div class="subtitle">Ce qui rend un bateau plus ou moins rapide — indépendamment du prix ou du luxe</div>
+    </div>
+    <div class="perf-factors">
+        <h4>⚡ Les 6 facteurs de performance</h4>
+        <ul>
+            <li><strong>Surface de voilure</strong> : les m² de voile = les chevaux d'un moteur. Dépend surtout de la longueur de la bôme.</li>
+            <li><strong>Poids du bateau</strong> : plus c'est léger, plus c'est rapide.</li>
+            <li><strong>Tirant d'eau (draft)</strong> : plus c'est profond, meilleure remontée au vent, moins de gîte, moins de dérive.</li>
+            <li><strong>Longueur</strong> : plus c'est long, plus c'est rapide (passage des vagues, remontée au vent).</li>
+            <li><strong>Type de grand-voile</strong> : enrouleur (pratique mais lent) vs lattée vs full battened.</li>
+            <li><strong>Forme de la coque.</strong></li>
+        </ul>
+    </div>
+    <div class="alert-warn">Ces catégories indiquent la <strong>performance</strong>, pas le prix ou le niveau de luxe.</div>
+</div>
+
+<div class="section-panel" id="panel-shipyards-monohull">
+    <div class="page-header">
+        <h1>🏗️ Gammes de monocoques</h1>
+    </div>
+    <div class="shipyard-section">
+        <div class="range-grid">
+            <div class="range-col cruise">
+                <h4>🐢 Croisière</h4>
+                <ul>
+                    <li><strong>Océanis</strong> (Bénéteau, FR)</li>
+                    <li><strong>Sun Odyssey</strong> (Jeanneau / Bénéteau)</li>
+                    <li><strong>Sun Loft</strong> (Jeanneau) — monomaran</li>
+                    <li><strong>Bavaria Cruiser</strong> (Bavaria, DE)</li>
+                    <li><strong>Cyclades</strong> (Bénéteau)</li>
+                    <li><strong>Sense</strong> (Bénéteau)</li>
+                    <li><strong>Dufour Grand Large</strong> (Dufour, FR)</li>
+                    <li><strong>Hanse</strong> (Hanse, DE) — foc autovireur</li>
+                </ul>
+            </div>
+            <div class="range-col medium">
+                <h4>⚡ Médium</h4>
+                <ul>
+                    <li><strong>Océanis XX.1</strong> (Bénéteau)</li>
+                    <li><strong>Elan Impression</strong> (Elan, SI)</li>
+                    <li><strong>Grand Soleil</strong> (IT)</li>
+                    <li><strong>Gib Sea</strong> (Gibert Marine, FR)</li>
+                    <li><strong>Ovni</strong> (Alubat, FR) — aluminium</li>
+                    <li><strong>Delphia</strong> (PL)</li>
+                    <li><strong>X Yachts</strong> (DK)</li>
+                    <li><strong>Dehler</strong></li>
+                    <li><strong>Salona</strong> (Salona, HR)</li>
+                </ul>
+            </div>
+            <div class="range-col perf">
+                <h4>🚀 Performance</h4>
+                <ul>
+                    <li><strong>First</strong> (Bénéteau)</li>
+                    <li><strong>Sun Fast</strong> (Jeanneau)</li>
+                    <li><strong>Pogo</strong> (Pogo Structures)</li>
+                    <li><strong>RM</strong> (RM Yachts) — contreplaqué+époxy</li>
+                    <li><strong>Django</strong> (Marée Haute, FR)</li>
+                    <li><strong>Archambault</strong> (FR)</li>
+                    <li><strong>J Yachts</strong> (FR)</li>
+                    <li><strong>JPK</strong> (FR)</li>
+                    <li><strong>Malango / Mojito</strong> (IDB Marine)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-shipyards-catamaran">
+    <div class="page-header">
+        <h1>🏗️ Gammes de catamarans</h1>
+        <div class="subtitle">Tous les catamarans sont confortables — les catégories indiquent la vitesse, pas le luxe.</div>
+    </div>
+    <div class="shipyard-section">
+        <div class="range-grid">
+            <div class="range-col cruise">
+                <h4>🐢 Lents</h4>
+                <ul>
+                    <li><strong>Lagoon</strong> à 2 chiffres (40, 42, 50…) — mât traversant le carré, bôme courte, lourds</li>
+                    <li><strong>Bali</strong> (Catana, FR) — très modernes, "porte de garage" à l'arrière du carré, frigo XXL</li>
+                </ul>
+            </div>
+            <div class="range-col medium">
+                <h4>⚡ Médiums</h4>
+                <ul>
+                    <li><strong>Lagoon</strong> à 3 chiffres (380, 400, 410, 450, 500) — mât très en avant, bôme longue</li>
+                    <li><strong>Fountaine-Pajot</strong> (Lucia 40, Astrea 42, Helia 44, Salina 48…)</li>
+                    <li><strong>Leopard</strong> (Robertson & Caine) — bateaux Sunsail & Moorings</li>
+                    <li><strong>Privilege</strong> (FR)</li>
+                </ul>
+            </div>
+            <div class="range-col perf">
+                <h4>🚀 Rapides</h4>
+                <ul>
+                    <li><strong>Catana</strong> (FR) — performant au près grâce aux dérives</li>
+                    <li><strong>Nautitech</strong> (FR / Bavaria) — léger, excellent compromis</li>
+                    <li><strong>Outremer</strong> (FR)</li>
+                    <li><strong>Excess</strong> (Excess Catamarans, FR)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-shipyards-comparatif">
+    <div class="page-header">
+        <h1>🏗️ Comparatifs — 40, 45 & 50 ft</h1>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="comparatifTabs">
+        <li class="nav-item"><a class="nav-link active" href="#" onclick="showComparatif('cat40')">Catamaran 40 ft</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showComparatif('mono45')">Monocoque 45 ft</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showComparatif('mono50')">Monocoque 50 ft</a></li>
+    </ul>
+
+    <div id="comp-cat40">
+        <div class="info-card">
+            <div style="overflow-x:auto;">
+                <table class="price-table">
+                    <thead><tr>
+                        <th>Modèle</th><th>Poids</th><th>Voilure</th><th>Voile/Poids</th><th>Bau max</th><th>Lancement</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr><td><strong>Lagoon 400 & 400 S2</strong></td><td>10,2 t</td><td>84 m²</td><td class="low">8,2 m²/t</td><td>7,25 m</td><td>2009</td></tr>
+                        <tr><td><strong>Lagoon 40</strong></td><td>10,9 t</td><td>81 m²</td><td class="low">7,2 m²/t</td><td>6,76 m</td><td>2017</td></tr>
+                        <tr><td><strong>Lucia 40</strong> (FP)</td><td>8,9 t</td><td>95 m²</td><td class="mid">10,7 m²/t</td><td>6,63 m</td><td>2016</td></tr>
+                        <tr><td><strong>Lavezzi 40</strong> (FP)</td><td>6,2 t</td><td>90 m²</td><td class="high">14,5 m²/t</td><td>6,50 m</td><td>2002</td></tr>
+                        <tr><td><strong>Nautitech Open 40</strong></td><td>8,9 t</td><td>91 m²</td><td class="mid">10,2 m²/t</td><td>6,91 m</td><td>2014</td></tr>
+                        <tr><td><strong>Nautitech 40</strong></td><td>7,4 t</td><td>87 m²</td><td class="mid">11,8 m²/t</td><td>6,48 m</td><td>2003</td></tr>
+                        <tr><td><strong>Leopard 40</strong></td><td>10,5 t</td><td>81 m²</td><td class="low">7,7 m²/t</td><td>6,72 m</td><td>2014</td></tr>
+                        <tr><td><strong>Bali 4.0</strong></td><td>8,6 t</td><td>81 m²</td><td class="low">9,4 m²/t</td><td>6,72 m</td><td>2016</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:0.75rem;color:var(--text-3);margin-top:8px;">* Voilure upwind (GV + génois). Plus le ratio voile/poids est élevé, plus le bateau est rapide.</p>
+        </div>
+    </div>
+
+    <div id="comp-mono45" style="display:none;">
+        <div class="info-card">
+            <div style="overflow-x:auto;">
+                <table class="price-table">
+                    <thead><tr>
+                        <th>Modèle</th><th>Poids</th><th>Voilure</th><th>Voile/Poids</th><th>Tirant d'eau</th><th>Bau max</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr><td><strong>Océanis 46.1</strong></td><td>10,8 t</td><td>97-106 m²</td><td class="mid">9,0-9,8 m²/t</td><td>1,75 ou 2,35 m</td><td>4,50 m</td></tr>
+                        <tr><td><strong>Sun Odyssey 469</strong></td><td>10,8 t</td><td>96 m²</td><td class="low">8,9 m²/t</td><td>1,65 ou 2,24 m</td><td>4,49 m</td></tr>
+                        <tr><td><strong>Dufour 460 GL</strong></td><td>10,8 t</td><td>99 m²</td><td class="mid">9,2 m²/t</td><td>1,95 ou 2,20 m</td><td>4,50 m</td></tr>
+                        <tr><td><strong>Océanis 45</strong></td><td>10,7 t</td><td>100 m²</td><td class="mid">9,3 m²/t</td><td>1,75 ou 2,27 m</td><td>4,50 m</td></tr>
+                        <tr><td><strong>First 45</strong></td><td>11,6 t</td><td>116 m²</td><td class="mid">10,0 m²/t</td><td>2,00-2,74 m</td><td>4,20 m</td></tr>
+                        <tr><td><strong>X-46</strong></td><td>10,4 t</td><td>127 m²</td><td class="high">12,2 m²/t</td><td>1,90 ou 2,40 m</td><td>4,15 m</td></tr>
+                        <tr><td><strong>RM 1370</strong> <span class="tag tag-gold">QR / Biquille</span></td><td>9,8 t</td><td>117 m²</td><td class="high">11,9 m²/t</td><td>1,95-3,35 m</td><td>4,50 m</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="comp-mono50" style="display:none;">
+        <div class="info-card">
+            <div style="overflow-x:auto;">
+                <table class="price-table">
+                    <thead><tr>
+                        <th>Modèle</th><th>Poids</th><th>Voilure</th><th>Voile/Poids</th><th>Tirant d'eau</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr><td><strong>Océanis 51.1</strong> <span class="tag tag-blue">2 safrans</span></td><td>14,0 t</td><td>91-122 m²</td><td class="low">6,5-8,8 m²/t</td><td>1,92 ou 2,36 m</td></tr>
+                        <tr><td><strong>Sun Odyssey 509 / 519</strong></td><td>14,0 t</td><td>105-133 m²</td><td class="mid">7,5-9,6 m²/t</td><td>1,73 ou 2,28 m</td></tr>
+                        <tr><td><strong>Dufour 512/520 GL</strong> <span class="tag tag-blue">cuisine à l'avant</span></td><td>15,2 t</td><td>101 m²</td><td class="low">6,6 m²/t</td><td>1,93 ou 2,30 m</td></tr>
+                        <tr><td><strong>Bavaria Cruiser 50/51</strong> <span class="tag tag-blue">2 safrans</span></td><td>14,1 t</td><td>127 m²</td><td class="mid">9,0 m²/t</td><td>1,85 ou 2,25 m</td></tr>
+                        <tr><td><strong>Hanse 505</strong></td><td>14,0 t</td><td>119 m²</td><td class="mid">8,5 m²/t</td><td>1,98 ou 2,38 m</td></tr>
+                        <tr><td><strong>Elan 50 Impression</strong></td><td>13,0 t</td><td>127 m²</td><td class="mid">9,8 m²/t</td><td>1,85-2,23 m</td></tr>
+                        <tr><td><strong>Grand Soleil 50</strong></td><td>13,5 t</td><td>139 m²</td><td class="high">10,3 m²/t</td><td>2,20-2,90 m</td></tr>
+                        <tr><td><strong>Pogo 50</strong> <span class="tag tag-red">quille relevable</span></td><td>8,9 t</td><td>151 m²</td><td class="high" style="color:var(--coral);font-weight:800;">17,0 m²/t</td><td>3,50 m</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ FLUVIAL ══════════════════════ -->
+<div class="section-panel" id="panel-fluvial-navigation">
+    <div class="page-header">
+        <h1>🚢 Fluvial — La Navigation</h1>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Faut-il de l'expérience ou un permis ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Absolument pas. Tous les bateaux proposés sont louables sans permis. Au départ, le personnel de base monte à bord pour une initiation de 30-45 minutes (pilotage, amarrages, passage d'écluse). Pour les premières écluses, les éclusiers peuvent aussi conseiller et assister.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Nombre de personnes minimum et maximum ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Minimum 2 adultes obligatoires (un adulte + un mineur non accepté). Maximum 12 personnes (les bébés comptent !).</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Peut-on s'amarrer où on le souhaite ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">
+            Presque partout, sauf où le stationnement est interdit :
+            <ul>
+                <li><strong>Ports et haltes fluviales</strong> : certains gratuits, d'autres avec taxe de 4 à 20 €/nuit.</li>
+                <li><strong>Berges du canal en plein air</strong> : piquets d'amarrage à planter dans la terre. Ne pas bloquer le chemin de halage. Déconseillé sur certaines rivières à courant (ex : le Lot).</li>
+            </ul>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Combien d'heures par jour et par semaine ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Pour une croisière tranquille : 3 à 5 heures/jour max, soit 20 à 35 heures/semaine. Les moteurs sont bridés à 8-10 km/h max. Conseil : ne pas être trop ambitieux sur l'itinéraire pour profiter pleinement des escales. Navigation de nuit interdite.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Les voies navigables sont-elles ouvertes toute l'année ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Non, uniquement d'avril à octobre (variable selon les canaux et rivières).</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Aller simple ou aller-retour ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">
+            <strong>Aller simple :</strong> possible mais plus cher. Supplément obligatoire de 100 à 200 € + convoyage véhicule 100-250 € selon les bases.<br>
+            <strong>Aller-retour :</strong> économique (pas de frais supplémentaires), l'expérience est différente dans chaque sens (écluses montées d'un côté, descendues de l'autre).
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-fluvial-ecluses">
+    <div class="page-header">
+        <h1>🚢 Fluvial — Les Écluses</h1>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Combien de temps prend une écluse ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">En moyenne 10 minutes, variable selon le type d'écluse (manuelle, automatique, avec ou sans éclusier).</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Fatiguant de passer autant d'écluses ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Le passage des écluses est une expérience unique. Avec 60 passages sur une semaine (30 écluses × 2 pour A/R), cela représente ~9 écluses/jour soit 2h. Pour moins d'écluses, privilégier : Camargue (0 écluse !), Grande Saône, le Lot, Shannon River (Irlande). La Bretagne propose des écluses privées ouvertes même les jours fériés.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Les écluses sont-elles faciles à passer ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Oui — manœuvrer au ralenti, rester patient. Écluses manuelles : 2 personnes minimum pour ouvrir les portes avec des manivelles.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Horaires et jours de fermeture ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Horaires : généralement 9h30-12h30 et 13h30-18h00 selon la saison. Fermetures : certains jours fériés (1er mai, 14 juillet, 1er novembre).</div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-fluvial-activites">
+    <div class="page-header">
+        <h1>🚢 Fluvial — Activités & Vie à bord</h1>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Peut-on pêcher ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Oui, mais le permis de pêche est obligatoire. À demander à l'avance sur <a href="https://www.cartedepeche.fr/" target="_blank">cartedepeche.fr</a>.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Peut-on se baigner ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Souvent possible dans les lacs et étangs à proximité. Attention : le Canal du Midi est trop sale pour se baigner → préférer le Lac de Jouarres près de Homps ou la plage de Frontignan en Camargue. Note : les réservoirs à eaux noires des bateaux de location sont souvent bloqués en position ouverte (VNF pas encore équipés en pompes de vidange).</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Peut-on amener des vélos ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Oui, à stocker à l'avant ou sur la terrasse arrière. Des chemins de halage longent toutes les voies navigables — idéaux pour se promener ou pédaler. Ne pas dépasser le seuil de vélos selon la taille du bateau.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Les enfants et les personnes âgées sont-ils bienvenus ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Le tourisme fluvial est accessible à tous. Les pénichettes sont adaptées aux personnes moins agiles (pas besoin de monter sur le pont supérieur). Tous les membres de l'équipage peuvent conduire sous la supervision du chef de bord désigné. Le port du gilet de sauvetage est recommandé pour les enfants.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Les animaux de compagnie sont-ils acceptés ? <span class="faq-icon">▼</span></div>
+        <div class="faq-a">Oui ! Chez LeBoat et Les Canalous : gratuit (jusqu'à 2 animaux). Chez d'autres loueurs : forfait ~50 €. ⚠️ Attacher l'animal au passage des écluses. Si départ à l'étranger : puce électronique + vaccin antirabique obligatoires.</div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-fluvial-equipement">
+    <div class="page-header">
+        <h1>🚢 Fluvial — Équipement & Ravitaillement</h1>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>⚡ Équipements à bord</h3>
+                <ul class="included-list">
+                    <li><span class="check">✓</span> Chauffage à gaz (tous les bateaux)</li>
+                    <li><span class="check">✓</span> Propulseur d'étrave (petite hélice à l'avant facilitant manœuvres d'écluse et d'amarrage)</li>
+                    <li><span class="check">✓</span> Prise 12V allume-cigare (recharge portables et appareils &lt;300W)</li>
+                    <li><span class="check">✓</span> Eau chaude (uniquement lorsque le moteur tourne)</li>
+                    <li><span class="cross">!</span> 220V non disponible sur la majorité des bateaux (sauf si prise de quai branchée au port)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>⛽ Carburant</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span> Réservoir plein au départ (autonomie 2 semaines)</li>
+                    <li><span class="check">▸</span> Coût : 10 à 13 €/heure moteur, soit ~300 €/semaine</li>
+                    <li><span class="check">▸</span> Avance carburant au départ : 200-250 € (solde restitué ou complété à la fin)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>🛒 Ravitaillement</h3>
+                <ul class="included-list">
+                    <li><span class="check">▸</span> Eau : se ravitailler tous les 2-3 jours aux ports de plaisance (quelques €)</li>
+                    <li><span class="check">▸</span> Courses : presque tous les villages bordant le canal ont épicerie ou commerce</li>
+                    <li><span class="check">▸</span> Maisons d'éclusiers : souvent œufs, volailles, légumes, vins locaux</li>
+                    <li><span class="check">▸</span> Conseil : profiter de la voiture le jour du départ pour les gros achats</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <h3>🅿️ Parking</h3>
+                <p>Parking gratuit non couvert disponible sur toutes les bases. Parking clos ou garage possible en extra : 40 à 60 €/semaine.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ SUNSAIL & MOORINGS ══════════════════════ -->
+<div class="section-panel" id="panel-sunsail-presentation">
+    <div class="page-header">
+        <h1>⛵ Sunsail & The Moorings — Présentation</h1>
+    </div>
+    <div class="brand-header">
+        <div class="brand-badge sunsail">
+            <h3>⛵ Sunsail</h3>
+            <p>Fondé à Athènes en 1974. ~500 bateaux dans presque toutes les destinations.</p>
+        </div>
+        <div class="brand-badge moorings">
+            <h3>⚓ The Moorings</h3>
+            <p>Fondé en 1969 à Tortola (BVI). ~400 bateaux. Marque la plus luxueuse des deux. Fondé en 1969, la plus ancienne.</p>
+        </div>
+    </div>
+    <div class="alert-tip">
+        <strong>Fusion en 2005</strong> — Les deux marques ont été réunies mais conservent leur identité. Elles appartiennent désormais à <strong>TUI Marine</strong> (groupe allemand propriétaire aussi de LeBoat). 50 ans d'expérience avec la clientèle américaine, la plus exigeante — d'où des standards qualité très élevés.
+    </div>
+    <div class="info-card">
+        <h3>✅ Toujours inclus (les deux marques)</h3>
+        <ul class="included-list">
+            <li><span class="check">✓</span> Nettoyage du bateau</li>
+            <li><span class="check">✓</span> Moteur hors-bord pour l'annexe</li>
+            <li><span class="check">✓</span> Linge de lit et serviettes</li>
+            <li><span class="check">✓</span> Starter pack (éponge, liquide vaisselle, sacs poubelle, torchon)</li>
+            <li><span class="check">✓</span> <strong>Garantie 4 heures</strong> : en cas de panne, réparations sous 4h ou compensation pour le temps de vacances perdu</li>
+            <li><span class="cross">✗</span> Animaux non acceptés (sauf en Italie — opérateur partenaire)</li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>🏆 Exclusivités The Moorings</h3>
+        <ul class="included-list">
+            <li><span class="check">✓</span> <strong>Friendly skipper</strong> : 4 heures avec un skipper professionnel au début du charter (gratuit) — prévenir la base à l'avance</li>
+            <li><span class="check">✓</span> <strong>Carburant inclus</strong> dans le prix pour les voiliers en destinations exotiques (pas en Méditerranée)</li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>📋 Infos pratiques</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span> Durées : <strong>7-14-21 jours UNIQUEMENT en Méditerranée</strong> et minimum 5 jours pour les destinations exotiques (même en basse saison)</li>
+            <li><span class="check">▸</span> En Méditerranée : Sunsail propose des charters dimanche-dimanche à Lefkas et Dubrovnik</li>
+            <li><span class="check">▸</span> En Croatie : <strong>pas besoin de certificat VHF</strong> (autorisation spéciale du gouvernement croate)</li>
+            <li><span class="check">▸</span> 2 sites dédiés pour l'avitaillement (provisionnement) — donner le numéro de réservation au client</li>
+            <li><span class="check">▸</span> Flotte <strong>standardisée</strong> à l'identique dans toutes les bases : même équipement garanti peu importe le port de départ</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-sunsail-produits">
+    <div class="page-header">
+        <h1>⛵ Sunsail & The Moorings — Produits & Flotte</h1>
+    </div>
+    <div class="info-card">
+        <h3>🏗️ Composition de la flotte</h3>
+        <p>Flotte exclusivement issue de 3 chantiers : <strong>Leopard</strong> (catamarans voile et moteur), <strong>Bénéteau</strong> et <strong>Jeanneau</strong> (monocoques voile). Cette standardisation garantit l'excellence technique.</p>
+        <p style="margin-top:8px;"><strong>Nommage :</strong> "Sunsail 454" = Leopard 45 à 4 cabines doubles / "Moorings 5000" = Leopard 50 / "Sunsail 34" = Jeanneau Sun Odyssey 349.</p>
+        <p style="margin-top:8px;">Standard sur tous les monocoques : <strong>grand-voile lattée avec lazy bag et lazy jack</strong>.</p>
+    </div>
+    <div class="info-card">
+        <h3>🏆 Arguments Leopard Catamaran (voile ou moteur)</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span> Porte à l'avant du carré ouvrant sur un espace lounge à la proue — crée un courant d'air naturel évitant la clim</li>
+            <li><span class="check">▸</span> Intérieur gris clair très lumineux</li>
+            <li><span class="check">▸</span> Espace lounge avant = intimité lors de l'apéritif au port (pas visible depuis le quai)</li>
+            <li><span class="check">▸</span> Davier électrique pour l'annexe</li>
+            <li><span class="check">▸</span> Toujours inclus (exotique) : clim, BBQ (interdit en Méditerranée — risque incendie)</li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>⚡ Arguments Leopard power catamaran</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span> Vitesse de croisière 12-15 nœuds — 2× plus rapide qu'un catamaran à voile → itinéraires ambitieux</li>
+            <li><span class="check">▸</span> Consommation raisonnable : ~20 L/h soit ~30 €/h (environ 2× un cat à voile)</li>
+            <li><span class="check">▸</span> Plancha électrique sur chaque power cat</li>
+            <li><span class="check">▸</span> <em>Ne pas hésiter à le proposer même aux clients qui veulent "de la voile" — sur la plupart des cats, le plaisir de navigation à la voile est de toute façon limité.</em></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-sunsail-boarding">
+    <div class="page-header">
+        <h1>⛵ Boarding Times</h1>
+        <div class="subtitle">Horaires d'embarquement et de restitution par base</div>
+    </div>
+
+    <ul class="nav nav-tabs" id="boardingTabs">
+        <li class="nav-item"><a class="nav-link active" href="#" onclick="showBoarding('sunsail')">Sunsail</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showBoarding('moorings')">The Moorings</a></li>
+    </ul>
+
+    <div id="board-sunsail">
+        <div class="info-card">
+            <div style="overflow-x:auto;">
+                <table class="boarding-table">
+                    <thead><tr><th>Région</th><th>Destination</th><th>Base</th><th>Min. jours</th><th>Départ</th><th>Embarquement</th><th>Restitution</th></tr></thead>
+                    <tbody>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>BVI</td><td>Tortola, Wickhams Cay II</td><td>5</td><td>N'importe</td><td>18:00</td><td>11:00</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>St Martin</td><td>Fort Luis Marina</td><td>5</td><td>N'importe</td><td>18:00</td><td>11:00</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>Antigua</td><td>English Harbour</td><td>5</td><td>N'importe</td><td>18:00</td><td>11:00</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>St Lucia</td><td>Rodney Bay</td><td>5</td><td>N'importe</td><td>18:00</td><td>11:00</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>Grenade</td><td>St George's / Port Louis</td><td>5</td><td>N'importe</td><td>18:00</td><td>11:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Croatie</td><td>Agana, Sunsail Marina</td><td>7</td><td>Samedi</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Croatie</td><td>Dubrovnik, ACI Marina</td><td>7</td><td>Dimanche</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Grèce</td><td>Corfou, Gouvia Marina</td><td>7</td><td>Sam/Dim</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Grèce</td><td>Lefkas, Lefkas Marina</td><td>7</td><td>Dimanche</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Grèce</td><td>Athènes, Zea Marina</td><td>7</td><td>Samedi</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Cannigione, Sardaigne</td><td>7</td><td>Samedi</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Procida Island, Naples</td><td>7</td><td>Samedi</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Portorosa, Sicile</td><td>7</td><td>Samedi</td><td>18:00</td><td>09:00</td></tr>
+                        <tr><td class="region-exotic">Exotique</td><td>Seychelles</td><td>Mahé, Eden Plaza</td><td>5</td><td>N'importe</td><td>15:00</td><td>09:00</td></tr>
+                        <tr><td class="region-exotic">Exotique</td><td>Thaïlande</td><td>Phuket, Ao Po Marina</td><td>5</td><td>N'importe</td><td>10:00</td><td>09:00</td></tr>
+                        <tr><td class="region-exotic">Exotique</td><td>Polynésie</td><td>Tahiti, Raiatea, Apooiti</td><td>5</td><td>N'importe</td><td>12:00</td><td>12:00</td></tr>
+                        <tr><td class="region-exotic">Exotique</td><td>Tonga</td><td>Neiafu, Vava'u</td><td>5</td><td>Sauf dim.</td><td>14:00</td><td>10:00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="board-moorings" style="display:none;">
+        <div class="info-card">
+            <div style="overflow-x:auto;">
+                <table class="boarding-table">
+                    <thead><tr><th>Région</th><th>Pays</th><th>Base</th><th>Min. jours</th><th>Départ</th><th>Emb.</th><th>Rest.</th><th>Bareboat</th><th>Power</th><th>Crewed</th></tr></thead>
+                    <tbody>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>BVI</td><td>Tortola, Wickams Cay II</td><td>5</td><td>N'importe</td><td>12h</td><td>11h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>St Martin</td><td>St. Martin, Fort Luis</td><td>5</td><td>N'importe</td><td>12h</td><td>11h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>Antigua</td><td>English Harbour</td><td>5</td><td>N'importe</td><td>12h</td><td>11h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>St Lucia</td><td>Rodney Bay Marina</td><td>5</td><td>N'importe</td><td>12h</td><td>11h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-caribbean">Caraïbes</td><td>Grenade</td><td>Grenada, Port Louis</td><td>5</td><td>N'importe</td><td>12h</td><td>11h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Croatie</td><td>Agana, Marina Agana</td><td>7</td><td>Samedi</td><td>3h</td><td>9h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Grèce</td><td>Athènes, Freatida-Piraeus</td><td>7</td><td>Samedi</td><td>3h</td><td>8h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Grèce</td><td>Corfou, Marina Gouvia</td><td>7</td><td>Samedi</td><td>3h</td><td>8h</td><td>✓</td><td>✓</td><td></td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Procida Island, Naples</td><td>7</td><td>Samedi</td><td>3h</td><td>8h</td><td>✓</td><td></td><td>✓</td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Portorosa, Sicile</td><td>7</td><td>Samedi</td><td>3h</td><td>8h</td><td>✓</td><td></td><td></td></tr>
+                        <tr><td class="region-med">Méd.</td><td>Italie</td><td>Cannigione, Sardaigne</td><td>7</td><td>Samedi</td><td>3h</td><td>8h</td><td>✓</td><td></td><td></td></tr>
+                        <tr><td class="region-exotic">Océan Indien</td><td>Seychelles</td><td>Mahé, Eden Island</td><td>5</td><td>N'importe</td><td>10h</td><td>10h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-exotic">Extrême-Orient</td><td>Thaïlande</td><td>Phuket, Ao Po Grand</td><td>5</td><td>N'importe</td><td>4h</td><td>9h</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td class="region-exotic">Pacifique Sud</td><td>Tahiti</td><td>Tahiti, Raiatea</td><td>5</td><td>N'importe</td><td>10h</td><td>10h</td><td>✓</td><td></td><td>✓</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ LUXURY CREWED ══════════════════════ -->
+<div class="section-panel" id="panel-luxury-glossaire">
+    <div class="page-header">
+        <h1>👑 Luxury Crewed Charter — Glossaire & Acteurs</h1>
+        <div class="subtitle">Pour les demandes de charter avec équipage permanent ≥ 20 000 €/semaine</div>
+    </div>
+
+    <div class="flow-diagram">
+        <div class="flow-step">CLIENT<small>Charterer</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">BROKER<small>Filovent (15%)</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">CENTRAL AGENT<small>Stakeholder (5%)</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">OWNER<small>Propriétaire</small></div>
+    </div>
+
+    <div class="alert-tip">
+        <strong>Distinction clé :</strong> Bareboat + skipper freelance ≠ Crewed charter. Dans le crewed charter, le capitaine est un salarié permanent du propriétaire avec une équipe (cuisinier, hôtesse, matelot…).
+    </div>
+
+    <div class="glossary-luxury">
+        <div class="gloss-item">
+            <div class="term">Central Agent (Stakeholder)</div>
+            <p>Terme utilisé uniquement pour les yachts de luxe avec équipage. Il gère le planning du yacht et est tiers de confiance entre l'Owner et le Broker (garde les fonds). Gagne 5% de commission. N'a pas de bureau physique.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Broker</div>
+            <p>Intermédiaire entre le client et le Central Agent. Conseille le client, gère toutes les communications. Filovent est broker. Commission : <strong>15% du prix HT</strong> (sauf exception rarissime).</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">MYBA</div>
+            <p>Mediterranean Yacht Brokerage Association. Réseau de professionnels (principalement des Central Agents). Moteur de recherche commun : Yachtfolio. Filovent est membre MYBA (peut signer des contrats MYBA) mais n'a pas accès à Yachtfolio.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Contrat MYBA</div>
+            <p>Contrat de privatisation de navire, toujours en anglais. Signé par 4 parties : Owner, Central Agent (Stakeholder), Broker (Filovent), Client (Charterer). Protège très bien le broker et le client.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Contrat de Transport</div>
+            <p>Alternative française au contrat MYBA (FIN). Avantages fiscaux : TVA à 10% (voire 0% si itinéraire en eaux étrangères), carburant quasi-exempté de taxes.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">TVA</div>
+            <p>Exprimée hors taxe car dépend du pays de départ. France : 20%. Italie : 22%. Grèce : 13%.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">APA</div>
+            <p><em>Advanced Provisioning Allowance</em> = Avance sur frais. Versée en plus du prix du bateau (~25-30% du prix HT). Couvre nourriture, carburant, ports. Le capitaine tient les comptes et restitue le solde non utilisé.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Brochure</div>
+            <p>Document officiel d'un yacht avec équipage (PDF ou page web). Jolie fiche produit avec photos réelles, plan et liste des équipements et "toys". À joindre aux devis.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Pourboire</div>
+            <p>5% à 15% du prix HT si satisfaction du service d'équipage. Usage, non obligatoire.</p>
+        </div>
+        <div class="gloss-item">
+            <div class="term">Frais de convoyage</div>
+            <p>Frais pour déplacer le bateau vers la base de départ si différente du port d'attache. Calculés sur le prix du carburant × nombre d'heures moteur.</p>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-luxury-recherche">
+    <div class="page-header">
+        <h1>👑 Luxury Crewed — Recherche & Devis</h1>
+    </div>
+    <div class="info-card">
+        <h3>🎯 Éclairage préalable — Infos à obtenir absolument</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><strong>Budget</strong> : bateaux de 15 000 € à 1 000 000 €/semaine — indispensable pour orienter la recherche.</li>
+            <li><span class="check">▸</span><strong>Expériences passées</strong> : a-t-il déjà loué ou possédé un bateau avec équipage ?</li>
+            <li><span class="check">▸</span><strong>Nombre de personnes</strong> : les yachts chers accueillent souvent peu d'invités dans grand confort (6-8 personnes, rarement +10).</li>
+            <li><span class="check">▸</span><strong>Dates</strong> : plus flexibles que pour le bareboat, pas de règle samedi-samedi.</li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>🔍 4 moyens de recherche</h3>
+        <ol style="padding-left:18px;font-size:0.85rem;line-height:2;">
+            <li>Recherche normale sur le site internet (identifier les loueurs potentiels).</li>
+            <li>Annuaires de yachts de luxe : <strong>CYA (Central Yacht Agent)</strong> ou <strong>Charter Index</strong> (liens dans le CRM).</li>
+            <li>Contacter directement les Central Agents de la région.</li>
+            <li>Passer par un Central Agent MYBA pour accéder à des bateaux d'autres agents — ⚠️ commission à partager, à éviter.</li>
+        </ol>
+    </div>
+    <div class="info-card">
+        <h3>📧 Email type aux Central Agents</h3>
+        <div class="alert-tip" style="font-family:monospace;font-size:0.8rem;">
+            Préciser :<br>
+            • Zone de navigation (itinéraire approximatif)<br>
+            • Nombre de pax (guests uniquement, sans l'équipage)<br>
+            • Dates souhaitées<br>
+            • Budget HT (indispensable, sans ça : pas de réponse)<br>
+            • Type de bateau (monocoque, catamaran, yacht à moteur)<br><br>
+            <strong>Toujours préciser qu'on souhaite uniquement les bateaux dont il est Central Agent</strong> — sinon il peut proposer des bateaux d'autres agents (commission partagée).
+        </div>
+    </div>
+    <div class="info-card">
+        <h3>🗺️ Principaux Central Agents par destination</h3>
+        <div style="overflow-x:auto;">
+            <table class="agents-table">
+                <thead><tr><th>Destination</th><th>Principaux Central Agents</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td>Méd. Ouest (Côte d'Azur, Corse, Sardaigne, Italie, Sicile)</td><td>Bernard Gallay, Arthaud Yachting, Blue Latitude, CSO Yachts, MS Yachts, MG Yachts (Sicile), Levante Yachts, Pegaso SRL</td><td>Tous réseau MYBA</td></tr>
+                    <tr><td>Baléares</td><td>SNS Yacht Charter, Med Cat Group (cats uniquement), Lamprell Marine (moteur uniquement)</td><td>Réseau MYBA</td></tr>
+                    <tr><td>Croatie</td><td>Adriatic Sailing (cats MYBA), Master Charter (caïques), Gulet Holidays (caïques)</td><td></td></tr>
+                    <tr><td>Grèce</td><td>Istion Yachting, Fyly Yachting, Athenian Yachts, Parsifal Yachting (moteur)</td><td>MYBA</td></tr>
+                    <tr><td>Antilles</td><td>Bernard Gallay, Blue Latitude, CSO Yachts</td><td>Généralement exonéré TVA, pension complète + carburant inclus → pas d'APA</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="info-card">
+        <h3>💰 Modèle de devis</h3>
+        <div class="alert-tip" style="font-family:monospace;font-size:0.8rem;">
+            Message d'introduction<br><br>
+            <strong>NOM DU BATEAU</strong> — voir la brochure (lien ou pièce jointe)<br>
+            Base de départ possible + base de retour éventuelle<br>
+            Tarif : <strong>Prix HT + TVA (%) + APA (%) + éventuels frais de livraison à confirmer</strong>
+        </div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-luxury-reservation">
+    <div class="page-header">
+        <h1>👑 Luxury Crewed — Réservation MYBA</h1>
+    </div>
+    <div class="info-card">
+        <h3>📋 Points clés du contrat MYBA</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="alert-tip">
+                    <strong>Protection du Broker (nous) :</strong>
+                    <ul style="margin-top:6px;padding-left:16px;font-size:0.82rem;">
+                        <li>Commission garantie même en cas de force majeure</li>
+                        <li>Si le client réserve à nouveau le même yacht (même directement), commission due au Broker</li>
+                        <li>Si le client achète le yacht, commission due au Broker</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert-tip">
+                    <strong>Pénalités d'annulation par l'Owner :</strong>
+                    <ul style="margin-top:6px;padding-left:16px;font-size:0.82rem;">
+                        <li>Annulation &lt;14 jours avant départ : remboursement + <strong>50%</strong> d'indemnité</li>
+                        <li>Annulation 14-30 jours avant : remboursement + <strong>35%</strong></li>
+                        <li>Annulation &gt;30 jours avant : remboursement + <strong>25%</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-card">
+        <h3>📝 Étapes de réservation</h3>
+        <ol class="steps-list">
+            <li>Obtenir le nom complet et l'adresse du client (pour le contrat).</li>
+            <li>Demander au Central Agent s'il fait un contrat MYBA + lui demander les "contract details".</li>
+            <li>Éditer le contrat MYBA sur l'interface MYBA e-contract (avec le manager). Préparer un <strong>DRAFT</strong>.</li>
+            <li>Envoyer le draft au Central Agent pour validation. Une fois validé → publier le PDF final.</li>
+            <li>Envoyer le contrat MYBA au client.</li>
+            <li>Le client signe en tant que CHARTERER et paraphe chaque page.</li>
+            <li>Nous ou notre manager signons en tant que BROKER.</li>
+            <li>Envoyer au Central Agent → il signe (STAKEHOLDER) et fait signer l'Owner.</li>
+            <li>Le Central Agent renvoie le contrat final signé.</li>
+            <li>Renvoyer la version finale au client → il initie le virement de l'acompte. 🎉</li>
+        </ol>
+    </div>
+    <div class="alert-warn">
+        <strong>Négociation :</strong> L'agence ne peut pas offrir de remise sur sa commission (prix public, identique pour tous). Le client peut faire une contre-offre transmise au Central Agent. Toute entorse à cette règle peut entraîner la radiation du réseau MYBA.
+    </div>
+</div>
+
+<div class="section-panel" id="panel-luxury-preparation">
+    <div class="page-header">
+        <h1>👑 Luxury Crewed — Préparation de la croisière</h1>
+    </div>
+    <div class="info-card">
+        <h3>📋 Différences avec une location classique</h3>
+        <ul class="included-list">
+            <li><span class="check">▸</span><strong>Pas de chef de base</strong> : le contact de référence est le capitaine du navire. Demander ses coordonnées au Central Agent après réservation.</li>
+            <li><span class="check">▸</span><strong>Liste de préférences</strong> : formulaire envoyé par le Central Agent à faire remplir par le client (goûts culinaires, activités, type de mouillages…). Fondamental pour que l'équipage prépare bien les vacances.</li>
+            <li><span class="check">▸</span><strong>Courses gérées par l'équipage</strong> selon les préférences, financées par l'APA.</li>
+            <li><span class="check">▸</span><strong>Notre commission est acquise dès le premier acompte</strong> — même en cas d'annulation par le client ou le propriétaire.</li>
+        </ul>
+    </div>
+    <div class="info-card">
+        <h3>🔑 Le client est "notre" client (conditions MYBA)</h3>
+        <p style="font-size:0.85rem;color:var(--text-2);">Les termes MYBA considèrent que le client appartient au Broker. Même si dans le futur il réserve directement auprès du propriétaire, ce dernier nous doit une commission. C'est pourquoi il est dans notre intérêt de connaître le vrai Central Agent de chaque bateau proposé, pour ne pas avoir à partager notre commission.</p>
+    </div>
+</div>
+
+</div><!-- /#main -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ─── NAVIGATION ────────────────────────────────────────
+function showSection(id) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.dest-link').forEach(l => l.classList.remove('active'));
+
+    const panel = document.getElementById('panel-' + id);
+    if (panel) panel.classList.add('active');
+
+    const link = document.querySelector('[data-section="' + id + '"]');
+    if (link) {
+        link.classList.add('active');
+        // Ouvrir l'accordéon parent
+        const acc = link.closest('.accordion-collapse');
+        if (acc && !acc.classList.contains('show')) {
+            new bootstrap.Collapse(acc, { toggle: false }).show();
+        }
+    }
+
+    window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.dest-link').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        showSection(link.dataset.section);
+    });
+});
+
+// ─── FAQ TOGGLE ────────────────────────────────────────
+function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = answer.classList.contains('open');
+    btn.closest('.faq-item').querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    btn.closest('.faq-item').querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    if (!isOpen) {
+        answer.classList.add('open');
+        btn.classList.add('open');
+    }
+}
+
+// ─── COMPARATIF TABS ────────────────────────────────────
+function showComparatif(id) {
+    ['cat40','mono45','mono50'].forEach(k => {
+        const el = document.getElementById('comp-' + k);
+        if (el) el.style.display = k === id ? 'block' : 'none';
+    });
+    document.querySelectorAll('#comparatifTabs .nav-link').forEach((link, i) => {
+        const keys = ['cat40','mono45','mono50'];
+        link.classList.toggle('active', keys[i] === id);
+    });
+}
+
+// ─── BOARDING TABS ────────────────────────────────────
+function showBoarding(id) {
+    ['sunsail','moorings'].forEach(k => {
+        const el = document.getElementById('board-' + k);
+        if (el) el.style.display = k === id ? 'block' : 'none';
+    });
+    document.querySelectorAll('#boardingTabs .nav-link').forEach((link, i) => {
+        const keys = ['sunsail','moorings'];
+        link.classList.toggle('active', keys[i] === id);
+    });
+}
+
+// ─── SEARCH ────────────────────────────────────────────
+const searchData = [];
+document.querySelectorAll('.section-panel').forEach(panel => {
+    const id = panel.id.replace('panel-', '');
+    panel.querySelectorAll('h1,h3,.term-fr,.term,.faq-q,.gloss-item .term').forEach(el => {
+        const text = el.textContent.trim();
+        if (text.length > 2) {
+            searchData.push({ title: text, section: id, context: panel.querySelector('h1')?.textContent?.trim() || id });
+        }
+    });
+});
+
+const fuse = new Fuse(searchData, { keys: ['title','context'], threshold: 0.35, minMatchCharLength: 2 });
+
+const searchInput = document.getElementById('searchInput');
+const resultsBox = document.getElementById('search-results');
+
+searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim();
+    if (q.length < 2) { resultsBox.style.display = 'none'; return; }
+    const results = fuse.search(q).slice(0, 8);
+    if (!results.length) {
+        resultsBox.innerHTML = '<div id="search-results-empty">Aucun résultat</div>';
+    } else {
+        resultsBox.innerHTML = results.map(r =>
+            `<div class="search-result-item" onclick="showSection('${r.item.section}');resultsBox.style.display='none';searchInput.value='';">
+                <div class="res-title">${r.item.title}</div>
+                <div class="res-context">${r.item.context}</div>
+            </div>`
+        ).join('');
+    }
+    resultsBox.style.display = 'block';
+});
+
+document.addEventListener('click', e => {
+    if (!e.target.closest('#sidebar')) resultsBox.style.display = 'none';
+});
+
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+    }
+    if (e.key === 'Escape') {
+        resultsBox.style.display = 'none';
+        searchInput.value = '';
+        searchInput.blur();
+    }
+});
+</script>
+</body>
+</html>

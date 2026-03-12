@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filovent — Plateforme Commerciale</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy:    #0d2240;
+            --wave:    #2a7ac4;
+            --seafoam: #1a9b72;
+            --coral:   #d94f3d;
+            --gold:    #c9913a;
+            --sand:    #f7f4ee;
+            --light:   #f0f4f9;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ── BACKGROUND ── */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background: var(--navy);
+            z-index: 0;
+        }
+
+        .bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 60% at 10% 20%, rgba(42,122,196,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 90% 80%, rgba(26,155,114,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(201,145,58,0.06) 0%, transparent 50%);
+        }
+
+        /* Vagues SVG animées */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            z-index: 0;
+            opacity: 0.12;
+        }
+
+        .wave {
+            animation: waveMove 8s ease-in-out infinite alternate;
+        }
+        .wave:nth-child(2) { animation-delay: -2s; animation-duration: 11s; opacity: 0.7; }
+        .wave:nth-child(3) { animation-delay: -4s; animation-duration: 14s; opacity: 0.5; }
+
+        @keyframes waveMove {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-60px); }
+        }
+
+        /* Grille de points décorative */
+        .dots {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            gap: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            margin-bottom: 64px;
+            animation: fadeDown 0.8s ease both;
+        }
+
+        .logo-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 100px;
+            padding: 6px 16px 6px 10px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(8px);
+        }
+
+        .logo-pill-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--seafoam);
+            box-shadow: 0 0 8px var(--seafoam);
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
+        .logo-pill span {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        h1 .accent {
+            background: linear-gradient(135deg, var(--wave), var(--seafoam));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.01em;
+        }
+
+        /* ── CARDS GRID ── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 960px;
+            animation: fadeUp 0.9s ease 0.2s both;
+        }
+
+        .card {
+            position: relative;
+            border-radius: 20px;
+            padding: 36px 32px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), box-shadow 0.35s ease;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        /* Card Greenbook */
+        .card-green {
+            background: linear-gradient(145deg, rgba(42,122,196,0.18), rgba(13,34,64,0.6));
+        }
+        .card-green::before {
+            background: linear-gradient(145deg, rgba(42,122,196,0.28), rgba(13,34,64,0.7));
+            box-shadow: 0 24px 60px rgba(42,122,196,0.3);
+        }
+        .card-green:hover {
+            box-shadow: 0 24px 60px rgba(42,122,196,0.3);
+            border-color: rgba(42,122,196,0.4);
+        }
+
+        /* Card Bluebook */
+        .card-blue {
+            background: linear-gradient(145deg, rgba(26,155,114,0.18), rgba(13,34,64,0.6));
+        }
+        .card-blue::before {
+            background: linear-gradient(145deg, rgba(26,155,114,0.28), rgba(13,34,64,0.7));
+        }
+        .card-blue:hover {
+            box-shadow: 0 24px 60px rgba(26,155,114,0.3);
+            border-color: rgba(26,155,114,0.4);
+        }
+
+        /* Card E-learning */
+        .card-gold {
+            background: linear-gradient(145deg, rgba(201,145,58,0.18), rgba(13,34,64,0.6));
+        }
+        .card-gold::before {
+            background: linear-gradient(145deg, rgba(201,145,58,0.28), rgba(13,34,64,0.7));
+        }
+        .card-gold:hover {
+            box-shadow: 0 24px 60px rgba(201,145,58,0.28);
+            border-color: rgba(201,145,58,0.4);
+        }
+
+        /* Icône */
+        .card-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        .card-green .card-icon  { background: rgba(42,122,196,0.25);  border: 1px solid rgba(42,122,196,0.3); }
+        .card-blue  .card-icon  { background: rgba(26,155,114,0.25);  border: 1px solid rgba(26,155,114,0.3); }
+        .card-gold  .card-icon  { background: rgba(201,145,58,0.25);  border: 1px solid rgba(201,145,58,0.3); }
+
+        .card-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 9px;
+            border-radius: 100px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .card-green .card-badge { background: rgba(42,122,196,0.25); color: #7bb8e8; }
+        .card-blue  .card-badge { background: rgba(26,155,114,0.25); color: #5ecba5; }
+        .card-gold  .card-badge { background: rgba(201,145,58,0.25); color: #e0b870; }
+
+        /* Bientôt dispo */
+        .card-badge.soon { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.65;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .card-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pill {
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.45);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .card-arrow {
+            position: absolute;
+            top: 28px; right: 28px;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 2;
+        }
+        .card:hover .card-arrow {
+            transform: translate(3px, -3px);
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* Card désactivée */
+        .card-disabled {
+            cursor: default;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .card-disabled:hover { transform: none; box-shadow: none; }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 52px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 0.04em;
+            animation: fadeUp 1s ease 0.5s both;
+        }
+
+        footer span {
+            color: rgba(255,255,255,0.35);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card stagger */
+        .card:nth-child(1) { animation: fadeUp 0.7s ease 0.25s both; }
+        .card:nth-child(2) { animation: fadeUp 0.7s ease 0.38s both; }
+        .card:nth-child(3) { animation: fadeUp 0.7s ease 0.51s both; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .cards { grid-template-columns: repeat(2, 1fr); max-width: 640px; }
+        }
+        @media (max-width: 600px) {
+            .cards { grid-template-columns: 1fr; max-width: 400px; }
+            h1 { font-size: 2rem; }
+            header { margin-bottom: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="dots"></div>
+
+<!-- Vagues SVG -->
+<svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs>
+        <path id="wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+    </defs>
+    <g>
+        <use class="wave" href="#wave" x="48" y="0" fill="rgba(42,122,196,1)"/>
+        <use class="wave" href="#wave" x="48" y="3" fill="rgba(42,122,196,0.7)"/>
+        <use class="wave" href="#wave" x="48" y="6" fill="rgba(13,34,64,0.9)"/>
+    </g>
+</svg>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-pill">
+            <div class="logo-pill-dot"></div>
+            <span>Plateforme interne · Équipe commerciale</span>
+        </div>
+        <h1>Bienvenue chez<br><span class="accent">Filovent</span></h1>
+        <p class="subtitle">Tous vos outils commerciaux en un seul endroit</p>
+    </header>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+        <!-- GREENBOOK -->
+        <a class="card card-green" href="greenbook.html" aria-label="Ouvrir le Greenbook">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">📗</div>
+            <div class="card-badge">Disponible</div>
+            <div class="card-title">Greenbook</div>
+            <div class="card-desc">
+                La base de connaissance destinations. 23 fiches, loueurs référencés, arguments de vente, boîte à mails et templates SMS.
+            </div>
+            <div class="card-pills">
+                <span class="pill">23 destinations</span>
+                <span class="pill">16 templates mails</span>
+                <span class="pill">9 SMS</span>
+            </div>
+        </a>
+
+        <!-- BLUEBOOK -->
+        <a class="card card-blue" href="bluebook.html" aria-label="Ouvrir le Bluebook">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">📘</div>
+            <div class="card-badge">Disponible</div>
+            <div class="card-title">Bluebook</div>
+            <div class="card-desc">
+                Vocabulaire nautique multilingue, budgeting, chantiers navals, navigation fluviale, Sunsail & Moorings, charter luxe.
+            </div>
+            <div class="card-pills">
+                <span class="pill">7 chapitres</span>
+                <span class="pill">Vocabulaire 5 langues</span>
+                <span class="pill">Charter luxe</span>
+            </div>
+        </a>
+
+        <!-- E-LEARNING -->
+        <div class="card card-gold card-disabled">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">🎓</div>
+            <div class="card-badge soon">Bientôt disponible</div>
+            <div class="card-title">E-Learning</div>
+            <div class="card-desc">
+                Modules de formation interactifs avec QCM. Testez vos connaissances sur le Greenbook et le Bluebook.
+            </div>
+            <div class="card-pills">
+                <span class="pill">QCM</span>
+                <span class="pill">Modules</span>
+                <span class="pill">Progression</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>Filovent</span> · Document interne · Ne pas diffuser
+    </footer>
+
+</div>
+
+</body>
+</html>

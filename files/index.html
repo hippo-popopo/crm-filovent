@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filovent — Plateforme Commerciale</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy:    #0d2240;
+            --deep:    #091a33;
+            --wave:    #2a7ac4;
+            --seafoam: #1a9b72;
+            --coral:   #d94f3d;
+            --gold:    #c9913a;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--deep);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ── BACKGROUND ── */
+        .bg {
+            position: fixed; inset: 0;
+            background: 
+                radial-gradient(ellipse 90% 70% at 50% 0%, rgba(13,34,64,1) 0%, var(--deep) 70%),
+                radial-gradient(ellipse 60% 50% at 15% 30%, rgba(42,122,196,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 85% 70%, rgba(26,155,114,0.1) 0%, transparent 55%),
+                radial-gradient(ellipse 30% 30% at 50% 90%, rgba(201,145,58,0.06) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .waves {
+            position: fixed; bottom: 0; left: 0;
+            width: 100%; height: 200px; z-index: 0; opacity: 0.10;
+        }
+        .wave { animation: waveMove 8s ease-in-out infinite alternate; }
+        .wave:nth-child(2) { animation-delay: -2s; animation-duration: 11s; opacity: 0.7; }
+        .wave:nth-child(3) { animation-delay: -4s; animation-duration: 14s; opacity: 0.5; }
+        @keyframes waveMove { 0% { transform: translateX(0); } 100% { transform: translateX(-60px); } }
+
+        .dots {
+            position: fixed; inset: 0; z-index: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .deco-line {
+            width: 60px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(42,122,196,0.5), transparent);
+            margin: 0 auto 20px;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            position: relative; z-index: 1;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 48px 24px;
+        }
+
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            margin-bottom: 56px;
+            animation: fadeDown 0.8s ease both;
+        }
+
+        .logo-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
+            padding: 6px 18px 6px 12px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(8px);
+        }
+        .logo-pill-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--seafoam);
+            box-shadow: 0 0 10px var(--seafoam);
+            animation: pulse 2.5s ease infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .logo-pill span {
+            font-size: 0.68rem; font-weight: 500;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .logo-img {
+            display: block;
+            max-width: 220px; height: auto;
+            filter: brightness(0) invert(1);
+            margin: 0 auto 20px;
+            opacity: 0.95;
+        }
+
+        .subtitle {
+            font-size: 1rem; font-weight: 300;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.02em;
+        }
+
+        /* ── STATS BAR ── */
+        .stats {
+            display: flex; gap: 48px;
+            justify-content: center;
+            margin-bottom: 52px;
+            animation: fadeUp 0.8s ease 0.15s both;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem; font-weight: 800;
+            line-height: 1; margin-bottom: 4px;
+        }
+        .stat-num.c1 { color: var(--wave); }
+        .stat-num.c2 { color: var(--seafoam); }
+        .stat-num.c3 { color: var(--gold); }
+        .stat-label {
+            font-size: 0.68rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.3);
+        }
+        .stat-sep {
+            width: 1px; background: rgba(255,255,255,0.08);
+            align-self: stretch;
+        }
+
+        /* ── CARDS GRID ── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px; width: 100%; max-width: 960px;
+        }
+
+        .card {
+            position: relative; border-radius: 20px;
+            padding: 32px 28px 28px;
+            cursor: pointer; text-decoration: none; color: white;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.07);
+            transition: transform 0.4s cubic-bezier(.22,.68,0,1.1), box-shadow 0.4s ease, border-color 0.3s ease;
+            backdrop-filter: blur(16px);
+            display: flex; flex-direction: column;
+        }
+        .card::before {
+            content: ''; position: absolute; inset: 0;
+            border-radius: 20px; opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .card:hover { transform: translateY(-6px) scale(1.01); }
+        .card:hover::before { opacity: 1; }
+
+        .card-green { background: linear-gradient(160deg, rgba(42,122,196,0.14), rgba(9,26,51,0.7)); }
+        .card-green::before { background: linear-gradient(160deg, rgba(42,122,196,0.25), rgba(9,26,51,0.8)); }
+        .card-green:hover { box-shadow: 0 20px 50px rgba(42,122,196,0.25); border-color: rgba(42,122,196,0.35); }
+
+        .card-blue { background: linear-gradient(160deg, rgba(26,155,114,0.14), rgba(9,26,51,0.7)); }
+        .card-blue::before { background: linear-gradient(160deg, rgba(26,155,114,0.25), rgba(9,26,51,0.8)); }
+        .card-blue:hover { box-shadow: 0 20px 50px rgba(26,155,114,0.25); border-color: rgba(26,155,114,0.35); }
+
+        .card-gold { background: linear-gradient(160deg, rgba(201,145,58,0.14), rgba(9,26,51,0.7)); }
+        .card-gold::before { background: linear-gradient(160deg, rgba(201,145,58,0.25), rgba(9,26,51,0.8)); }
+        .card-gold:hover { box-shadow: 0 20px 50px rgba(201,145,58,0.2); border-color: rgba(201,145,58,0.35); }
+
+        .card-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 20px;
+            position: relative; z-index: 1;
+        }
+        .card-green .card-icon { background: rgba(42,122,196,0.2); border: 1px solid rgba(42,122,196,0.25); }
+        .card-blue  .card-icon { background: rgba(26,155,114,0.2); border: 1px solid rgba(26,155,114,0.25); }
+        .card-gold  .card-icon { background: rgba(201,145,58,0.2); border: 1px solid rgba(201,145,58,0.25); }
+
+        .card-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.62rem; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding: 3px 10px; border-radius: 100px;
+            margin-bottom: 10px;
+            position: relative; z-index: 1; width: fit-content;
+        }
+        .card-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
+        .card-green .card-badge { background: rgba(42,122,196,0.2); color: #7bb8e8; }
+        .card-green .card-badge::before { background: #7bb8e8; }
+        .card-blue  .card-badge { background: rgba(26,155,114,0.2); color: #5ecba5; }
+        .card-blue  .card-badge::before { background: #5ecba5; }
+        .card-gold  .card-badge { background: rgba(201,145,58,0.2); color: #e0b870; }
+        .card-gold  .card-badge::before { background: #e0b870; }
+        .card-badge.soon { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); }
+        .card-badge.soon::before { background: rgba(255,255,255,0.25); }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem; font-weight: 800;
+            margin-bottom: 8px;
+            position: relative; z-index: 1;
+        }
+        .card-desc {
+            font-size: 0.84rem; font-weight: 300;
+            color: rgba(255,255,255,0.5); line-height: 1.65;
+            position: relative; z-index: 1; flex: 1;
+        }
+        .card-pills {
+            display: flex; flex-wrap: wrap; gap: 5px;
+            margin-top: 20px; position: relative; z-index: 1;
+        }
+        .pill {
+            font-size: 0.65rem; font-weight: 500;
+            padding: 3px 9px; border-radius: 100px;
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.38);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .card-arrow {
+            position: absolute; top: 24px; right: 24px;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; color: rgba(255,255,255,0.3);
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+            z-index: 2;
+        }
+        .card:hover .card-arrow {
+            transform: translate(2px, -2px);
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+        }
+        .card-disabled { cursor: default; pointer-events: none; opacity: 0.45; }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 48px; text-align: center;
+            font-size: 0.72rem; color: rgba(255,255,255,0.15);
+            letter-spacing: 0.06em;
+            animation: fadeUp 1s ease 0.6s both;
+        }
+        footer span { color: rgba(255,255,255,0.25); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .card:nth-child(1) { animation: fadeUp 0.7s ease 0.3s both; }
+        .card:nth-child(2) { animation: fadeUp 0.7s ease 0.42s both; }
+        .card:nth-child(3) { animation: fadeUp 0.7s ease 0.54s both; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .cards { grid-template-columns: repeat(2, 1fr); max-width: 640px; }
+            .stats { gap: 32px; }
+        }
+        @media (max-width: 600px) {
+            .cards { grid-template-columns: 1fr; max-width: 400px; }
+            .stats { flex-direction: column; gap: 16px; }
+            .stat-sep { display: none; }
+            header { margin-bottom: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="dots"></div>
+
+<svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs><path id="wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/></defs>
+    <g>
+        <use class="wave" href="#wave" x="48" y="0" fill="rgba(42,122,196,0.9)"/>
+        <use class="wave" href="#wave" x="48" y="3" fill="rgba(42,122,196,0.6)"/>
+        <use class="wave" href="#wave" x="48" y="6" fill="rgba(9,26,51,0.95)"/>
+    </g>
+</svg>
+
+<div class="page">
+
+    <header>
+        <div class="logo-pill">
+            <div class="logo-pill-dot"></div>
+            <span>Plateforme interne · Équipe commerciale</span>
+        </div>
+        <img class="logo-img" src="https://www.filovent.com/front/assets/img/logo-brochure.png" alt="Filovent">
+        <div class="deco-line"></div>
+        <p class="subtitle">Tous vos outils commerciaux en un seul endroit</p>
+    </header>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-num c1">23</div>
+            <div class="stat-label">destinations</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat">
+            <div class="stat-num c2">150+</div>
+            <div class="stat-label">loueurs</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat">
+            <div class="stat-num c3">60+</div>
+            <div class="stat-label">termes nautiques</div>
+        </div>
+    </div>
+
+    <div class="cards">
+        <a class="card card-green" href="greenbook.html" aria-label="Ouvrir le Greenbook">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">📗</div>
+            <div class="card-badge">Disponible</div>
+            <div class="card-title">Greenbook</div>
+            <div class="card-desc">La base de connaissance destinations. 23 fiches, loueurs référencés, arguments de vente, boîte à mails et templates SMS.</div>
+            <div class="card-pills">
+                <span class="pill">23 destinations</span>
+                <span class="pill">16 templates mails</span>
+                <span class="pill">9 SMS</span>
+            </div>
+        </a>
+
+        <a class="card card-blue" href="bluebook.html" aria-label="Ouvrir le Bluebook">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">📘</div>
+            <div class="card-badge">Disponible</div>
+            <div class="card-title">Bluebook</div>
+            <div class="card-desc">Vocabulaire nautique multilingue, budgeting, chantiers navals, navigation fluviale, Sunsail & Moorings, charter luxe.</div>
+            <div class="card-pills">
+                <span class="pill">7 chapitres</span>
+                <span class="pill">Vocabulaire 5 langues</span>
+                <span class="pill">Charter luxe</span>
+            </div>
+        </a>
+
+        <div class="card card-gold card-disabled">
+            <div class="card-arrow">↗</div>
+            <div class="card-icon">🎓</div>
+            <div class="card-badge soon">Bientôt disponible</div>
+            <div class="card-title">E-Learning</div>
+            <div class="card-desc">Modules de formation interactifs avec QCM. Testez vos connaissances sur le Greenbook et le Bluebook.</div>
+            <div class="card-pills">
+                <span class="pill">QCM</span>
+                <span class="pill">Modules</span>
+                <span class="pill">Progression</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <span>Filovent</span> · Document interne · Ne pas diffuser
+    </footer>
+
+</div>
+
+</body>
+</html>

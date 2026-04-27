@@ -252,6 +252,22 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .info-lbl{color:var(--t3);min-width:78px;font-weight:500}
 .info-val{color:var(--t1);flex:1}
 
+/* WILLSHEET */
+.willsheet-card{margin-bottom:16px;overflow:hidden}
+.willsheet-status{font-size:.63rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:rgba(217,93,74,.1);color:var(--red)}
+.willsheet-status.ready{background:rgba(35,138,115,.12);color:var(--green)}
+.willsheet-body{padding:16px}
+.willsheet-empty{border:1px dashed #bfd1d9;border-radius:8px;background:#f7fbfc;padding:14px;color:var(--t3);font-size:.82rem;line-height:1.55}
+.willsheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.willsheet-field{background:#f7fbfc;border:1px solid var(--border);border-radius:8px;padding:10px 11px;min-height:62px}
+.willsheet-field.wide{grid-column:1/-1}
+.willsheet-label{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:5px}
+.willsheet-value{font-size:.82rem;line-height:1.45;color:var(--t2);white-space:pre-wrap}
+.willsheet-form{max-height:68vh;overflow-y:auto;padding-right:4px}
+.willsheet-modal-section{font-family:'Syne',sans-serif;font-weight:800;color:var(--nav);font-size:.92rem;margin:18px 0 10px;padding-top:12px;border-top:1px solid var(--border)}
+.willsheet-modal-section:first-child{margin-top:0;padding-top:0;border-top:none}
+@media(max-width:760px){.willsheet-grid{grid-template-columns:1fr}}
+
 /* GEMINI ZONE */
 .audio-zone{border:2px dashed #c6d7df;border-radius:8px;padding:22px;text-align:center;transition:all .2s;cursor:pointer;background:linear-gradient(180deg,#ffffff,#f1f7f8)}
 .audio-zone:hover,.audio-zone.drag{border-color:var(--accent);background:#eef8fb}
@@ -622,6 +638,71 @@ textarea.form-ctrl{resize:vertical}
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-event-detail')">✕</button>
     <div id="modal-event-content"></div>
+  </div>
+</div>
+
+<!-- WILLSHEET -->
+<div class="modal" id="modal-willsheet">
+  <div class="modal-box wide" style="max-width:900px">
+    <button class="modal-close" onclick="closeModal('modal-willsheet')">✕</button>
+    <div class="modal-title">📋 WillSheet premier appel</div>
+    <div class="modal-sub" id="willsheet-modal-sub">Fiche projet client</div>
+    <div class="willsheet-form">
+      <div class="willsheet-modal-section">Projet</div>
+      <div class="form-grp"><label class="form-lbl">Project title</label><input class="form-ctrl" id="ws-projectTitle" placeholder="Croatie - juillet - 2026"></div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Type of service</label><input class="form-ctrl" id="ws-serviceType" placeholder="Bareboat, Skippered, Crewed, Cruise, River..."></div>
+        <div><label class="form-lbl">Charter track record</label><input class="form-ctrl" id="ws-charterRecord" placeholder="First charter / Previous charters"></div>
+      </div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Cruising area</label><input class="form-ctrl" id="ws-cruisingArea" placeholder="Destination / zone de navigation"></div>
+        <div><label class="form-lbl">Why this destination</label><input class="form-ctrl" id="ws-whyDestination" placeholder="Pourquoi cette destination ?"></div>
+      </div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Departure base</label><input class="form-ctrl" id="ws-departureBase" placeholder="Base ou marina de départ"></div>
+        <div><label class="form-lbl">Means of transport</label><input class="form-ctrl" id="ws-transport" placeholder="Avion, voiture, train..."></div>
+      </div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Dates and duration</label><input class="form-ctrl" id="ws-datesDuration" placeholder="Dates, durée, semaine souhaitée"></div>
+        <div><label class="form-lbl">Departure date</label><input class="form-ctrl" type="date" id="ws-departureDate"></div>
+      </div>
+      <div class="form-grp"><label class="form-lbl">Flexibility and precisions</label><textarea class="form-ctrl" id="ws-flexibility" rows="2" placeholder="Flexibilité dates, contraintes, précisions importantes"></textarea></div>
+
+      <div class="willsheet-modal-section">Bateau et équipage</div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Type of boat</label><input class="form-ctrl" id="ws-boatType" placeholder="Catamaran, monocoque, yacht..."></div>
+        <div><label class="form-lbl">Number of people</label><input class="form-ctrl" id="ws-people" placeholder="Nombre de personnes"></div>
+      </div>
+      <div class="form-grp"><label class="form-lbl">Criteria for choosing a boat</label><textarea class="form-ctrl" id="ws-boatCriteria" rows="2" placeholder="Cabines, confort, budget, âge du bateau, options..."></textarea></div>
+      <div class="form-grp"><label class="form-lbl">Composition of the crew</label><textarea class="form-ctrl" id="ws-crewComposition" rows="2" placeholder="Famille, amis, couples, enfants, skipper dans le groupe..."></textarea></div>
+
+      <div class="willsheet-modal-section">Budget et décision</div>
+      <div class="form-grp"><label class="form-lbl">Budget</label><textarea class="form-ctrl" id="ws-budget" rows="2" placeholder="Budget bateau + extras selon type de service"></textarea></div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Competitors</label><input class="form-ctrl" id="ws-competitors" placeholder="Autres agences / offres comparées"></div>
+        <div><label class="form-lbl">Decision date</label><input class="form-ctrl" id="ws-decisionDate" placeholder="Date précise ou approximative"></div>
+      </div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Decision deadline and rendez-vous</label><input class="form-ctrl" id="ws-decisionDeadline" placeholder="Deadline, prochain contact, horaire"></div>
+        <div><label class="form-lbl">Knowledge of Filovent</label><input class="form-ctrl" id="ws-knowledge" placeholder="Enlightened / Newbie"></div>
+      </div>
+      <div class="form-grp"><label class="form-lbl">Offers from competitors and alternatives</label><textarea class="form-ctrl" id="ws-alternatives" rows="2" placeholder="Offres concurrentes, alternatives proposées, arbitrages"></textarea></div>
+
+      <div class="willsheet-modal-section">Client</div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Client tag</label><input class="form-ctrl" id="ws-clientTag" placeholder="Luxury, crewed, famille, repeat..."></div>
+        <div><label class="form-lbl">Language spoken</label><input class="form-ctrl" id="ws-language" placeholder="fr, en, de..."></div>
+      </div>
+      <div class="form-row2 form-grp">
+        <div><label class="form-lbl">Nationality</label><input class="form-ctrl" id="ws-nationality" placeholder="France, Suisse..."></div>
+        <div><label class="form-lbl">Last updated</label><input class="form-ctrl" id="ws-updatedAt" disabled></div>
+      </div>
+      <div class="form-grp"><label class="form-lbl">Notes internes</label><textarea class="form-ctrl" id="ws-notes" rows="3" placeholder="Tout ce qui ne rentre pas ailleurs"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveWillsheetFromModal()">Enregistrer la WillSheet</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-willsheet')">Annuler</button>
+    </div>
   </div>
 </div>
 
@@ -1231,6 +1312,136 @@ function escapeHtml(str=''){
 }
 
 /* ══════════════════════════════════════════
+   WILLSHEET
+══════════════════════════════════════════ */
+const WILLSHEET_FIELDS=[
+  'projectTitle','serviceType','charterRecord','cruisingArea','whyDestination','departureBase','transport',
+  'datesDuration','departureDate','flexibility','boatType','boatCriteria','people','crewComposition',
+  'budget','competitors','alternatives','decisionDeadline','decisionDate','knowledge','clientTag',
+  'language','nationality','notes'
+];
+const WILLSHEET_LABELS={
+  projectTitle:'Project title',serviceType:'Type of service',charterRecord:'Charter track record',
+  cruisingArea:'Cruising area',whyDestination:'Why this destination',departureBase:'Departure base',
+  transport:'Means of transport',datesDuration:'Dates and duration',departureDate:'Departure date',
+  flexibility:'Flexibility and precisions',boatType:'Type of boat',boatCriteria:'Criteria for choosing a boat',
+  people:'Number of people',crewComposition:'Composition of the crew',budget:'Budget',
+  competitors:'Competitors',alternatives:'Offers / alternatives',decisionDeadline:'Decision deadline / RDV',
+  decisionDate:'Decision date',knowledge:'Knowledge of Filovent',clientTag:'Client tag',
+  language:'Language spoken',nationality:'Nationality',notes:'Notes'
+};
+
+function defaultWillsheet(c={}){
+  return {
+    projectTitle:c.interests||'',serviceType:'',charterRecord:'',cruisingArea:'',whyDestination:'',
+    departureBase:'',transport:'',datesDuration:'',departureDate:'',flexibility:'',boatType:'',
+    boatCriteria:'',people:'',crewComposition:'',budget:'',competitors:'',alternatives:'',
+    decisionDeadline:'',decisionDate:'',knowledge:'',clientTag:'',language:'fr',nationality:'',
+    notes:'',updatedAt:''
+  };
+}
+function normalizeWillsheet(raw,c={}){
+  const ws={...defaultWillsheet(c),...(raw&&typeof raw==='object'?raw:{})};
+  WILLSHEET_FIELDS.forEach(k=>{if(ws[k]==null)ws[k]='';});
+  return ws;
+}
+function willsheetCompletion(ws){
+  const keys=WILLSHEET_FIELDS.filter(k=>!['notes','nationality','competitors','alternatives'].includes(k));
+  return keys.filter(k=>String(ws[k]||'').trim()).length;
+}
+function willsheetVal(ws,k){return escapeHtml(ws[k]||'—');}
+function renderWillsheetCard(key){
+  const c=S.clients[key];if(!c)return '';
+  const ws=normalizeWillsheet(c.willsheet,c);
+  const score=willsheetCompletion(ws);
+  const ready=score>=6;
+  const fields=[
+    ['projectTitle','wide'],['serviceType',''],['charterRecord',''],['cruisingArea',''],['departureBase',''],
+    ['datesDuration',''],['boatType',''],['people',''],['budget','wide'],['decisionDeadline','wide']
+  ];
+  return `<div class="card willsheet-card">
+    <div class="card-hd">
+      <div class="card-title">📋 WillSheet premier appel <span class="willsheet-status ${ready?'ready':''}">${ready?'Renseignée':'À compléter'}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+        <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openWillsheetModal('${key}')">Voir / éditer</button>
+        ${(c.calls||[]).length?`<button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="prefillWillsheetFromFirstCall('${key}')">✨ Préremplir</button>`:''}
+      </div>
+    </div>
+    <div class="willsheet-body">
+      ${score===0?`<div class="willsheet-empty">La WillSheet sera remplie automatiquement par Gemini au premier appel importé. Vous pouvez aussi la compléter manuellement à tout moment.</div>`:
+      `<div class="willsheet-grid">${fields.map(([k,wide])=>`<div class="willsheet-field ${wide}"><div class="willsheet-label">${WILLSHEET_LABELS[k]}</div><div class="willsheet-value">${willsheetVal(ws,k)}</div></div>`).join('')}</div>
+       <div style="font-size:.68rem;color:var(--t3);margin-top:10px">${ws.updatedAt?'Mis à jour le '+dFr(ws.updatedAt):'Non daté'}</div>`}
+    </div>
+  </div>`;
+}
+function openWillsheetModal(key){
+  const c=S.clients[key];if(!c)return;
+  S.currentClient=key;
+  const ws=normalizeWillsheet(c.willsheet,c);
+  document.getElementById('willsheet-modal-sub').textContent='Fiche projet · '+c.name;
+  WILLSHEET_FIELDS.forEach(k=>{const el=document.getElementById('ws-'+k);if(el)el.value=ws[k]||'';});
+  const up=document.getElementById('ws-updatedAt');if(up)up.value=ws.updatedAt?dFr(ws.updatedAt):'—';
+  openModal('modal-willsheet');
+}
+function saveWillsheetFromModal(){
+  const key=S.currentClient;if(!key||!S.clients[key])return;
+  const ws=normalizeWillsheet(S.clients[key].willsheet,S.clients[key]);
+  WILLSHEET_FIELDS.forEach(k=>{const el=document.getElementById('ws-'+k);if(el)ws[k]=el.value.trim();});
+  ws.updatedAt=toStr();
+  S.clients[key].willsheet=ws;
+  save();closeModal('modal-willsheet');_renderClientDetail(key);renderClientsGrid();toast('WillSheet enregistrée ✓','ok');
+}
+function mergeWillsheet(key,incoming){
+  const c=S.clients[key];if(!c||!incoming||typeof incoming!=='object')return;
+  const current=normalizeWillsheet(c.willsheet,c);
+  WILLSHEET_FIELDS.forEach(k=>{if(incoming[k]!=null&&String(incoming[k]).trim())current[k]=String(incoming[k]).trim();});
+  current.updatedAt=toStr();
+  c.willsheet=current;
+}
+async function prefillWillsheetFromFirstCall(key){
+  const c=S.clients[key];if(!c)return;
+  const first=(c.calls||[])[0];
+  if(!first){toast('Aucun appel disponible pour préremplir','err');return;}
+  if(!S.apiKey){openApiModal();toast('Clé Gemini requise pour préremplir la WillSheet','err');return;}
+  try{
+    toast('Préremplissage WillSheet en cours…');
+    const parsed=await geminiExtractWillsheet(c, first, toStr());
+    mergeWillsheet(key, parsed.willsheet||parsed);
+    save();_renderClientDetail(key);toast('WillSheet préremplie ✓','ok');
+  }catch(err){toast('Préremplissage impossible : '+err.message,'err');}
+}
+async function geminiExtractWillsheet(c,call,today){
+  const prompt=`Tu es un assistant commercial Filovent. À partir du premier appel client ci-dessous, remplis une WillSheet.
+Client: ${c.name}
+Email: ${c.email||''}
+Téléphone: ${c.phone||''}
+Projet déjà connu: ${c.interests||''}
+Date: ${today}
+Résumé appel: ${call.summary||''}
+Transcription: ${call.transcription||''}
+Actions: ${(call.actions||[]).join(' | ')}
+
+Réponds UNIQUEMENT en JSON:
+{"willsheet":{
+"projectTitle":"","serviceType":"","charterRecord":"","cruisingArea":"","whyDestination":"","departureBase":"","transport":"",
+"datesDuration":"","departureDate":"","flexibility":"","boatType":"","boatCriteria":"","people":"","crewComposition":"",
+"budget":"","competitors":"","alternatives":"","decisionDeadline":"","decisionDate":"","knowledge":"","clientTag":"",
+"language":"","nationality":"","notes":""
+}}
+Si une information n'est pas dite, laisse une chaîne vide.`;
+  const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.1,maxOutputTokens:4096}})
+  });
+  const data=await resp.json().catch(()=>({}));
+  if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
+  const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+  const match=raw.match(/\{[\s\S]*\}/);
+  if(!match)throw new Error('Réponse Gemini non JSON');
+  return JSON.parse(match[0]);
+}
+
+/* ══════════════════════════════════════════
    CALENDAR
 ══════════════════════════════════════════ */
 const HOURS = [8,9,10,11,12,13,14,15,16,17,18,19,20];
@@ -1761,6 +1972,8 @@ function _renderClientDetail(key){
           </div>
         </div>
 
+        ${renderWillsheetCard(key)}
+
         <!-- JOURNAL -->
         <div class="card">
           <div class="card-hd">
@@ -1824,7 +2037,7 @@ function _renderClientDetail(key){
 }
 
 /* ══════════════════════════════════════════
-   OPENAI MP3 TRANSCRIPTION
+   GEMINI MP3 TRANSCRIPTION
 ══════════════════════════════════════════ */
 function handleDrop(event,key){
   event.preventDefault();
@@ -1873,12 +2086,39 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de t
   "actions": ["Action commerciale à faire suite à cet appel", "Autre action si nécessaire"],
   "events": [{"title": "Titre du RDV ou rappel", "type": "rdv", "date": "YYYY-MM-DD", "time": "HH:MM", "notes": "contexte"}],
   "client_interests": "Destination, type de bateau, période, budget, nombre de personnes détectés",
-  "duration_estimate": "X min"
+  "duration_estimate": "X min",
+  "willsheet": {
+    "projectTitle": "Cruising area - month of departure - year",
+    "serviceType": "One of the guests, Skippered, Crewed, Cruise, River...",
+    "charterRecord": "First charter ou Previous charters",
+    "cruisingArea": "Destination(s) demandée(s)",
+    "whyDestination": "Pourquoi cette destination",
+    "departureBase": "Base(s) de départ",
+    "transport": "Moyen de transport",
+    "datesDuration": "Dates et durée",
+    "departureDate": "YYYY-MM-DD si connue",
+    "flexibility": "Flexibilité et précisions",
+    "boatType": "Type de bateau",
+    "boatCriteria": "Critères de choix du bateau",
+    "people": "Nombre de personnes",
+    "crewComposition": "Composition de l'équipage",
+    "budget": "Budget et ce qu'il inclut",
+    "competitors": "Concurrents mentionnés",
+    "alternatives": "Offres concurrentes et alternatives",
+    "decisionDeadline": "Deadline de décision et prochain RDV",
+    "decisionDate": "Date de décision précise ou approximative",
+    "knowledge": "Enlightened ou Newbie",
+    "clientTag": "Tag client pertinent",
+    "language": "Langue parlée",
+    "nationality": "Nationalité",
+    "notes": "Autres informations utiles"
+  }
 }
 Règles :
 - Si aucun RDV n'est explicitement fixé dans l'appel, renvoie events: []
 - Si aucune action concrète n'est mentionnée, renvoie actions: []
 - Le champ transcription doit retranscrire fidèlement tout ce qui est dit
+- Remplis la WillSheet avec les informations dites pendant l'appel. Si une information n'est pas dite, mets une chaîne vide.
 - Le champ type dans events peut être : "rdv", "rappel" ou "suivi"`;
 
     setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
@@ -1923,6 +2163,9 @@ Règles :
 
     // Enrichir les intérêts si vide
     if(parsed.client_interests&&!c.interests)c.interests=parsed.client_interests;
+    if(!(c.willsheet&&willsheetCompletion(normalizeWillsheet(c.willsheet,c))>0)&&parsed.willsheet){
+      mergeWillsheet(key, parsed.willsheet);
+    }
 
     // Ajouter au journal
     if(!c.calls)c.calls=[];
@@ -2038,10 +2281,19 @@ function saveCall(){
   }
   actions.forEach(a=>S.todos.push({id:uid(),text:a,details:`Action issue de l'appel du ${dFr(callDate)} avec ${c.name}.`,dueDate:callDate,clientKey:key,done:false,createdAt:toStr(),source:'auto'}));
   if(!c.calls)c.calls=[];
-  c.calls.push({id:uid(),date:callDate,duration:document.getElementById('call-duration').value.trim(),summary,actions,events:callEvts,source:'manual'});
+  const call={id:uid(),date:callDate,duration:document.getElementById('call-duration').value.trim(),summary,actions,events:callEvts,source:'manual'};
+  c.calls.push(call);
+  const shouldPrefill=!(c.willsheet&&willsheetCompletion(normalizeWillsheet(c.willsheet,c))>0)&&S.apiKey;
   save();updateBadges();closeModal('modal-add-call');
   toast('Appel enregistré'+(rdvDate?' + RDV ajouté ✓':' + rappel créé ✓'),'ok');
   _renderClientDetail(key);renderCalendar();renderDashboard();
+  if(shouldPrefill){
+    geminiExtractWillsheet(c,call,callDate).then(parsed=>{
+      mergeWillsheet(key, parsed.willsheet||parsed);
+      save();if(S.currentClient===key)_renderClientDetail(key);
+      toast('WillSheet préremplie depuis l’appel ✓','ok');
+    }).catch(err=>toast('WillSheet non préremplie : '+err.message,'err'));
+  }
 }
 function deleteCall(clientKey,callId){
   const c=S.clients[clientKey];if(!c)return;

@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Tools</title>
+<title>Filovent CRM 2.0</title>
+<link rel="icon" href="assets/filovent-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --nav:#0b1f3a;--nav2:#132d50;--accent:#2e7fc8;--gold:#c8923a;
-  --green:#1a9b72;--red:#d94f3d;--bg:#f2f4f7;--card:#ffffff;
-  --border:#e0e5ed;--t1:#111827;--t2:#374151;--t3:#8898aa;
-  --r:10px;--shadow:0 2px 12px rgba(11,31,58,.08);--sidebar:262px;
+  --nav:#071524;--nav2:#0b2642;--accent:#176a9c;--gold:#c9913a;
+  --green:#238a73;--red:#d85d4a;--bg:#f4f8fa;--card:#ffffff;
+  --border:#d9e4ea;--t1:#102033;--t2:#394f60;--t3:#7c909b;
+  --r:8px;--shadow:0 10px 28px rgba(7,21,36,.07);--sidebar:274px;
 }
-html,body{height:100%;font-family:'DM Sans',system-ui,sans-serif;color:var(--t1);background:var(--bg);overflow:hidden}
+html,body{height:100%;font-family:'DM Sans',system-ui,sans-serif;color:var(--t1);background:linear-gradient(180deg,#edf5f7 0%,var(--bg) 38%,#eef4f6 100%);overflow:hidden}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,textarea,select{font-family:inherit;outline:none;background:transparent}
 ::-webkit-scrollbar{width:4px;height:4px}
@@ -23,23 +24,24 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 
 /* LAYOUT */
 #app{display:flex;height:100vh;overflow:hidden}
-#sidebar{width:var(--sidebar);flex-shrink:0;background:var(--nav);display:flex;flex-direction:column;overflow:hidden;box-shadow:3px 0 20px rgba(0,0,0,.18);z-index:10}
+#sidebar{width:var(--sidebar);flex-shrink:0;background:linear-gradient(180deg,rgba(7,21,36,.98),rgba(11,38,66,.96)),url("assets/filovent-hero-marina.png") center/cover;display:flex;flex-direction:column;overflow:hidden;box-shadow:3px 0 24px rgba(7,21,36,.22);z-index:10}
 #content{flex:1;display:flex;flex-direction:column;overflow:hidden}
 
 /* SIDEBAR */
-.sb-brand{padding:20px 18px 15px;border-bottom:1px solid rgba(255,255,255,.07)}
-.sb-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.12rem;color:#fff;display:flex;align-items:center;gap:8px}
-.sb-sub{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.27);margin-top:4px}
+.sb-brand{padding:18px 16px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.08rem;color:#fff;display:flex;align-items:center;gap:10px}
+.sb-logo img{width:44px;height:44px;object-fit:contain;flex-shrink:0}
+.sb-sub{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.52);margin-top:3px;margin-left:54px}
 .sb-nav{padding:8px 8px 0;flex:1;overflow-y:auto}
 .sb-section{font-size:.59rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);font-weight:700;padding:10px 10px 5px;margin-top:2px}
-.sb-btn{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:8px;color:rgba(255,255,255,.5);font-size:.81rem;font-weight:500;transition:all .15s;text-align:left}
+.sb-btn{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:8px;color:rgba(255,255,255,.62);font-size:.81rem;font-weight:500;transition:all .15s;text-align:left}
 .sb-btn:hover{color:rgba(255,255,255,.88);background:rgba(255,255,255,.07)}
-.sb-btn.active{color:#fff;background:rgba(46,127,200,.3);font-weight:600}
+.sb-btn.active{color:#fff;background:rgba(42,168,196,.22);font-weight:700}
 .sb-btn .icon{font-size:.9rem;width:17px;text-align:center;flex-shrink:0}
 .sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.59rem;font-weight:700;padding:2px 6px;border-radius:20px;min-width:17px;text-align:center}
 .sb-badge.gold{background:var(--gold)}.sb-badge.green{background:var(--green)}
 .sb-search{padding:5px 8px}
-.sb-search input{width:100%;padding:6px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.07);color:#fff;font-size:.77rem;transition:.2s}
+.sb-search input{width:100%;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;font-size:.77rem;transition:.2s}
 .sb-search input::placeholder{color:rgba(255,255,255,.27)}
 .sb-search input:focus{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.1)}
 .sb-client{display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;cursor:pointer;transition:.15s}
@@ -48,6 +50,10 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .sb-cname{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-cmeta{font-size:.65rem;color:rgba(255,255,255,.3)}
 .sb-empty{padding:10px 10px;font-size:.75rem;color:rgba(255,255,255,.27)}
+.resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px 8px 7px}
+.resource-link{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:8px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.68);font-size:.75rem;font-weight:700;text-decoration:none;transition:.15s}
+.resource-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.resource-link span{font-size:.86rem}
 .sb-footer{padding:10px 8px;border-top:1px solid rgba(255,255,255,.07)}
 .api-btn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);transition:.15s;cursor:pointer}
 .api-btn:hover{background:rgba(255,255,255,.08)}
@@ -56,7 +62,7 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .api-txt{font-size:.71rem;color:rgba(255,255,255,.44);flex:1}
 
 /* TOPBAR */
-#topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 26px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;z-index:5}
+#topbar{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 26px;height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;z-index:5}
 .tb-title{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:800;color:var(--nav)}
 .tb-actions{display:flex;align-items:center;gap:8px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:.79rem;font-weight:600;transition:.15s;cursor:pointer}
@@ -70,7 +76,7 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .panel-scroll{flex:1;overflow-y:auto;padding:22px 26px}
 
 /* CARD */
-.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card{background:rgba(255,255,255,.94);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
 .card-hd{padding:13px 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .card-title{font-weight:700;font-size:.87rem;color:var(--nav);display:flex;align-items:center;gap:7px}
 
@@ -186,13 +192,46 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 
 /* CLIENTS */
 .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
-.client-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:17px;cursor:pointer;transition:all .15s}
+.client-card{background:rgba(255,255,255,.94);border:1px solid var(--border);border-radius:var(--r);padding:17px;cursor:pointer;transition:all .15s}
 .client-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,31,58,.1)}
+
+/* TEMPLATES */
+.template-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.template-search{flex:1;min-width:220px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;font-size:.84rem;color:var(--t1)}
+.template-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.template-tab{padding:7px 11px;border-radius:8px;border:1px solid var(--border);background:#fff;color:var(--t2);font-size:.76rem;font-weight:700;cursor:pointer}
+.template-tab.active{background:var(--nav);color:#fff;border-color:var(--nav)}
+.template-recs{display:none;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px}
+.template-recs.show{display:block}
+.template-recs-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px}
+.template-rec-row{display:flex;gap:7px;flex-wrap:wrap}
+.template-rec{border:1px solid rgba(23,106,156,.22);background:rgba(23,106,156,.07);color:var(--accent);border-radius:8px;padding:7px 10px;font-size:.76rem;font-weight:800;cursor:pointer}
+.template-rec:hover{background:rgba(23,106,156,.13)}
+.template-layout{display:grid;grid-template-columns:minmax(280px,390px) 1fr;gap:16px;align-items:start}
+.template-list{display:flex;flex-direction:column;gap:9px}
+.template-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:.15s}
+.template-item:hover,.template-item.active{border-color:var(--accent);box-shadow:0 8px 24px rgba(7,21,36,.08)}
+.template-item-title{font-weight:800;color:var(--nav);font-size:.86rem;margin-bottom:4px}
+.template-item-meta{display:flex;gap:5px;flex-wrap:wrap}
+.template-pill{font-size:.61rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:999px;background:#eef4f6;color:var(--t3)}
+.template-pill.kind-email{background:rgba(23,106,156,.1);color:var(--accent)}
+.template-pill.kind-sms{background:rgba(35,138,115,.1);color:var(--green)}
+.template-pill.kind-script{background:rgba(201,145,58,.12);color:var(--gold)}
+.template-editor{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.template-editor-hd{padding:15px 17px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.template-editor-title{font-family:'Syne',sans-serif;font-weight:800;color:var(--nav);font-size:1rem}
+.template-editor-sub{font-size:.75rem;color:var(--t3);margin-top:3px}
+.template-editor-bd{padding:16px}
+.template-preview{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:13px;font-size:.84rem;line-height:1.7;color:var(--t2);white-space:pre-wrap;min-height:210px}
+.template-subject{font-size:.8rem;background:#eef6f8;border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:10px;color:var(--t2)}
+.template-form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.template-empty{padding:30px;text-align:center;color:var(--t3)}
+@media(max-width:980px){.template-layout{grid-template-columns:1fr}.template-form-grid{grid-template-columns:1fr}}
 
 /* CLIENT DETAIL */
 .client-layout{display:grid;grid-template-columns:1fr 335px;gap:18px;align-items:start}
-.client-hero{background:linear-gradient(135deg,var(--nav) 0%,var(--nav2) 100%);border-radius:var(--r);padding:21px;margin-bottom:16px;display:flex;align-items:center;gap:15px;overflow:hidden;position:relative}
-.client-hero::after{content:'';position:absolute;right:-15px;top:-15px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.04)}
+.client-hero{background:linear-gradient(100deg,rgba(7,21,36,.94),rgba(11,38,66,.82)),url("assets/filovent-hero-marina.png") center 62%/cover;border-radius:var(--r);padding:22px;margin-bottom:16px;display:flex;align-items:center;gap:15px;overflow:hidden;position:relative}
+.client-hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:36%;background:linear-gradient(90deg,transparent,rgba(42,168,196,.2))}
 .ch-avatar{width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:800;color:#fff;flex-shrink:0}
 .ch-name{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:#fff}
 .ch-meta{font-size:.77rem;color:rgba(255,255,255,.5);margin-top:3px}
@@ -214,15 +253,15 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .info-val{color:var(--t1);flex:1}
 
 /* GEMINI ZONE */
-.gemini-zone{border:2px dashed var(--border);border-radius:12px;padding:22px;text-align:center;transition:all .2s;cursor:pointer;background:rgba(255,255,255,.5)}
-.gemini-zone:hover,.gemini-zone.drag{border-color:var(--accent);background:rgba(46,127,200,.04)}
-.gemini-zone input[type=file]{display:none}
+.audio-zone{border:2px dashed #c6d7df;border-radius:8px;padding:22px;text-align:center;transition:all .2s;cursor:pointer;background:linear-gradient(180deg,#ffffff,#f1f7f8)}
+.audio-zone:hover,.audio-zone.drag{border-color:var(--accent);background:#eef8fb}
+.audio-zone input[type=file]{display:none}
 .gz-icon{font-size:1.8rem;margin-bottom:8px}
 .gz-title{font-weight:700;font-size:.87rem;color:var(--nav);margin-bottom:3px}
 .gz-sub{font-size:.75rem;color:var(--t3)}
 
 /* Processing */
-.process-card{background:linear-gradient(135deg,var(--nav),var(--nav2));border-radius:12px;padding:20px;display:none}
+.process-card{background:linear-gradient(135deg,var(--nav),var(--nav2));border-radius:8px;padding:20px;display:none}
 .process-card.show{display:block}
 .process-title{font-family:'Syne',sans-serif;font-weight:800;font-size:.93rem;color:#fff;margin-bottom:14px}
 .process-step{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:.82rem;color:rgba(255,255,255,.38);transition:color .3s}
@@ -232,7 +271,7 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Result */
-.result-card{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:20px;display:none}
+.result-card{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:20px;display:none}
 .result-card.show{display:block}
 .result-section{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px}
 .result-text{font-size:.83rem;line-height:1.7;color:var(--t2);background:var(--bg);border-radius:9px;padding:13px;margin-bottom:14px}
@@ -250,7 +289,7 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 /* MODALS */
 .modal{position:fixed;inset:0;background:rgba(11,31,58,.58);backdrop-filter:blur(4px);z-index:2000;display:none;align-items:center;justify-content:center}
 .modal.open{display:flex}
-.modal-box{background:var(--card);border-radius:16px;padding:26px;max-width:460px;width:92%;box-shadow:0 24px 60px rgba(11,31,58,.22);animation:popIn .22s cubic-bezier(.22,.68,0,1.2)}
+.modal-box{background:var(--card);border-radius:8px;padding:26px;max-width:460px;width:92%;box-shadow:0 24px 60px rgba(11,31,58,.22);animation:popIn .22s cubic-bezier(.22,.68,0,1.2)}
 .modal-box.wide{max-width:560px}
 @keyframes popIn{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
 .modal-title{font-family:'Syne',sans-serif;font-size:1.12rem;font-weight:800;color:var(--nav);margin-bottom:4px}
@@ -272,7 +311,7 @@ textarea.form-ctrl{resize:vertical}
 /* DASHBOARD */
 .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px}
+.stat-card{background:linear-gradient(180deg,#ffffff,#f8fbfc);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px}
 .stat-num{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:800;color:var(--nav)}
 .stat-lbl{font-size:.7rem;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 .stat-sub{font-size:.76rem;color:var(--t2);margin-top:5px}
@@ -287,6 +326,28 @@ textarea.form-ctrl{resize:vertical}
 .overlay{position:fixed;inset:0;background:rgba(11,31,58,.52);backdrop-filter:blur(4px);z-index:1500;display:none;align-items:center;justify-content:center}
 .overlay.open{display:flex}
 .overlay-box{background:var(--card);border-radius:16px;padding:26px;max-width:500px;width:92%;box-shadow:0 24px 60px rgba(11,31,58,.2);animation:popIn .22s cubic-bezier(.22,.68,0,1.2)}
+@media(max-width:760px){
+  html,body{overflow:auto}
+  #app{min-height:100vh;height:auto;display:block;overflow:visible}
+  #sidebar{position:relative;width:100%;height:auto;max-height:none;box-shadow:none}
+  .sb-brand{padding:14px 16px 10px}
+  .sb-logo img{width:36px;height:36px}
+  .sb-sub{margin-left:46px}
+  .sb-nav{padding:8px 10px 10px;overflow:visible}
+  .sb-section,.sb-search,#sb-clients{display:none}
+  .resource-grid{display:grid;grid-template-columns:1fr 1fr;padding:2px 0 8px}
+  .sb-btn{width:auto;display:inline-flex;margin:0 4px 6px 0;padding:8px 10px}
+  .sb-footer{padding:8px 10px 10px}
+  #content{height:auto;min-height:0;overflow:visible}
+  #topbar{height:auto;min-height:58px;padding:10px 14px;align-items:flex-start;gap:10px}
+  .tb-title{font-size:.96rem;line-height:1.2}
+  .tb-actions{flex-wrap:wrap;justify-content:flex-end}
+  .panel,.panel.active{overflow:visible}
+  .panel-scroll{overflow:visible;padding:14px}
+  .three-col,.two-col,.client-layout{grid-template-columns:1fr}
+  .cal-nav{flex-wrap:wrap}
+  .cal-week-grid,.cal-grid{overflow-x:auto}
+}
 </style>
 </head>
 <body>
@@ -295,20 +356,28 @@ textarea.form-ctrl{resize:vertical}
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sb-brand">
-    <a href="index.html" style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.72rem; font-weight:500; margin-bottom:14px; transition: color 0.15s; font-family:'Inter',sans-serif;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
-        <i class="bi bi-arrow-left" style="font-size:0.7rem;"></i> Accueil plateforme
+    <a href="agenda.html" style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.58); text-decoration:none; font-size:0.72rem; font-weight:700; margin-bottom:14px; transition: color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.58)'">
+        <i class="bi bi-compass" style="font-size:0.7rem;"></i> Poste de travail
     </a>
 
-    <div class="sb-logo">⚓ CRM 2.0</div>
+    <div class="sb-logo"><img src="assets/filovent-mark.png" alt=""> <span>CRM 2.0</span></div>
     <div class="sb-sub">Outil commercial interne</div>
   </div>
   <div class="sb-nav">
     <div class="sb-section">Navigation</div>
-    <button class="sb-btn active" onclick="nav('dashboard')" id="nb-dashboard"><span class="icon">📊</span>Tableau de bord</button>
+    <button class="sb-btn active" onclick="nav('dashboard')" id="nb-dashboard"><span class="icon">📊</span>Aujourd’hui</button>
     <button class="sb-btn" onclick="nav('calendar')" id="nb-calendar"><span class="icon">📅</span>Agenda <span class="sb-badge" id="bdg-events">0</span></button>
     <button class="sb-btn" onclick="nav('todo')" id="nb-todo"><span class="icon">✅</span>Mes tâches <span class="sb-badge" id="bdg-todos">0</span></button>
     <button class="sb-btn" onclick="nav('clients')" id="nb-clients"><span class="icon">👥</span>Clients <span class="sb-badge gold" id="bdg-clients">0</span></button>
-    <div class="sb-section" style="margin-top:4px">Accès rapide</div>
+    <button class="sb-btn" onclick="nav('templates')" id="nb-templates"><span class="icon">✉️</span>Templates</button>
+    <div class="sb-section" style="margin-top:4px">Ressources</div>
+    <div class="resource-grid">
+      <a class="resource-link" href="greenbook.html"><span>📗</span>Greenbook</a>
+      <a class="resource-link" href="bluebook.html"><span>📘</span>Bluebook</a>
+      <a class="resource-link" href="itineraires.html"><span>🧭</span>Itinéraires</a>
+      <a class="resource-link" href="elearning.html"><span>🎓</span>Learning</a>
+    </div>
+    <div class="sb-section" style="margin-top:4px">Clients</div>
     <div class="sb-search"><input type="text" placeholder="Chercher un client…" oninput="filterSb(this.value)" id="sb-search"></div>
     <div id="sb-clients"></div>
   </div>
@@ -318,13 +387,18 @@ textarea.form-ctrl{resize:vertical}
       <div class="api-txt" id="api-txt">Clé Gemini non configurée</div>
       <span style="font-size:.7rem;color:rgba(255,255,255,.24)">⚙</span>
     </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+      <button class="api-btn" style="justify-content:center;font-size:.7rem;color:rgba(255,255,255,.62)" onclick="exportBackup()">Export</button>
+      <button class="api-btn" style="justify-content:center;font-size:.7rem;color:rgba(255,255,255,.62)" onclick="triggerImport()">Import</button>
+    </div>
+    <input type="file" id="backup-input" accept="application/json,.json" style="display:none" onchange="importBackupFile(this)">
   </div>
 </div>
 
 <!-- CONTENT -->
 <div id="content">
   <div id="topbar">
-    <div class="tb-title" id="tb-title">Tableau de bord</div>
+    <div class="tb-title" id="tb-title">Aujourd’hui</div>
     <div class="tb-actions">
       <button class="btn btn-outline" onclick="openAddClientModal()">＋ Client</button>
       <button class="btn btn-outline" onclick="openAddEventModal()">＋ Événement</button>
@@ -406,6 +480,22 @@ textarea.form-ctrl{resize:vertical}
     <div class="panel-scroll"><div id="clients-inner"></div></div>
   </div>
 
+  <!-- TEMPLATES -->
+  <div class="panel" id="panel-templates">
+    <div class="panel-scroll">
+      <div class="template-toolbar">
+        <input class="template-search" id="tpl-search" placeholder="Rechercher un template, une situation, une destination..." oninput="renderTemplates()">
+        <button class="btn btn-outline" onclick="openTemplateModal()">＋ Template</button>
+      </div>
+      <div class="template-recs" id="tpl-recs"></div>
+      <div class="template-tabs" id="tpl-tabs"></div>
+      <div class="template-layout">
+        <div class="template-list" id="tpl-list"></div>
+        <div class="template-editor" id="tpl-editor"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- CLIENT DETAIL -->
   <div class="panel" id="panel-client-detail">
     <div class="panel-scroll"><div id="client-detail-inner"></div></div>
@@ -420,9 +510,9 @@ textarea.form-ctrl{resize:vertical}
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-api')">✕</button>
     <div class="modal-title">🔑 Clé API Gemini</div>
-    <div class="modal-sub">Obtenez votre clé gratuite sur <strong>aistudio.google.com</strong> → "Get API Key".<br>Stockée uniquement dans votre navigateur.</div>
+    <div class="modal-sub">Obtenez votre clé sur <strong>aistudio.google.com</strong> → Get API Key.<br>Stockée uniquement dans votre navigateur.</div>
     <div class="form-grp"><label class="form-lbl">Clé API</label><input class="form-ctrl" type="password" id="api-key-input" placeholder="AIza…"></div>
-    <div style="background:var(--bg);border-radius:8px;padding:10px 13px;font-size:.73rem;color:var(--t3);line-height:1.5;margin-bottom:4px">⚠️ Réservé à un usage interne sur machine de confiance.</div>
+    <div style="background:var(--bg);border-radius:8px;padding:10px 13px;font-size:.73rem;color:var(--t3);line-height:1.5;margin-bottom:4px">⚠️ Réservé à un usage interne sur machine de confiance. Pour une version publique, utilisez un serveur proxy afin de ne pas exposer la clé.</div>
     <div class="modal-footer">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveApiKey()">✓ Enregistrer</button>
       <button class="btn btn-outline" onclick="closeModal('modal-api')">Annuler</button>
@@ -498,6 +588,35 @@ textarea.form-ctrl{resize:vertical}
   </div>
 </div>
 
+<!-- ADD / EDIT TEMPLATE -->
+<div class="modal" id="modal-template">
+  <div class="modal-box wide">
+    <button class="modal-close" onclick="closeModal('modal-template')">✕</button>
+    <div class="modal-title" id="tpl-modal-title">✉️ Nouveau template</div>
+    <div class="modal-sub">Utilisez des variables entre doubles accolades, par exemple {{prenom}}, {{destination}}, {{bateau}}.</div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Nom *</label><input class="form-ctrl" id="tpl-name" placeholder="Relance devis"></div>
+      <div><label class="form-lbl">Type</label>
+        <select class="form-ctrl" id="tpl-kind">
+          <option value="email">Email</option>
+          <option value="sms">SMS / WhatsApp</option>
+          <option value="script">Script appel</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Catégorie</label><input class="form-ctrl" id="tpl-category" placeholder="relance"></div>
+      <div><label class="form-lbl">Tags</label><input class="form-ctrl" id="tpl-tags" placeholder="devis, urgence, méditerranée"></div>
+    </div>
+    <div class="form-grp"><label class="form-lbl">Objet email</label><input class="form-ctrl" id="tpl-subject" placeholder="Votre projet de croisière"></div>
+    <div class="form-grp"><label class="form-lbl">Message *</label><textarea class="form-ctrl" id="tpl-body" rows="8" placeholder="Bonjour {{prenom}}, ..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveTemplateFromModal()">Enregistrer</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-template')">Annuler</button>
+    </div>
+  </div>
+</div>
+
 <!-- EVENT DETAIL -->
 <div class="modal" id="modal-event-detail">
   <div class="modal-box">
@@ -561,23 +680,27 @@ textarea.form-ctrl{resize:vertical}
    STATE
 ══════════════════════════════════════════ */
 const S = {
-  apiKey:'', clients:{}, events:[], todos:[],
+  apiKey:'', clients:{}, events:[], todos:[], templates:[],
   calDate:new Date(), calView:'week',
-  currentClient:null, pendingDelKey:null, currentCallClient:null, todoFilter:'all'
+  currentClient:null, pendingDelKey:null, currentCallClient:null, todoFilter:'all',
+  templateFilter:'all', currentTemplate:null, editingTemplate:null
 };
 
 function save() {
   localStorage.setItem('filo_clients', JSON.stringify(S.clients));
   localStorage.setItem('filo_events',  JSON.stringify(S.events));
   localStorage.setItem('filo_todos',   JSON.stringify(S.todos));
-  localStorage.setItem('filo_api_key', S.apiKey);
+  localStorage.setItem('filo_templates', JSON.stringify(S.templates));
+  localStorage.setItem('filo_gemini_api_key', S.apiKey);
 }
 function load() {
   try {
-    S.apiKey = localStorage.getItem('filo_api_key') || '';
+    S.apiKey = localStorage.getItem('filo_gemini_api_key') || localStorage.getItem('filo_api_key') || '';
     const c = localStorage.getItem('filo_clients'); if(c) S.clients = JSON.parse(c);
     const e = localStorage.getItem('filo_events');  if(e) S.events  = JSON.parse(e);
     const t = localStorage.getItem('filo_todos');   if(t) S.todos   = JSON.parse(t);
+    const tpl = localStorage.getItem('filo_templates');
+    S.templates = mergeDefaultTemplates(tpl ? JSON.parse(tpl) : []);
   } catch(err){ console.error(err); }
 }
 
@@ -601,12 +724,12 @@ function toast(msg, type='') {
 /* ══════════════════════════════════════════
    NAV
 ══════════════════════════════════════════ */
-const PANELS=['dashboard','calendar','todo','clients','client-detail'];
-const TITLES={dashboard:'Tableau de bord',calendar:'Agenda',todo:'Mes tâches',clients:'Clients','client-detail':'Fiche client'};
+const PANELS=['dashboard','calendar','todo','clients','templates','client-detail'];
+const TITLES={dashboard:'Aujourd’hui',calendar:'Agenda',todo:'Mes tâches',clients:'Clients',templates:'Templates','client-detail':'Fiche client'};
 
 function nav(name) {
   PANELS.forEach(p=>document.getElementById('panel-'+p).classList.remove('active'));
-  ['dashboard','calendar','todo','clients'].forEach(n=>{ const b=document.getElementById('nb-'+n); if(b) b.classList.remove('active'); });
+  ['dashboard','calendar','todo','clients','templates'].forEach(n=>{ const b=document.getElementById('nb-'+n); if(b) b.classList.remove('active'); });
   document.getElementById('panel-'+name).classList.add('active');
   const nb=document.getElementById('nb-'+name); if(nb) nb.classList.add('active');
   document.getElementById('tb-title').textContent=TITLES[name]||name;
@@ -614,6 +737,7 @@ function nav(name) {
   if(name==='todo') renderTodos();
   if(name==='dashboard') renderDashboard();
   if(name==='clients') renderClientsGrid();
+  if(name==='templates') renderTemplates();
 }
 
 /* ══════════════════════════════════════════
@@ -712,6 +836,398 @@ function renderDashboard(){
       <div style="font-size:.82rem;font-weight:500;color:var(--t1)">${ev.title}</div>
       ${ev.client?`<div style="font-size:.71rem;color:var(--t3)">${ev.client}</div>`:''}
     </div>`).join('');}
+}
+
+/* ══════════════════════════════════════════
+   TEMPLATES
+══════════════════════════════════════════ */
+function defaultTemplates(){
+  return [
+    {id:'tpl-first-contact',kind:'email',category:'decouverte',name:'Premier contact - demande entrante',tags:['qualification','nouveau client'],subject:'Votre projet de croisière - Filovent',body:`Bonjour {{prenom}},
+
+Merci pour votre demande. Pour vous proposer les bateaux les plus adaptés, j'aurais besoin de confirmer quelques éléments :
+
+- Destination souhaitée : {{destination}}
+- Période de départ : {{dates}}
+- Nombre de personnes à bord : {{personnes}}
+- Type de bateau préféré : {{bateau}}
+- Budget indicatif : {{budget}}
+
+Je peux ensuite vous envoyer une sélection claire avec les meilleures options disponibles.
+
+Bien cordialement,
+{{commercial}}
+Filovent`},
+    {id:'tpl-send-offer',kind:'email',category:'proposition',name:'Envoi de proposition',tags:['devis','selection'],subject:'Votre sélection de bateaux pour {{destination}}',body:`Bonjour {{prenom}},
+
+Suite à notre échange, je vous ai préparé une sélection pour votre croisière en {{destination}}.
+
+J'ai privilégié :
+- des bateaux adaptés à {{personnes}} personnes,
+- une navigation cohérente avec votre niveau,
+- des disponibilités autour de {{dates}},
+- un budget proche de {{budget}}.
+
+Je vous conseille de regarder en priorité l'option que j'ai placée en haut de la sélection : elle correspond le mieux à votre projet.
+
+Souhaitez-vous que je pose une option le temps que vous validiez avec votre équipage ?
+
+Bien cordialement,
+{{commercial}}
+Filovent`},
+    {id:'tpl-follow-up',kind:'email',category:'relance',name:'Relance après devis',tags:['relance','devis'],subject:'Avez-vous pu regarder la proposition pour {{destination}} ?',body:`Bonjour {{prenom}},
+
+Je me permets de revenir vers vous au sujet de votre projet de croisière en {{destination}}.
+
+Les disponibilités évoluent assez vite sur cette période, surtout pour les {{bateau}}. Si une option vous intéresse, je peux la sécuriser temporairement pour vous laisser le temps de valider.
+
+Souhaitez-vous que l'on fasse le point ensemble aujourd'hui ?
+
+Bien cordialement,
+{{commercial}}
+Filovent`},
+    {id:'tpl-objection-price',kind:'email',category:'objection',name:'Objection prix - expliquer la valeur',tags:['objection','prix','devis'],subject:'Quelques précisions sur le budget de votre croisière',body:`Bonjour {{prenom}},
+
+Je comprends tout à fait votre remarque sur le budget.
+
+Sur une location de bateau, le prix dépend surtout de la période, de la base de départ, du type de bateau et des services inclus. Mon rôle est justement de comparer les options pour éviter un bateau moins cher sur le papier mais moins adapté à votre équipage ou plus contraignant sur place.
+
+Pour votre projet en {{destination}}, je peux vous proposer :
+- une option plus économique,
+- une option plus confortable,
+- une option avec meilleur rapport qualité/prix.
+
+Souhaitez-vous que je vous renvoie une sélection resserrée avec ces trois niveaux ?
+
+Bien cordialement,
+{{commercial}}
+Filovent`},
+    {id:'tpl-confirm-option',kind:'email',category:'confirmation',name:'Option posée - confirmation',tags:['option','confirmation'],subject:'Option posée pour votre croisière en {{destination}}',body:`Bonjour {{prenom}},
+
+C'est noté, l'option est posée pour votre projet en {{destination}}.
+
+Elle permet de bloquer temporairement le bateau le temps de finaliser votre décision avec votre équipage. Attention, l'option reste limitée dans le temps et peut expirer si elle n'est pas confirmée.
+
+Prochaine étape : valider les derniers éléments du dossier et confirmer la réservation.
+
+Je reste disponible si vous souhaitez refaire un point rapide.
+
+Bien cordialement,
+{{commercial}}
+Filovent`},
+    {id:'tpl-documents-before-departure',kind:'email',category:'confirmation',name:'Rappel documents avant départ',tags:['depart','documents','rappel'],subject:'Documents à préparer pour votre croisière en {{destination}}',body:`Bonjour {{prenom}},
+
+Votre départ approche pour votre croisière en {{destination}}.
+
+Pensez à vérifier les éléments suivants :
+- passeports ou cartes d'identité,
+- permis bateau si nécessaire,
+- liste équipage,
+- heure et lieu d'embarquement,
+- caution et moyens de paiement acceptés,
+- éventuels extras demandés.
+
+Je vous conseille de garder tous les documents dans un dossier accessible hors ligne.
+
+Bonne préparation,
+{{commercial}}
+Filovent`},
+    {id:'tpl-no-answer-sms',kind:'sms',category:'relance',name:'Appel manqué - relance courte',tags:['sms','appel'],subject:'',body:`Bonjour {{prenom}}, j'ai essayé de vous joindre pour votre projet {{destination}}. Vous pouvez me rappeler quand vous êtes disponible, ou me répondre ici. {{commercial}} - Filovent`},
+    {id:'tpl-option-expiry-sms',kind:'sms',category:'urgence',name:'Option qui expire',tags:['sms','option'],subject:'',body:`{{prenom}}, l'option sur votre {{bateau}} en {{destination}} expire bientôt. Souhaitez-vous confirmer ou libérer le bateau ? {{commercial}} - Filovent`},
+    {id:'tpl-confirm-booking-sms',kind:'sms',category:'confirmation',name:'Réservation confirmée',tags:['sms','confirmation'],subject:'',body:`C'est confirmé {{prenom}} ! Votre croisière en {{destination}} est réservée. Je vous envoie le dossier complet par email. {{commercial}} - Filovent`},
+    {id:'tpl-flash-offer-sms',kind:'sms',category:'urgence',name:'Offre flash',tags:['sms','promo','urgence'],subject:'',body:`{{prenom}}, une offre intéressante vient d'apparaître pour {{destination}} sur {{dates}}. Voulez-vous que je vous l'envoie avant qu'elle parte ? {{commercial}} - Filovent`},
+    {id:'tpl-call-script',kind:'script',category:'qualification',name:'Script qualification projet',tags:['appel','qualification'],subject:'',body:`Objectif : qualifier rapidement le projet de {{prenom}}.
+
+1. Confirmer la destination : {{destination}}
+2. Confirmer les dates ou la flexibilité : {{dates}}
+3. Nombre de personnes et cabines nécessaires : {{personnes}}
+4. Niveau de navigation et besoin skipper
+5. Type de bateau préféré : {{bateau}}
+6. Budget réaliste : {{budget}}
+7. Décisionnaire et délai de décision
+
+Finir par une action claire : envoi devis, option, ou prochain rappel.`}
+  ];
+}
+
+function mergeDefaultTemplates(saved){
+  const defaults=defaultTemplates();
+  const clean=Array.isArray(saved)?saved:[];
+  const ids=new Set(clean.map(t=>t.id));
+  return [...clean,...defaults.filter(t=>!ids.has(t.id))];
+}
+
+function templateCats(){
+  return [
+    ['all','Tous'],
+    ['email','Emails'],
+    ['sms','SMS'],
+    ['script','Scripts'],
+    ['relance','Relance'],
+    ['proposition','Proposition']
+  ];
+}
+
+function renderTemplates(){
+  renderTemplateRecommendations();
+  const tabs=document.getElementById('tpl-tabs');
+  if(tabs){
+    tabs.innerHTML=templateCats().map(([id,label])=>`<button class="template-tab ${S.templateFilter===id?'active':''}" onclick="setTemplateFilter('${id}')">${label}</button>`).join('');
+  }
+  const q=(document.getElementById('tpl-search')?.value||'').toLowerCase().trim();
+  const list=S.templates.filter(t=>{
+    const hay=[t.name,t.kind,t.category,t.subject,t.body,...(t.tags||[])].join(' ').toLowerCase();
+    const okFilter=S.templateFilter==='all'||t.kind===S.templateFilter||t.category===S.templateFilter||(t.tags||[]).includes(S.templateFilter);
+    return okFilter && (!q||hay.includes(q));
+  });
+  const listEl=document.getElementById('tpl-list');
+  const editor=document.getElementById('tpl-editor');
+  if(!listEl||!editor)return;
+  if(!list.length){
+    listEl.innerHTML='<div class="template-empty">Aucun template trouvé.</div>';
+    editor.innerHTML='<div class="template-empty">Sélectionnez ou créez un template.</div>';
+    return;
+  }
+  if(!S.currentTemplate||!list.some(t=>t.id===S.currentTemplate)) S.currentTemplate=list[0].id;
+  listEl.innerHTML=list.map(t=>`
+    <div class="template-item ${S.currentTemplate===t.id?'active':''}" onclick="selectTemplate('${t.id}')">
+      <div class="template-item-title">${escapeHtml(t.name)}</div>
+      <div class="template-item-meta">
+        <span class="template-pill kind-${t.kind}">${t.kind}</span>
+        <span class="template-pill">${escapeHtml(t.category||'general')}</span>
+        ${(t.tags||[]).slice(0,2).map(tag=>`<span class="template-pill">${escapeHtml(tag)}</span>`).join('')}
+      </div>
+    </div>`).join('');
+  renderTemplateEditor();
+}
+
+function renderTemplateRecommendations(){
+  const el=document.getElementById('tpl-recs'); if(!el)return;
+  const recs=recommendedTemplates();
+  if(!recs.length){el.classList.remove('show');el.innerHTML='';return;}
+  const c=S.currentClient?S.clients[S.currentClient]:null;
+  el.classList.add('show');
+  el.innerHTML=`
+    <div class="template-recs-title">${c?'Recommandés pour '+escapeHtml(c.name):'Recommandés pour le suivi commercial'}</div>
+    <div class="template-rec-row">${recs.map(t=>`<button class="template-rec" onclick="selectTemplate('${t.id}')">${escapeHtml(t.name)}</button>`).join('')}</div>`;
+}
+
+function recommendedTemplates(){
+  const byId=id=>S.templates.find(t=>t.id===id);
+  const ids=[];
+  if(S.currentClient){
+    const key=S.currentClient;
+    const hasCalls=(S.clients[key]?.calls||[]).length>0;
+    const hasPending=S.todos.some(t=>t.clientKey===key&&!t.done);
+    const hasFutureEvent=S.events.some(e=>e.clientKey===key&&e.date>=toStr());
+    if(!hasCalls) ids.push('tpl-first-contact','tpl-call-script');
+    if(hasCalls||hasPending) ids.push('tpl-follow-up','tpl-no-answer-sms');
+    if(hasFutureEvent) ids.push('tpl-documents-before-departure');
+    ids.push('tpl-send-offer','tpl-option-expiry-sms');
+  }else{
+    ids.push('tpl-first-contact','tpl-send-offer','tpl-follow-up','tpl-no-answer-sms');
+  }
+  return [...new Set(ids)].map(byId).filter(Boolean).slice(0,5);
+}
+
+function setTemplateFilter(id){S.templateFilter=id;renderTemplates();}
+function selectTemplate(id){S.currentTemplate=id;renderTemplates();}
+function currentTemplate(){return S.templates.find(t=>t.id===S.currentTemplate)||S.templates[0];}
+
+function templateContext(){
+  const key=S.currentClient;
+  const c=key?S.clients[key]:null;
+  return {
+    prenom:c?.prenom||'',
+    nom:c?.nom||'',
+    client:c?.name||'',
+    email:c?.email||'',
+    telephone:c?.phone||'',
+    destination:c?.interests||'',
+    bateau:'',
+    dates:'',
+    personnes:'',
+    budget:'',
+    commercial:localStorage.getItem('profil-prenom')||'',
+    telephone_commercial:localStorage.getItem('profil-tel')||''
+  };
+}
+
+function templateVars(t){
+  const found=[...((t.subject||'')+'\n'+(t.body||'')).matchAll(/\{\{\s*([^}]+?)\s*\}\}/g)].map(m=>m[1].trim());
+  return [...new Set(found)];
+}
+
+function renderTemplateEditor(){
+  const t=currentTemplate();
+  const editor=document.getElementById('tpl-editor');
+  if(!t||!editor){return;}
+  const ctx=templateContext();
+  const vars=templateVars(t);
+  editor.innerHTML=`
+    <div class="template-editor-hd">
+      <div>
+        <div class="template-editor-title">${escapeHtml(t.name)}</div>
+        <div class="template-editor-sub">${t.kind.toUpperCase()} · ${escapeHtml(t.category||'general')} · ${(t.tags||[]).join(', ')}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+        <button class="btn btn-outline" onclick="editTemplate('${t.id}')">Modifier</button>
+        <button class="btn btn-red" onclick="deleteTemplate('${t.id}')">Supprimer</button>
+      </div>
+    </div>
+    <div class="template-editor-bd">
+      ${vars.length?`<div class="template-form-grid">${vars.map(v=>`<div><label class="form-lbl">${escapeHtml(v)}</label><input class="form-ctrl tpl-var" data-var="${escapeHtml(v)}" value="${escapeHtml(ctx[v]||'')}" oninput="updateTemplatePreview()"></div>`).join('')}</div>`:'<div class="modal-sub">Aucune variable dans ce template.</div>'}
+      ${t.subject?`<div class="template-subject"><strong>Objet :</strong> <span id="tpl-subject-preview"></span></div>`:''}
+      <div class="template-preview" id="tpl-body-preview"></div>
+      <div class="modal-footer" style="margin-top:14px">
+        <button class="btn btn-navy" onclick="copyTemplate()">Copier ${t.kind==='email'?'email':t.kind==='sms'?'message':'script'}</button>
+        ${t.subject?'<button class="btn btn-outline" onclick="copyTemplateSubject()">Copier objet</button>':''}
+      </div>
+    </div>`;
+  updateTemplatePreview();
+}
+
+function getTemplateFillValues(){
+  const vals={...templateContext()};
+  document.querySelectorAll('.tpl-var').forEach(input=>{vals[input.dataset.var]=input.value;});
+  return vals;
+}
+
+function applyTemplateVars(text,vals){
+  return (text||'').replace(/\{\{\s*([^}]+?)\s*\}\}/g,(_,name)=>vals[name.trim()]||`{{${name.trim()}}}`);
+}
+
+function updateTemplatePreview(){
+  const t=currentTemplate(); if(!t)return;
+  const vals=getTemplateFillValues();
+  const subj=document.getElementById('tpl-subject-preview');
+  const body=document.getElementById('tpl-body-preview');
+  if(subj)subj.textContent=applyTemplateVars(t.subject,vals);
+  if(body)body.textContent=applyTemplateVars(t.body,vals);
+}
+
+function copyTemplate(){
+  const t=currentTemplate(); if(!t)return;
+  const vals=getTemplateFillValues();
+  const subject=applyTemplateVars(t.subject,vals);
+  const body=applyTemplateVars(t.body,vals);
+  const text=t.subject?`Objet : ${subject}\n\n${body}`:body;
+  copyToClipboard(text,'Template copié ✓');
+}
+
+function copyTemplateSubject(){
+  const t=currentTemplate(); if(!t)return;
+  copyToClipboard(applyTemplateVars(t.subject,getTemplateFillValues()),'Objet copié ✓');
+}
+
+function copyToClipboard(text,msg){
+  navigator.clipboard?.writeText(text).then(()=>toast(msg,'ok')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast(msg,'ok');
+  });
+}
+
+function openTemplateModal(){
+  S.editingTemplate=null;
+  document.getElementById('tpl-modal-title').textContent='✉️ Nouveau template';
+  ['tpl-name','tpl-category','tpl-tags','tpl-subject','tpl-body'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tpl-kind').value='email';
+  openModal('modal-template');
+}
+
+function editTemplate(id){
+  const t=S.templates.find(x=>x.id===id); if(!t)return;
+  S.editingTemplate=id;
+  document.getElementById('tpl-modal-title').textContent='✏️ Modifier template';
+  document.getElementById('tpl-name').value=t.name||'';
+  document.getElementById('tpl-kind').value=t.kind||'email';
+  document.getElementById('tpl-category').value=t.category||'';
+  document.getElementById('tpl-tags').value=(t.tags||[]).join(', ');
+  document.getElementById('tpl-subject').value=t.subject||'';
+  document.getElementById('tpl-body').value=t.body||'';
+  openModal('modal-template');
+}
+
+function saveTemplateFromModal(){
+  const name=document.getElementById('tpl-name').value.trim();
+  const body=document.getElementById('tpl-body').value.trim();
+  if(!name||!body){toast('Nom et message requis','err');return;}
+  const tpl={
+    id:S.editingTemplate||uid(),
+    name,
+    kind:document.getElementById('tpl-kind').value,
+    category:document.getElementById('tpl-category').value.trim()||'general',
+    tags:document.getElementById('tpl-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    subject:document.getElementById('tpl-subject').value.trim(),
+    body
+  };
+  const idx=S.templates.findIndex(t=>t.id===tpl.id);
+  if(idx>=0)S.templates[idx]=tpl; else S.templates.unshift(tpl);
+  S.currentTemplate=tpl.id;S.editingTemplate=null;save();closeModal('modal-template');renderTemplates();toast('Template enregistré ✓','ok');
+}
+
+function deleteTemplate(id){
+  const t=S.templates.find(x=>x.id===id);if(!t)return;
+  if(!confirm(`Supprimer le template "${t.name}" ?`))return;
+  S.templates=S.templates.filter(x=>x.id!==id);
+  S.currentTemplate=S.templates[0]?.id||null;
+  save();renderTemplates();toast('Template supprimé');
+}
+
+function openTemplatesForClient(key){
+  S.currentClient=key;
+  S.templateFilter='all';
+  nav('templates');
+}
+
+function exportBackup(){
+  const payload={
+    app:'filovent-crm-2',
+    version:1,
+    exportedAt:new Date().toISOString(),
+    clients:S.clients,
+    events:S.events,
+    todos:S.todos,
+    templates:S.templates
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='filovent-crm-backup-'+toStr()+'.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  toast('Backup exporté ✓','ok');
+}
+
+function triggerImport(){
+  document.getElementById('backup-input').click();
+}
+
+function importBackupFile(input){
+  const file=input.files?.[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(!data||typeof data!=='object')throw new Error('Format invalide');
+      if(!confirm('Importer ce backup remplacera les clients, tâches, événements et templates locaux. Continuer ?'))return;
+      S.clients=data.clients&&typeof data.clients==='object'?data.clients:{};
+      S.events=Array.isArray(data.events)?data.events:[];
+      S.todos=Array.isArray(data.todos)?data.todos:[];
+      S.templates=mergeDefaultTemplates(Array.isArray(data.templates)?data.templates:[]);
+      S.currentClient=null;S.currentTemplate=null;
+      save();updateBadges();renderDashboard();renderCalendar();renderTodayStrip();renderTodos();renderClientsGrid();renderTemplates();
+      toast('Backup importé ✓','ok');
+    }catch(err){
+      toast('Import impossible : '+err.message,'err');
+    }finally{
+      input.value='';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function escapeHtml(str=''){
+  return String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 }
 
 /* ══════════════════════════════════════════
@@ -1199,6 +1715,7 @@ function _renderClientDetail(key){
       </div>
       <div style="display:flex;gap:8px;align-items:flex-start;position:relative;z-index:1">
         <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openAddCallModal('${key}')">📝 Saisie manuelle</button>
+        <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openTemplatesForClient('${key}')">✉️ Message</button>
         <button class="btn btn-red" onclick="askDelClient('${key}')">🗑</button>
       </div>
     </div>
@@ -1216,7 +1733,7 @@ function _renderClientDetail(key){
           </div>
           <div style="padding:16px">
             ${!hasApi?`<div class="no-api-banner">⚠️ Clé API Gemini requise pour la transcription automatique. <a href="#" onclick="openApiModal();return false" style="font-weight:700;text-decoration:underline">Configurer maintenant →</a></div>`:''}
-            <div class="gemini-zone" id="gz-${key}"
+            <div class="audio-zone" id="gz-${key}"
               onclick="document.getElementById('gf-${key}').click()"
               ondragover="event.preventDefault();this.classList.add('drag')"
               ondragleave="this.classList.remove('drag')"
@@ -1227,7 +1744,7 @@ function _renderClientDetail(key){
               <div class="gz-sub">Formats : MP3, M4A, WAV, OGG · Max 25 Mo<br>Gemini transcrit l'appel et extrait automatiquement résumé, actions et RDV</div>
             </div>
             <div class="process-card" id="pc-${key}">
-              <div class="process-title">🤖 Analyse en cours…</div>
+              <div class="process-title">🤖 Analyse Gemini en cours…</div>
               <div class="process-step" id="ps1-${key}"><span class="step-ico">📤</span> Envoi de l'audio à Gemini</div>
               <div class="process-step" id="ps2-${key}"><span class="step-ico">🎙️</span> Transcription de l'appel</div>
               <div class="process-step" id="ps3-${key}"><span class="step-ico">🧠</span> Extraction des informations clés</div>
@@ -1307,7 +1824,7 @@ function _renderClientDetail(key){
 }
 
 /* ══════════════════════════════════════════
-   GEMINI MP3 TRANSCRIPTION
+   OPENAI MP3 TRANSCRIPTION
 ══════════════════════════════════════════ */
 function handleDrop(event,key){
   event.preventDefault();
@@ -1328,19 +1845,7 @@ function loadAudioFile(file,key){
   gz.style.display='none';pc.classList.add('show');rc.classList.remove('show');
   // Reset steps
   ['ps1','ps2','ps3','ps4'].forEach(s=>{const el=document.getElementById(s+'-'+key);if(el){el.classList.remove('done','active');const ico=el.querySelector('.step-ico');if(ico)ico.textContent=['📤','🎙️','🧠','💾'][['ps1','ps2','ps3','ps4'].indexOf(s)];}});
-  const reader=new FileReader();
-  reader.onload=async(e)=>{
-    const b64=e.target.result.split(',')[1];
-    let mt=file.type;const fn=file.name.toLowerCase();
-    if(fn.endsWith('.mp3'))mt='audio/mpeg';
-    else if(fn.endsWith('.m4a'))mt='audio/mp4';
-    else if(fn.endsWith('.wav'))mt='audio/wav';
-    else if(fn.endsWith('.ogg'))mt='audio/ogg';
-    else if(fn.endsWith('.aac'))mt='audio/aac';
-    if(!mt)mt='audio/mpeg';
-    await runGeminiAnalysis(b64,mt,file.name,key);
-  };
-  reader.readAsDataURL(file);
+  runGeminiAnalysis(file,key);
 }
 
 function setStep(id,status){
@@ -1351,10 +1856,12 @@ function setStep(id,status){
   else if(status==='done'){el.classList.add('done');if(ico)ico.textContent='✅';}
 }
 
-async function runGeminiAnalysis(b64,mimeType,fileName,key){
+async function runGeminiAnalysis(file,key){
   const c=S.clients[key];const today=toStr();
   try{
     setStep('ps1-'+key,'active');
+    const b64=await fileToBase64(file);
+    const mimeType=audioMimeType(file);
     const prompt=`Tu es un assistant CRM pour Filovent, agence nautique française spécialisée en location de voiliers et catamarans.
 Analyse cet enregistrement d'appel téléphonique commercial avec le client ${c.name}.
 Date d'aujourd'hui : ${today}.
@@ -1383,7 +1890,7 @@ Règles :
         generationConfig:{temperature:0.1,maxOutputTokens:8192}
       })
     });
-    const data=await resp.json();
+    const data=await resp.json().catch(()=>({}));
     if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
 
     setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
@@ -1419,7 +1926,7 @@ Règles :
 
     // Ajouter au journal
     if(!c.calls)c.calls=[];
-    c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:parsed.summary,transcription:parsed.transcription,actions:parsed.actions||[],events:callEvts,source:'gemini',fileName});
+    c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:parsed.summary,transcription:parsed.transcription,actions:parsed.actions||[],events:callEvts,source:'gemini',fileName:file.name});
 
     save();updateBadges();
     setStep('ps4-'+key,'done');
@@ -1433,8 +1940,30 @@ Règles :
     console.error(err);
     document.getElementById('pc-'+key)?.classList.remove('show');
     const gz=document.getElementById('gz-'+key);if(gz)gz.style.display='';
-    toast('Erreur Gemini : '+err.message,'err');
+    const msg=err instanceof TypeError
+      ? "Connexion Gemini impossible depuis le navigateur. Vérifiez la clé API, le réseau ou utilisez un petit serveur proxy."
+      : err.message;
+    toast('Erreur Gemini : '+msg,'err');
   }
+}
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=e=>resolve(String(e.target.result).split(',')[1]||'');
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function audioMimeType(file){
+  const fn=file.name.toLowerCase();
+  if(fn.endsWith('.mp3'))return 'audio/mpeg';
+  if(fn.endsWith('.m4a'))return 'audio/mp4';
+  if(fn.endsWith('.wav'))return 'audio/wav';
+  if(fn.endsWith('.ogg'))return 'audio/ogg';
+  if(fn.endsWith('.aac'))return 'audio/aac';
+  return file.type||'audio/mpeg';
 }
 
 function showGeminiResult(parsed,key,callEvts){
@@ -1557,6 +2086,8 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderTodayStrip();
   renderTodos();
   renderClientsGrid();
+  renderTemplates();
+  if(location.hash==='#templates') nav('templates');
 });
 </script>
 </body>

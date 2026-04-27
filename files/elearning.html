@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filovent — E-Learning</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link rel="icon" href="assets/filovent-mark.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --sidebar-width: 290px;
-            --navy: #0d2240;
-            --ocean: #1a4a7a;
-            --sky: #e8f2fc;
+            --navy: #071524;
+            --ocean: #0b2642;
+            --sky: #e8f6f5;
             --sand: #f7f4ee;
-            --wave: #2a7ac4;
-            --coral: #d94f3d;
-            --seafoam: #1a9b72;
+            --wave: #176a9c;
+            --coral: #d85d4a;
+            --seafoam: #238a73;
             --gold: #c9913a;
-            --bg: #f4f6f9;
+            --bg: #f4f8fa;
             --card: #ffffff;
-            --border: #e2e6ed;
-            --text: #1a2233;
-            --text-2: #4a5568;
-            --text-3: #8898aa;
-            --sidebar-bg: #0d2240;
+            --border: #d9e4ea;
+            --text: #102033;
+            --text-2: #394f60;
+            --text-3: #7c909b;
+            --sidebar-bg: #071524;
             --sidebar-border: rgba(255,255,255,0.09);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +36,7 @@
 
         /* ─── SIDEBAR ─── */
         #sidebar {
-            width: var(--sidebar-width); background: var(--sidebar-bg);
+            width: var(--sidebar-width); background: linear-gradient(180deg,rgba(7,21,36,.98),rgba(11,38,66,.96)),url("assets/filovent-hero-marina.png") center/cover;
             display: flex; flex-direction: column;
             position: fixed; height: 100vh; z-index: 1000;
             box-shadow: 3px 0 20px rgba(13,34,64,0.18);
@@ -212,15 +212,27 @@
             .stats-row { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
+    <link rel="stylesheet" href="assets/resource-shell.css">
 </head>
 <body>
 
 <!-- ═══════ SIDEBAR ═══════ -->
 <div id="sidebar">
     <div class="sidebar-header">
-        <a href="index.html" class="back-link">← Accueil plateforme</a>
-        <div class="book-title">🎓 E-Learning</div>
-        <div class="tagline">Filovent · Modules de Formation</div>
+        <a href="agenda.html" class="resource-top-link"><i class="bi bi-arrow-left"></i> CRM 2.0</a>
+        <div class="resource-brand">
+            <img src="assets/filovent-mark.png" alt="">
+            <div>
+                <div class="resource-title">Learning</div>
+                <div class="resource-subtitle">Modules de formation</div>
+            </div>
+        </div>
+        <div class="resource-switcher">
+            <a href="greenbook.html"><span>📗</span>Greenbook</a>
+            <a href="bluebook.html"><span>📘</span>Bluebook</a>
+            <a href="itineraires.html"><span>🧭</span>Itinéraires</a>
+            <a class="active" href="elearning.html"><span>🎓</span>Learning</a>
+        </div>
     </div>
 
     <div class="sidebar-body">

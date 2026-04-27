@@ -1,0 +1,207 @@
+/* Shared resource-page shell: Greenbook, Bluebook, Itineraires, Learning */
+:root{
+  --shell-nav:#071524;
+  --shell-nav-2:#0b2642;
+  --shell-blue:#176a9c;
+  --shell-cyan:#2aa8c4;
+  --shell-bg:#f4f8fa;
+  --shell-line:#d9e4ea;
+  --shell-text:#102033;
+  --shell-muted:#6f8491;
+}
+
+body{
+  background:linear-gradient(180deg,#eef6f8 0%,var(--shell-bg) 38%,#eef4f6 100%) !important;
+}
+
+#sidebar{
+  background:
+    linear-gradient(180deg,rgba(7,21,36,.98),rgba(11,38,66,.96)),
+    url("filovent-hero-marina.png") center/cover !important;
+  box-shadow:3px 0 24px rgba(7,21,36,.22) !important;
+}
+
+.sidebar-header{
+  padding:16px 14px 14px !important;
+  border-bottom:1px solid rgba(255,255,255,.1) !important;
+  text-align:left !important;
+}
+
+.resource-top-link{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:rgba(255,255,255,.62) !important;
+  text-decoration:none !important;
+  font-size:.72rem;
+  font-weight:800;
+  margin-bottom:13px;
+}
+
+.resource-top-link:hover{color:#fff !important}
+
+.resource-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+}
+
+.resource-brand img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  flex-shrink:0;
+}
+
+.resource-title{
+  font-family:'Syne',sans-serif;
+  font-size:1.14rem;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:0;
+}
+
+.resource-subtitle{
+  font-size:.61rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.52);
+  margin-top:5px;
+}
+
+.resource-switcher{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:14px;
+}
+
+.resource-switcher a{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  padding:7px 9px;
+  border-radius:8px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.68);
+  font-size:.73rem;
+  font-weight:800;
+  text-decoration:none;
+  transition:.15s;
+}
+
+.resource-switcher a:hover,
+.resource-switcher a.active{
+  background:rgba(255,255,255,.13);
+  border-color:rgba(255,255,255,.2);
+  color:#fff;
+}
+
+.resource-switcher span{font-size:.86rem}
+
+.search-box{
+  padding:12px 0 0 !important;
+}
+
+.search-box i{
+  left:12px !important;
+  top:23px !important;
+}
+
+.search-box input{
+  border-radius:8px !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  background:rgba(255,255,255,.08) !important;
+  padding-left:32px !important;
+}
+
+.search-kbd{
+  right:9px !important;
+  top:20px !important;
+}
+
+.sidebar-body{
+  padding-top:8px !important;
+}
+
+#home-link{
+  display:flex !important;
+  align-items:center !important;
+  gap:9px !important;
+  padding:9px 12px !important;
+  border-radius:8px !important;
+  background:rgba(42,168,196,.18) !important;
+  border:1px solid rgba(42,168,196,.22) !important;
+  color:#fff !important;
+  text-decoration:none !important;
+  font-size:.82rem !important;
+  font-weight:800 !important;
+}
+
+#home-link:hover{
+  background:rgba(42,168,196,.28) !important;
+}
+
+.accordion-button{
+  border-radius:8px !important;
+  color:rgba(255,255,255,.72) !important;
+}
+
+.accordion-button:hover,
+.accordion-button:not(.collapsed){
+  background:rgba(255,255,255,.08) !important;
+  color:#fff !important;
+}
+
+.accordion-item{
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+
+#main-content{
+  background:linear-gradient(180deg,#f8fbfc 0%,#f4f8fa 100%);
+  color:var(--shell-text);
+}
+
+.page-header,
+.tool-page-header{
+  background:#fff;
+  border:1px solid var(--shell-line);
+  border-radius:8px;
+  padding:22px !important;
+  box-shadow:0 10px 28px rgba(7,21,36,.05);
+}
+
+.home-card,
+.module-card,
+.iti-card,
+.card,
+.tab-content-box{
+  border-radius:8px !important;
+}
+
+.dest-link{
+  border-radius:8px !important;
+}
+
+@media(max-width:768px){
+  body{display:block !important;overflow:auto !important}
+  #sidebar{
+    display:flex !important;
+    position:relative !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+  }
+  .sidebar-header{padding:14px !important}
+  .resource-switcher{grid-template-columns:1fr 1fr}
+  .search-box{display:none}
+  .sidebar-body{max-height:260px;overflow:auto}
+  #main-content{
+    margin-left:0 !important;
+    padding:16px !important;
+    color:var(--shell-text) !important;
+  }
+}

@@ -278,6 +278,14 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .willsheet-launch:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(7,21,36,.07)}
 .willsheet-launch-title{font-size:.84rem;font-weight:800;color:var(--nav)}
 .willsheet-launch-sub{font-size:.7rem;color:var(--t3);margin-top:2px}
+.pending-events{display:flex;flex-direction:column;gap:9px;padding:13px}
+.pending-event{border:1px solid var(--border);background:#f8fbfc;border-radius:8px;padding:11px}
+.pending-event-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.pending-event-title{font-size:.83rem;font-weight:800;color:var(--nav);line-height:1.35}
+.pending-event-sub{font-size:.68rem;color:var(--t3);margin-top:2px}
+.pending-event-grid{display:grid;grid-template-columns:1.4fr .9fr .7fr .9fr;gap:7px;margin-bottom:9px}
+.pending-event-grid input,.pending-event-grid select{border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 8px;font-size:.76rem;color:var(--t1)}
+.pending-event-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
 .call-item{padding:15px 17px;border-bottom:1px solid var(--border)}
 .call-item:last-child{border-bottom:none}
 .call-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
@@ -400,7 +408,7 @@ textarea.form-ctrl{resize:vertical}
   .tb-actions{flex-wrap:wrap;justify-content:flex-end}
   .panel,.panel.active{overflow:visible}
   .panel-scroll{overflow:visible;padding:14px}
-  .three-col,.two-col,.client-layout,.client-summary-grid,.client-action-row,.project-field-grid{grid-template-columns:1fr}
+  .three-col,.two-col,.client-layout,.client-summary-grid,.client-action-row,.project-field-grid,.pending-event-grid{grid-template-columns:1fr}
   .client-topline{display:block}
   .client-title-wrap{margin-bottom:12px}
   .client-hero-actions{justify-content:flex-start}
@@ -840,7 +848,7 @@ textarea.form-ctrl{resize:vertical}
    STATE
 ══════════════════════════════════════════ */
 const S = {
-  apiKey:'', clients:{}, events:[], todos:[], templates:[],
+  apiKey:'', clients:{}, events:[], pendingEvents:[], todos:[], templates:[],
   calDate:new Date(), calView:'week',
   currentClient:null, pendingDelKey:null, currentCallClient:null, todoFilter:'all',
   templateFilter:'all', currentTemplate:null, editingTemplate:null
@@ -849,6 +857,7 @@ const S = {
 function save() {
   localStorage.setItem('filo_clients', JSON.stringify(S.clients));
   localStorage.setItem('filo_events',  JSON.stringify(S.events));
+  localStorage.setItem('filo_pending_events', JSON.stringify(S.pendingEvents));
   localStorage.setItem('filo_todos',   JSON.stringify(S.todos));
   localStorage.setItem('filo_templates', JSON.stringify(S.templates));
   localStorage.setItem('filo_gemini_api_key', S.apiKey);
@@ -858,6 +867,7 @@ function load() {
     S.apiKey = localStorage.getItem('filo_gemini_api_key') || localStorage.getItem('filo_api_key') || '';
     const c = localStorage.getItem('filo_clients'); if(c) S.clients = JSON.parse(c);
     const e = localStorage.getItem('filo_events');  if(e) S.events  = JSON.parse(e);
+    const pe = localStorage.getItem('filo_pending_events'); if(pe) S.pendingEvents = JSON.parse(pe);
     const t = localStorage.getItem('filo_todos');   if(t) S.todos   = JSON.parse(t);
     const tpl = localStorage.getItem('filo_templates');
     S.templates = mergeDefaultTemplates(tpl ? JSON.parse(tpl) : []);
@@ -880,6 +890,10 @@ function toast(msg, type='') {
   document.getElementById('toasts').appendChild(el);
   setTimeout(()=>el.remove(), 3500);
 }
+function replaceTextValue(value,oldText,newText){
+  if(!oldText||!newText||typeof value!=='string')return value;
+  return value.split(oldText).join(newText);
+}
 
 /* ══════════════════════════════════════════
    NAV
@@ -898,6 +912,7 @@ function nav(name) {
   if(name==='dashboard') renderDashboard();
   if(name==='clients') renderClientsGrid();
   if(name==='templates') renderTemplates();
+  if(name==='client-detail'&&S.currentClient) _renderClientDetail(S.currentClient);
 }
 
 /* ══════════════════════════════════════════
@@ -1370,6 +1385,7 @@ function exportBackup(){
     exportedAt:new Date().toISOString(),
     clients:S.clients,
     events:S.events,
+    pendingEvents:S.pendingEvents,
     todos:S.todos,
     templates:S.templates
   };
@@ -1393,9 +1409,10 @@ function importBackupFile(input){
     try{
       const data=JSON.parse(reader.result);
       if(!data||typeof data!=='object')throw new Error('Format invalide');
-      if(!confirm('Importer ce backup remplacera les clients, tâches, événements et templates locaux. Continuer ?'))return;
+      if(!confirm('Importer ce backup remplacera les clients, tâches, événements, validations en attente et templates locaux. Continuer ?'))return;
       S.clients=data.clients&&typeof data.clients==='object'?data.clients:{};
       S.events=Array.isArray(data.events)?data.events:[];
+      S.pendingEvents=Array.isArray(data.pendingEvents)?data.pendingEvents:[];
       S.todos=Array.isArray(data.todos)?data.todos:[];
       S.templates=mergeDefaultTemplates(Array.isArray(data.templates)?data.templates:[]);
       S.currentClient=null;S.currentTemplate=null;
@@ -1491,6 +1508,44 @@ function renderWillsheetLaunch(key){
     <span style="font-size:1rem;color:var(--accent)">→</span>
   </button>`;
 }
+function pendingEventsForClient(key){return S.pendingEvents.filter(e=>e.clientKey===key);}
+function renderPendingEventReview(key){
+  const items=pendingEventsForClient(key);
+  if(!items.length)return '';
+  return `<div class="card" style="margin-bottom:16px;border-color:rgba(201,145,58,.38)">
+    <div class="card-hd">
+      <div class="card-title">Événements détectés à valider <span class="willsheet-status">${items.length}</span></div>
+      <button class="btn btn-outline" style="font-size:.72rem;padding:4px 9px" onclick="rejectAllPendingEvents('${key}')">Tout ignorer</button>
+    </div>
+    <div class="pending-events">
+      ${items.map(ev=>`
+        <div class="pending-event" id="pe-card-${ev.id}">
+          <div class="pending-event-top">
+            <div>
+              <div class="pending-event-title">${escapeHtml(ev.title||'RDV détecté')}</div>
+              <div class="pending-event-sub">Détecté par Gemini depuis ${escapeHtml(ev.sourceLabel||'un appel')} · vérifiez surtout la date avant ajout agenda.</div>
+            </div>
+            <span class="ev-badge ${ev.type==='rappel'?'ev-rappel':'ev-rdv'}">${ev.type==='rappel'?'Rappel':'RDV'}</span>
+          </div>
+          <div class="pending-event-grid">
+            <input id="pe-title-${ev.id}" value="${escapeHtml(ev.title||'')}" placeholder="Titre">
+            <input id="pe-date-${ev.id}" type="date" value="${escapeHtml(ev.date||'')}">
+            <input id="pe-time-${ev.id}" type="time" value="${escapeHtml(ev.time||'')}">
+            <select id="pe-type-${ev.id}">
+              <option value="rdv" ${ev.type==='rdv'?'selected':''}>RDV</option>
+              <option value="rappel" ${ev.type==='rappel'?'selected':''}>Rappel</option>
+              <option value="suivi" ${ev.type==='suivi'?'selected':''}>Suivi</option>
+            </select>
+          </div>
+          <textarea class="form-ctrl" id="pe-notes-${ev.id}" rows="2" placeholder="Notes">${escapeHtml(ev.notes||'')}</textarea>
+          <div class="pending-event-actions">
+            <button class="btn btn-outline" onclick="rejectPendingEvent('${ev.id}')">Ignorer</button>
+            <button class="btn btn-navy" onclick="approvePendingEvent('${ev.id}')">Valider dans l'agenda</button>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
 function openWillsheetModal(key){
   const c=S.clients[key];if(!c)return;
   S.currentClient=key;
@@ -1577,18 +1632,10 @@ function setCalView(v,btn){
   renderCalendar();
 }
 
-// Keep only rdv + rappel, one per client per day (highest priority wins)
 function getCalEvents(){
-  const priority={rdv:0,rappel:1};
-  // Group by clientKey+date, keep highest priority
-  const map={};
-  S.events
+  return S.events
     .filter(e=>e.type==='rdv'||e.type==='rappel')
-    .forEach(ev=>{
-      const k=(ev.clientKey||ev.id)+'__'+ev.date;
-      if(!map[k]||priority[ev.type]<priority[map[k].type]) map[k]=ev;
-    });
-  return Object.values(map);
+    .sort((a,b)=>(a.date+a.time+a.title).localeCompare(b.date+b.time+b.title));
 }
 
 function renderCalendar(){
@@ -1838,6 +1885,26 @@ function openEventDetail(id){
   openModal('modal-event-detail');
 }
 function deleteEvent(id){S.events=S.events.filter(e=>e.id!==id);save();updateBadges();renderCalendar();renderDashboard();closeModal('modal-event-detail');toast('Événement supprimé');}
+function approvePendingEvent(id){
+  const ev=S.pendingEvents.find(e=>e.id===id);if(!ev)return;
+  const title=document.getElementById('pe-title-'+id)?.value.trim()||ev.title;
+  const date=document.getElementById('pe-date-'+id)?.value||ev.date;
+  if(!title||!date){toast('Titre et date requis pour valider','err');return;}
+  const client=S.clients[ev.clientKey];
+  const approved={id:uid(),title,date,time:document.getElementById('pe-time-'+id)?.value||'',type:document.getElementById('pe-type-'+id)?.value||ev.type||'rdv',notes:document.getElementById('pe-notes-'+id)?.value.trim()||'',client:client?.name||ev.client||'',clientKey:ev.clientKey||''};
+  S.events.push(approved);
+  S.pendingEvents=S.pendingEvents.filter(e=>e.id!==id);
+  save();updateBadges();renderCalendar();renderTodayStrip();renderDashboard();renderClientsGrid();if(S.currentClient) _renderClientDetail(S.currentClient);toast('Événement ajouté à l’agenda ✓','ok');
+}
+function rejectPendingEvent(id){
+  const ev=S.pendingEvents.find(e=>e.id===id);
+  S.pendingEvents=S.pendingEvents.filter(e=>e.id!==id);
+  save();if(S.currentClient)_renderClientDetail(S.currentClient);toast(ev?.type==='rappel'?'Rappel ignoré':'Événement ignoré');
+}
+function rejectAllPendingEvents(key){
+  S.pendingEvents=S.pendingEvents.filter(e=>e.clientKey!==key);
+  save();_renderClientDetail(key);toast('Événements détectés ignorés');
+}
 
 /* ══════════════════════════════════════════
    TODOS
@@ -2007,22 +2074,35 @@ function openEditClientModal(key=S.currentClient){
 }
 function saveEditClient(){
   const oldKey=S.currentClient;const c=S.clients[oldKey];if(!c)return;
+  const oldName=c.name||'';
   const prenom=document.getElementById('ec-prenom').value.trim();
   const nom=document.getElementById('ec-nom').value.trim();
   if(!prenom||!nom){toast('Prénom et nom requis','err');return;}
   const nextKey=cKey(prenom,nom);
   if(nextKey!==oldKey&&S.clients[nextKey]){toast('Un autre client porte déjà ce nom','err');return;}
   const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),interests:document.getElementById('ec-interests').value.trim()};
-  if(nextKey!==oldKey){
-    delete S.clients[oldKey];
-    S.events.forEach(e=>{if(e.clientKey===oldKey){e.clientKey=nextKey;e.client=updated.name;}});
-    S.todos.forEach(t=>{if(t.clientKey===oldKey)t.clientKey=nextKey;});
-  }else{
-    S.events.forEach(e=>{if(e.clientKey===oldKey)e.client=updated.name;});
-  }
+  syncClientReferences(oldKey,nextKey,oldName,updated.name);
+  if(nextKey!==oldKey) delete S.clients[oldKey];
   S.clients[nextKey]=updated;
   S.currentClient=nextKey;
-  save();updateBadges();renderClientsGrid();renderDashboard();renderCalendar();closeModal('modal-edit-client');_renderClientDetail(nextKey);toast('Fiche client mise à jour ✓','ok');
+  save();updateBadges();renderSb(document.getElementById('sb-search')?.value||'');renderClientsGrid();renderDashboard();renderCalendar();renderTodayStrip();renderTodos();renderTemplates();closeModal('modal-edit-client');_renderClientDetail(nextKey);toast('Fiche client mise à jour partout ✓','ok');
+}
+function syncClientReferences(oldKey,nextKey,oldName,newName){
+  const patchRecord=(obj,force=false)=>{
+    if(!obj)return;
+    if(obj.clientKey===oldKey)obj.clientKey=nextKey;
+    if(force||obj.clientKey===nextKey||obj.client===oldName){
+      if('client'in obj)obj.client=newName;
+      ['title','notes','text','details','summary','transcription'].forEach(k=>{if(obj[k])obj[k]=replaceTextValue(obj[k],oldName,newName);});
+      if(Array.isArray(obj.actions))obj.actions=obj.actions.map(a=>replaceTextValue(a,oldName,newName));
+      if(Array.isArray(obj.events))obj.events=obj.events.map(ev=>({...ev,title:replaceTextValue(ev.title,oldName,newName)}));
+    }
+  };
+  S.events.forEach(patchRecord);
+  S.pendingEvents.forEach(patchRecord);
+  S.todos.forEach(patchRecord);
+  const calls=S.clients[oldKey]?.calls||[];
+  calls.forEach(call=>patchRecord(call,true));
 }
 function renderClientsGrid(){
   const keys=Object.keys(S.clients).sort((a,b)=>lastCallDate(b).localeCompare(lastCallDate(a)));
@@ -2138,6 +2218,8 @@ function _renderClientDetail(key){
 
     <div class="client-layout">
       <div>
+        <div id="pending-review-${key}">${renderPendingEventReview(key)}</div>
+
         <div class="process-card" id="pc-${key}" style="margin-bottom:16px">
           <div class="process-title">Analyse Gemini en cours…</div>
           <div class="process-step" id="ps1-${key}"><span class="step-ico">📤</span> Préparation de l'appel</div>
@@ -2176,7 +2258,7 @@ function _renderClientDetail(key){
                 <div class="call-summary-txt">${call.summary||'—'}</div>
                 ${(call.actions||[]).length?`<div style="margin-top:8px">${call.actions.map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${a}</div>`).join('')}</div>`:''}
                 <div class="call-tags">
-                  ${(call.events||[]).length?`<span class="call-tag ct-rdv">📅 ${call.events.length} RDV</span>`:''}
+                  ${callEventBadge(call)}
                   ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
                 </div>
               </div>`).join('')}
@@ -2302,7 +2384,7 @@ async function runGeminiAnalysis(file,key){
     await new Promise(r=>setTimeout(r,400));
     showGeminiResult(parsed,key,callEvts);
     renderDashboard();renderCalendar();
-    toast(`Appel de ${c.name} analysé ✓${callEvts.length?' + RDV ajouté':' + rappel de relance créé'}`, 'ok');
+    toast(`Appel de ${c.name} analysé ✓ + validation agenda`, 'ok');
 
   }catch(err){
     console.error(err);
@@ -2349,7 +2431,7 @@ ${cleanTranscript}
     await new Promise(r=>setTimeout(r,400));
     showGeminiResult(parsed,key,callEvts);
     renderDashboard();renderCalendar();
-    toast(`Transcript de ${c.name} analysé ✓${callEvts.length?' + RDV ajouté':' + rappel de relance créé'}`, 'ok');
+    toast(`Transcript de ${c.name} analysé ✓ + validation agenda`, 'ok');
 
   }catch(err){
     console.error(err);
@@ -2421,13 +2503,14 @@ function applyCallAnalysisResult(parsed,key,today,fileName,source){
   const callEvts=[];
   (parsed.events||[]).forEach(ev=>{
     if(!ev.date)return;
-    const newEv={id:uid(),title:ev.title||`RDV ${c.name}`,date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:ev.notes||`Détecté dans l'appel du ${today}`};
-    S.events.push(newEv);callEvts.push({title:newEv.title,date:ev.date,time:ev.time||''});
+    const pending={id:uid(),title:ev.title||`RDV ${c.name}`,date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:ev.notes||`Détecté dans l'appel du ${today}`,source,sourceLabel:fileName||'appel',createdAt:today};
+    S.pendingEvents.push(pending);callEvts.push({title:pending.title,date:ev.date,time:ev.time||'',pending:true});
   });
 
   if(callEvts.length===0){
     const fu=new Date();fu.setDate(fu.getDate()+5);const fuStr=fu.toISOString().split('T')[0];
-    S.events.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé lors de l'appel du ${today} — relance automatique`});
+    const reminder={id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé lors de l'appel du ${today} — relance automatique`,source,sourceLabel:fileName||'appel',createdAt:today};
+    S.pendingEvents.push(reminder);callEvts.push({title:reminder.title,date:fuStr,time:'',pending:true});
     S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${parsed.summary||'—'}`,dueDate:fuStr,clientKey:key,done:false,createdAt:today,source:'auto'});
   }
 
@@ -2468,10 +2551,19 @@ function showGeminiResult(parsed,key,callEvts){
   const raEl=document.getElementById('ractions-'+key);
   if(raEl){raEl.innerHTML='';if((parsed.actions||[]).length){raEl.innerHTML=`<div class="result-section" style="margin-top:4px">Actions créées dans la to-do</div>`+parsed.actions.map(a=>`<div class="result-action">→ ${a}</div>`).join('');}}
   const reEl=document.getElementById('revents-'+key);
-  if(reEl){reEl.innerHTML='';if(callEvts.length){reEl.innerHTML=`<div class="result-section" style="margin-top:4px">Événements ajoutés au calendrier</div>`+callEvts.map(ev=>`<div class="result-event"><span class="result-event-dt">${dFr(ev.date)}</span>${ev.time?ev.time+' · ':''}${ev.title}</div>`).join('');}}
+  if(reEl){reEl.innerHTML='';if(callEvts.length){reEl.innerHTML=`<div class="result-section" style="margin-top:4px">Événements à valider avant ajout agenda</div>`+callEvts.map(ev=>`<div class="result-event"><span class="result-event-dt">${dFr(ev.date)}</span>${ev.time?ev.time+' · ':''}${ev.title}</div>`).join('');}}
   // Refresh journal
   const listEl=document.getElementById('calls-list-'+key);
   if(listEl)_refreshCallsList(key,listEl);
+  const pendingEl=document.getElementById('pending-review-'+key);
+  if(pendingEl)pendingEl.innerHTML=renderPendingEventReview(key);
+}
+function callEventBadge(call){
+  const events=call.events||[];
+  if(!events.length)return '';
+  const pending=events.filter(e=>e.pending).length;
+  const label=pending?`${pending} à valider`:`${events.length} RDV`;
+  return `<span class="call-tag ct-rdv">📅 ${label}</span>`;
 }
 
 function _refreshCallsList(key,listEl){
@@ -2490,7 +2582,7 @@ function _refreshCallsList(key,listEl){
       <div class="call-summary-txt">${call.summary||'—'}</div>
       ${(call.actions||[]).length?`<div style="margin-top:8px">${call.actions.map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${a}</div>`).join('')}</div>`:''}
       <div class="call-tags">
-        ${(call.events||[]).length?`<span class="call-tag ct-rdv">📅 ${call.events.length} RDV</span>`:''}
+        ${callEventBadge(call)}
         ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
       </div>
     </div>`).join('');
@@ -2529,7 +2621,7 @@ function saveCall(){
     S.events.push(ev);callEvts.push({title:ev.title,date:rdvDate,time:rdvTime});
   }else{
     const fu=new Date();fu.setDate(fu.getDate()+5);const fuStr=fu.toISOString().split('T')[0];
-    S.events.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé le ${dFr(callDate)}`});
+    S.pendingEvents.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé le ${dFr(callDate)}`,source:'manual-call',sourceLabel:'saisie manuelle',createdAt:toStr()});
     S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${summary}`,dueDate:fuStr,clientKey:key,done:false,createdAt:toStr(),source:'auto'});
   }
   actions.forEach(a=>S.todos.push({id:uid(),text:a,details:`Action issue de l'appel du ${dFr(callDate)} avec ${c.name}.`,dueDate:callDate,clientKey:key,done:false,createdAt:toStr(),source:'auto'}));
@@ -2538,7 +2630,7 @@ function saveCall(){
   c.calls.push(call);
   const shouldPrefill=!(c.willsheet&&willsheetCompletion(normalizeWillsheet(c.willsheet,c))>0)&&S.apiKey;
   save();updateBadges();closeModal('modal-add-call');
-  toast('Appel enregistré'+(rdvDate?' + RDV ajouté ✓':' + rappel créé ✓'),'ok');
+  toast('Appel enregistré'+(rdvDate?' + RDV ajouté ✓':' + rappel à valider ✓'),'ok');
   _renderClientDetail(key);renderCalendar();renderDashboard();
   if(shouldPrefill){
     geminiExtractWillsheet(c,call,callDate).then(parsed=>{
@@ -2565,7 +2657,7 @@ function deleteCall(clientKey,callId){
 function askDelClient(key){S.pendingDelKey=key;document.getElementById('confirm-del-msg').textContent=`Supprimer définitivement ${S.clients[key]?.name} ? Tous les appels, tâches et événements liés seront effacés.`;openModal('modal-confirm-del');}
 function confirmDelClient(){
   const key=S.pendingDelKey;if(!key)return;const name=S.clients[key]?.name;
-  delete S.clients[key];S.events=S.events.filter(e=>e.clientKey!==key);S.todos=S.todos.filter(t=>t.clientKey!==key);
+  delete S.clients[key];S.events=S.events.filter(e=>e.clientKey!==key);S.pendingEvents=S.pendingEvents.filter(e=>e.clientKey!==key);S.todos=S.todos.filter(t=>t.clientKey!==key);
   S.pendingDelKey=null;save();updateBadges();renderSb();renderClientsGrid();closeModal('modal-confirm-del');toast(`${name} supprimé`);nav('clients');
 }
 

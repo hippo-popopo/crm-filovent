@@ -3,23 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filovent — CRM 2.0</title>
+<title>Filovent — Accès CRM</title>
 <link rel="icon" href="assets/filovent-mark.png">
-<meta http-equiv="refresh" content="0; url=agenda.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-html,body{height:100%;margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f8fa;color:#102033}
-body{display:grid;place-items:center}
-a{color:#176a9c;font-weight:700}
-.box{text-align:center;padding:24px}
-img{width:56px;height:56px;object-fit:contain;margin-bottom:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--nav:#071524;--nav2:#0b2642;--accent:#176a9c;--green:#238a73;--gold:#c9913a;--red:#d85d4a;--line:rgba(255,255,255,.18)}
+html,body{min-height:100%;font-family:'DM Sans',system-ui,sans-serif;color:#fff;background:#071524}
+body{display:grid;place-items:center;overflow:hidden}
+.shell{position:relative;width:100%;min-height:100vh;display:grid;place-items:center;padding:28px;isolation:isolate}
+.shell::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,rgba(7,21,36,.94),rgba(7,21,36,.72) 48%,rgba(11,38,66,.68)),url("assets/filovent-hero-marina.png") center/cover;z-index:-2}
+.shell::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 115%,rgba(35,138,115,.32),transparent 42%);z-index:-1}
+.login{width:min(1040px,100%);display:grid;grid-template-columns:minmax(0,1fr) 400px;min-height:560px;border:1px solid var(--line);background:rgba(255,255,255,.08);backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.28);border-radius:8px;overflow:hidden}
+.panel{padding:34px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:auto}
+.brand img{width:52px;height:52px;object-fit:contain}
+.brand-name{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;letter-spacing:.02em}
+.brand-sub{font-size:.7rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.52);margin-top:3px}
+.hero-copy{max-width:440px;margin:70px 0 24px}
+.eyebrow{font-size:.7rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9bd7dd;margin-bottom:14px}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.35rem,3.7vw,3.45rem);line-height:.98;font-weight:800;letter-spacing:0;max-width:100%;overflow-wrap:normal}
+.lead{font-size:1rem;line-height:1.7;color:rgba(255,255,255,.68);margin-top:18px;max-width:390px}
+.status-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.status{display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);border-radius:8px;padding:9px 11px;font-size:.76rem;color:rgba(255,255,255,.72)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px rgba(35,138,115,.8)}
+.form-panel{background:rgba(255,255,255,.94);color:#102033;padding:38px;justify-content:center}
+.form-kicker{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.form-title{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--nav);margin-bottom:8px}
+.form-text{font-size:.88rem;line-height:1.6;color:#607382;margin-bottom:24px}
+.field{position:relative;margin-bottom:12px}
+.field input{width:100%;height:48px;border-radius:8px;border:1px solid #d6e4ea;background:#fff;padding:0 46px 0 14px;font:inherit;font-weight:700;color:var(--nav);outline:none;transition:.16s}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(23,106,156,.1)}
+.field button{position:absolute;right:7px;top:7px;width:34px;height:34px;border:none;border-radius:7px;background:#eef5f7;color:#5d7480;cursor:pointer;font-weight:800}
+.unlock{width:100%;height:48px;border:none;border-radius:8px;background:var(--nav);color:#fff;font-weight:800;font:inherit;cursor:pointer;transition:.16s;margin-top:4px}
+.unlock:hover{background:var(--nav2);transform:translateY(-1px)}
+.error{min-height:20px;color:var(--red);font-size:.78rem;font-weight:700;margin-top:10px}
+.hint{margin-top:18px;padding:12px;border-radius:8px;background:#f3f8fa;border:1px solid #dce9ee;color:#6a7e89;font-size:.78rem;line-height:1.55}
+.quick{display:none;margin-top:12px}
+.quick.show{display:block}
+.quick a{display:flex;align-items:center;justify-content:center;height:42px;border-radius:8px;border:1px solid #d6e4ea;text-decoration:none;color:var(--accent);font-weight:800}
+@media(max-width:900px){body{overflow:auto}.shell{padding:14px}.login{grid-template-columns:1fr;min-height:0}.panel{padding:24px}.hero-copy{margin:46px 0 24px}.form-panel{padding:26px}.status-row{display:none}h1{font-size:clamp(2.15rem,10vw,3rem)}}
 </style>
 </head>
 <body>
-<main class="box">
-  <img src="assets/filovent-mark.png" alt="">
-  <p>Ouverture du CRM 2.0...</p>
-  <p><a href="agenda.html">Ouvrir le CRM</a></p>
+<main class="shell">
+  <section class="login">
+    <div class="panel">
+      <div class="brand">
+        <img src="assets/filovent-mark.png" alt="">
+        <div>
+          <div class="brand-name">Filovent CRM</div>
+          <div class="brand-sub">Poste de travail commercial</div>
+        </div>
+      </div>
+      <div class="hero-copy">
+        <div class="eyebrow">Accès interne</div>
+        <h1>Bienvenue à bord.</h1>
+        <p class="lead">Clients, agenda, relances, WillSheet et ressources commerciales réunis dans un espace de travail unique.</p>
+      </div>
+      <div class="status-row">
+        <div class="status"><span class="dot"></span> CRM prêt</div>
+        <div class="status"><span class="dot"></span> Ressources connectées</div>
+        <div class="status"><span class="dot"></span> Accès protégé</div>
+      </div>
+    </div>
+    <form class="form-panel" onsubmit="unlock(event)">
+      <div class="form-kicker">Connexion</div>
+      <div class="form-title">Entrer le mot de passe</div>
+      <p class="form-text">Déverrouillez la session pour accéder au CRM et aux ressources Filovent.</p>
+      <div class="field">
+        <input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe" autofocus>
+        <button type="button" onclick="togglePassword()" aria-label="Afficher le mot de passe">•</button>
+      </div>
+      <button class="unlock" type="submit">Accéder au site</button>
+      <div class="error" id="error"></div>
+      <div class="quick" id="quick"><a href="agenda.html">Ouvrir le CRM</a></div>
+      <div class="hint">Protection légère adaptée à GitHub Pages. Pour une sécurité forte, il faudra un hébergement avec authentification serveur.</div>
+    </form>
+  </section>
 </main>
-<script>window.location.replace('agenda.html');</script>
+<script>
+const SITE_PASSWORD='filovent2026';
+const AUTH_KEY='filovent_site_auth';
+const requested=new URLSearchParams(location.search).get('next')||'';
+const DESTINATION=requested&&!requested.includes('://')&&!requested.startsWith('/')?requested:'agenda.html';
+const quick=document.getElementById('quick');
+quick.querySelector('a').href=DESTINATION;
+if(sessionStorage.getItem(AUTH_KEY)==='ok')quick.classList.add('show');
+function unlock(event){
+  event.preventDefault();
+  const input=document.getElementById('password');
+  const error=document.getElementById('error');
+  if(input.value.trim()===SITE_PASSWORD){
+    sessionStorage.setItem(AUTH_KEY,'ok');
+    error.textContent='';
+    window.location.href=DESTINATION;
+  }else{
+    error.textContent='Mot de passe incorrect.';
+    input.select();
+  }
+}
+function togglePassword(){
+  const input=document.getElementById('password');
+  input.type=input.type==='password'?'text':'password';
+  input.focus();
+}
+</script>
 </body>
 </html>

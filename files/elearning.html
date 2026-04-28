@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+(function(){
+  if(sessionStorage.getItem('filovent_site_auth')!=='ok'){
+    const here=location.pathname.split('/').pop()+location.search+location.hash;
+    location.replace('index.html?next='+encodeURIComponent(here));
+  }
+})();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filovent — E-Learning</title>

@@ -197,6 +197,12 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 
 /* TEMPLATES */
 .template-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.template-profile{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+.template-profile-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t3)}
+.template-profile-sub{font-size:.8rem;font-weight:800;color:var(--nav);margin-top:2px}
+.template-profile-fields{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.template-profile-fields input{width:170px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;font-size:.8rem;color:var(--t1)}
+.template-profile-fields input:focus{border-color:var(--accent)}
 .template-search{flex:1;min-width:220px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;font-size:.84rem;color:var(--t1)}
 .template-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .template-tab{padding:7px 11px;border-radius:8px;border:1px solid var(--border);background:#fff;color:var(--t2);font-size:.76rem;font-weight:700;cursor:pointer}
@@ -226,18 +232,52 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .template-subject{font-size:.8rem;background:#eef6f8;border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:10px;color:var(--t2)}
 .template-form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
 .template-empty{padding:30px;text-align:center;color:var(--t3)}
-@media(max-width:980px){.template-layout{grid-template-columns:1fr}.template-form-grid{grid-template-columns:1fr}}
+@media(max-width:980px){.template-layout{grid-template-columns:1fr}.template-form-grid{grid-template-columns:1fr}.template-profile{grid-template-columns:1fr}.template-profile-fields{justify-content:flex-start}.template-profile-fields input{width:100%}}
 
 /* CLIENT DETAIL */
 .client-layout{display:grid;grid-template-columns:1fr 335px;gap:18px;align-items:start}
 .client-hero{background:linear-gradient(100deg,rgba(7,21,36,.94),rgba(11,38,66,.82)),url("assets/filovent-hero-marina.png") center 62%/cover;border-radius:var(--r);padding:22px;margin-bottom:16px;display:flex;align-items:center;gap:15px;overflow:hidden;position:relative}
 .client-hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:36%;background:linear-gradient(90deg,transparent,rgba(42,168,196,.2))}
+.client-hero.compact{display:block;padding:20px 22px}
+.client-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:relative;z-index:1}
+.client-title-wrap{display:flex;align-items:center;gap:13px;min-width:0}
 .ch-avatar{width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:800;color:#fff;flex-shrink:0}
 .ch-name{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:#fff}
 .ch-meta{font-size:.77rem;color:rgba(255,255,255,.5);margin-top:3px}
 .ch-stats{display:flex;gap:18px;margin-top:9px}
 .ch-stat-n{font-size:1rem;font-weight:700;color:#fff}
 .ch-stat-l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.38)}
+.client-hero-actions{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+.client-summary-grid{display:grid;grid-template-columns:1.35fr repeat(3,minmax(120px,.65fr));gap:10px;margin-top:18px;position:relative;z-index:1}
+.client-summary-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:11px 12px;min-height:74px}
+.client-summary-card.main{background:rgba(255,255,255,.14)}
+.client-summary-label{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.42);margin-bottom:6px}
+.client-summary-value{font-size:.86rem;font-weight:800;line-height:1.35;color:#fff}
+.client-summary-sub{font-size:.7rem;color:rgba(255,255,255,.55);margin-top:4px;line-height:1.35}
+.client-alert{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 11px;border-radius:8px;background:rgba(250,204,21,.13);color:#fff;font-size:.78rem;font-weight:700;position:relative;z-index:1}
+.client-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.client-section-title{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:800;color:var(--nav)}
+.client-action-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.client-action-btn{display:flex;align-items:center;gap:9px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 12px;color:var(--t1);box-shadow:0 6px 18px rgba(7,21,36,.04);transition:.15s}
+.client-action-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.client-action-ico{width:28px;height:28px;border-radius:8px;background:rgba(23,106,156,.09);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.88rem;flex-shrink:0}
+.client-action-copy{min-width:0}
+.client-action-title{display:block;font-size:.78rem;font-weight:800;color:var(--nav);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client-action-sub{display:block;font-size:.64rem;color:var(--t3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-upload{display:flex;align-items:center;gap:8px;border:1px dashed #bfd1d9;border-radius:8px;padding:9px 11px;background:#f7fbfc;cursor:pointer;transition:.15s}
+.mini-upload:hover,.mini-upload.drag{border-color:var(--accent);background:#eef8fb}
+.mini-upload input[type=file]{display:none}
+.mini-upload-title{display:block;font-size:.78rem;font-weight:800;color:var(--nav)}
+.mini-upload-sub{display:block;font-size:.66rem;color:var(--t3)}
+.project-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:14px}
+.project-field{background:#f7fbfc;border:1px solid var(--border);border-radius:8px;padding:9px 10px;min-height:62px}
+.project-field.wide{grid-column:1/-1}
+.project-field-label{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:5px}
+.project-field-value{font-size:.81rem;line-height:1.45;color:var(--t2);white-space:pre-wrap}
+.willsheet-launch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;text-align:left;width:100%}
+.willsheet-launch:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(7,21,36,.07)}
+.willsheet-launch-title{font-size:.84rem;font-weight:800;color:var(--nav)}
+.willsheet-launch-sub{font-size:.7rem;color:var(--t3);margin-top:2px}
 .call-item{padding:15px 17px;border-bottom:1px solid var(--border)}
 .call-item:last-child{border-bottom:none}
 .call-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
@@ -360,7 +400,10 @@ textarea.form-ctrl{resize:vertical}
   .tb-actions{flex-wrap:wrap;justify-content:flex-end}
   .panel,.panel.active{overflow:visible}
   .panel-scroll{overflow:visible;padding:14px}
-  .three-col,.two-col,.client-layout{grid-template-columns:1fr}
+  .three-col,.two-col,.client-layout,.client-summary-grid,.client-action-row,.project-field-grid{grid-template-columns:1fr}
+  .client-topline{display:block}
+  .client-title-wrap{margin-bottom:12px}
+  .client-hero-actions{justify-content:flex-start}
   .cal-nav{flex-wrap:wrap}
   .cal-week-grid,.cal-grid{overflow-x:auto}
 }
@@ -415,11 +458,7 @@ textarea.form-ctrl{resize:vertical}
 <div id="content">
   <div id="topbar">
     <div class="tb-title" id="tb-title">Aujourd’hui</div>
-    <div class="tb-actions">
-      <button class="btn btn-outline" onclick="openAddClientModal()">＋ Client</button>
-      <button class="btn btn-outline" onclick="openAddEventModal()">＋ Événement</button>
-      <button class="btn btn-navy" onclick="openAddTodoModal()">＋ Tâche</button>
-    </div>
+    <div class="tb-actions"></div>
   </div>
 
   <!-- DASHBOARD -->
@@ -472,6 +511,10 @@ textarea.form-ctrl{resize:vertical}
   <!-- TODO — grouped by client -->
   <div class="panel" id="panel-todo">
     <div class="panel-scroll" style="max-width:760px">
+      <div class="client-section-head">
+        <div class="client-section-title">Actions commerciales</div>
+        <button class="btn btn-navy" onclick="openAddTodoModal()">＋ Tâche</button>
+      </div>
       <div id="todo-overdue-sec" style="display:none;margin-bottom:4px">
         <div style="font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--red);margin-bottom:8px">⚠ En retard <span id="overdue-count" style="background:rgba(217,79,61,.1);padding:1px 7px;border-radius:20px"></span></div>
         <div id="todo-overdue-list"></div>
@@ -493,12 +536,28 @@ textarea.form-ctrl{resize:vertical}
 
   <!-- CLIENTS -->
   <div class="panel" id="panel-clients">
-    <div class="panel-scroll"><div id="clients-inner"></div></div>
+    <div class="panel-scroll">
+      <div class="client-section-head">
+        <div class="client-section-title">Portefeuille clients</div>
+        <button class="btn btn-navy" onclick="openAddClientModal()">＋ Client</button>
+      </div>
+      <div id="clients-inner"></div>
+    </div>
   </div>
 
   <!-- TEMPLATES -->
   <div class="panel" id="panel-templates">
     <div class="panel-scroll">
+      <div class="template-profile">
+        <div>
+          <div class="template-profile-title">Signature commerciale</div>
+          <div class="template-profile-sub">Utilisée dans {{commercial}} et {{telephone_commercial}}</div>
+        </div>
+        <div class="template-profile-fields">
+          <input id="tpl-commercial-name" placeholder="Prénom commercial" oninput="saveTemplateProfile()">
+          <input id="tpl-commercial-phone" placeholder="Téléphone commercial" oninput="saveTemplateProfile()">
+        </div>
+      </div>
       <div class="template-toolbar">
         <input class="template-search" id="tpl-search" placeholder="Rechercher un template, une situation, une destination..." oninput="renderTemplates()">
         <button class="btn btn-outline" onclick="openTemplateModal()">＋ Template</button>
@@ -552,6 +611,26 @@ textarea.form-ctrl{resize:vertical}
     <div class="modal-footer">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="addClient()">Créer la fiche</button>
       <button class="btn btn-outline" onclick="closeModal('modal-add-client')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT CLIENT -->
+<div class="modal" id="modal-edit-client">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-edit-client')">✕</button>
+    <div class="modal-title">👤 Modifier le client</div>
+    <div class="modal-sub">Mettez à jour les coordonnées et le brief projet visible en tête de fiche.</div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Prénom *</label><input class="form-ctrl" id="ec-prenom"></div>
+      <div><label class="form-lbl">Nom *</label><input class="form-ctrl" id="ec-nom"></div>
+    </div>
+    <div class="form-grp"><label class="form-lbl">Email</label><input class="form-ctrl" id="ec-email"></div>
+    <div class="form-grp"><label class="form-lbl">Téléphone</label><input class="form-ctrl" id="ec-phone"></div>
+    <div class="form-grp"><label class="form-lbl">Brief projet</label><textarea class="form-ctrl" id="ec-interests" rows="3" placeholder="Destination, dates, bateau, budget, niveau de maturité..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveEditClient()">Enregistrer</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-edit-client')">Annuler</button>
     </div>
   </div>
 </div>
@@ -1115,20 +1194,36 @@ function setTemplateFilter(id){S.templateFilter=id;renderTemplates();}
 function selectTemplate(id){S.currentTemplate=id;renderTemplates();}
 function currentTemplate(){return S.templates.find(t=>t.id===S.currentTemplate)||S.templates[0];}
 
+function loadTemplateProfile(){
+  const name=document.getElementById('tpl-commercial-name');
+  const phone=document.getElementById('tpl-commercial-phone');
+  if(name)name.value=localStorage.getItem('profil-prenom')||'';
+  if(phone)phone.value=localStorage.getItem('profil-tel')||'';
+}
+function saveTemplateProfile(){
+  localStorage.setItem('profil-prenom',document.getElementById('tpl-commercial-name')?.value.trim()||'');
+  localStorage.setItem('profil-tel',document.getElementById('tpl-commercial-phone')?.value.trim()||'');
+  updateTemplatePreview();
+}
+
 function templateContext(){
   const key=S.currentClient;
   const c=key?S.clients[key]:null;
+  const ws=c?normalizeWillsheet(c.willsheet,c):{};
   return {
     prenom:c?.prenom||'',
     nom:c?.nom||'',
     client:c?.name||'',
     email:c?.email||'',
     telephone:c?.phone||'',
-    destination:c?.interests||'',
-    bateau:'',
-    dates:'',
-    personnes:'',
-    budget:'',
+    destination:ws.cruisingArea||c?.interests||'',
+    bateau:ws.boatType||'',
+    dates:ws.datesDuration||ws.departureDate||'',
+    personnes:ws.people||'',
+    budget:ws.budget||'',
+    base:ws.departureBase||'',
+    service:ws.serviceType||'',
+    decision:ws.decisionDeadline||ws.decisionDate||'',
     commercial:localStorage.getItem('profil-prenom')||'',
     telephone_commercial:localStorage.getItem('profil-tel')||''
   };
@@ -1162,10 +1257,18 @@ function renderTemplateEditor(){
       <div class="template-preview" id="tpl-body-preview"></div>
       <div class="modal-footer" style="margin-top:14px">
         <button class="btn btn-navy" onclick="copyTemplate()">Copier ${t.kind==='email'?'email':t.kind==='sms'?'message':'script'}</button>
+        ${vars.length?'<button class="btn btn-outline" onclick="autofillTemplateVars()">Remplir auto</button>':''}
         ${t.subject?'<button class="btn btn-outline" onclick="copyTemplateSubject()">Copier objet</button>':''}
       </div>
     </div>`;
   updateTemplatePreview();
+}
+
+function autofillTemplateVars(){
+  const ctx=templateContext();
+  document.querySelectorAll('.tpl-var').forEach(input=>{input.value=ctx[input.dataset.var]||'';});
+  updateTemplatePreview();
+  toast('Variables mises à jour ✓','ok');
 }
 
 function getTemplateFillValues(){
@@ -1350,29 +1453,43 @@ function willsheetCompletion(ws){
   return keys.filter(k=>String(ws[k]||'').trim()).length;
 }
 function willsheetVal(ws,k){return escapeHtml(ws[k]||'—');}
-function renderWillsheetCard(key){
+function projectVal(ws,c,k,fallback='—'){
+  const value=(ws&&ws[k])||fallback;
+  return escapeHtml(value||'—');
+}
+function renderProjectSnapshot(c,key){
+  const ws=normalizeWillsheet(c.willsheet,c);
+  const fields=[
+    ['Destination',projectVal(ws,c,'cruisingArea',c.interests)],
+    ['Dates',projectVal(ws,c,'datesDuration',ws.departureDate)],
+    ['Bateau',projectVal(ws,c,'boatType')],
+    ['Budget',projectVal(ws,c,'budget')],
+    ['Équipage',projectVal(ws,c,'people')],
+    ['Décision',projectVal(ws,c,'decisionDeadline',ws.decisionDate)]
+  ];
+  return `<div class="card" style="margin-bottom:16px">
+    <div class="card-hd">
+      <div class="card-title">Projet commercial</div>
+      <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openEditClientModal('${key}')">Modifier</button>
+    </div>
+    <div class="project-field-grid">
+      <div class="project-field wide"><div class="project-field-label">Brief rapide</div><div class="project-field-value">${escapeHtml(c.interests||ws.projectTitle||'Aucun brief renseigné')}</div></div>
+      ${fields.map(([label,value])=>`<div class="project-field"><div class="project-field-label">${label}</div><div class="project-field-value">${value}</div></div>`).join('')}
+    </div>
+  </div>`;
+}
+function renderWillsheetLaunch(key){
   const c=S.clients[key];if(!c)return '';
   const ws=normalizeWillsheet(c.willsheet,c);
   const score=willsheetCompletion(ws);
   const ready=score>=6;
-  const fields=[
-    ['projectTitle','wide'],['serviceType',''],['charterRecord',''],['cruisingArea',''],['departureBase',''],
-    ['datesDuration',''],['boatType',''],['people',''],['budget','wide'],['decisionDeadline','wide']
-  ];
-  return `<div class="card willsheet-card">
-    <div class="card-hd">
-      <div class="card-title">📋 WillSheet premier appel <span class="willsheet-status ${ready?'ready':''}">${ready?'Renseignée':'À compléter'}</span></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
-        <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openWillsheetModal('${key}')">Voir / éditer</button>
-        ${(c.calls||[]).length?`<button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="prefillWillsheetFromFirstCall('${key}')">✨ Préremplir</button>`:''}
-      </div>
+  return `<button class="willsheet-launch" onclick="openWillsheetModal('${key}')">
+    <div>
+      <div class="willsheet-launch-title">WillSheet premier appel <span class="willsheet-status ${ready?'ready':''}">${ready?'Renseignée':'À compléter'}</span></div>
+      <div class="willsheet-launch-sub">${score} champs utiles remplis${ws.updatedAt?' · maj '+dFr(ws.updatedAt):''}</div>
     </div>
-    <div class="willsheet-body">
-      ${score===0?`<div class="willsheet-empty">La WillSheet sera remplie automatiquement par Gemini au premier appel importé. Vous pouvez aussi la compléter manuellement à tout moment.</div>`:
-      `<div class="willsheet-grid">${fields.map(([k,wide])=>`<div class="willsheet-field ${wide}"><div class="willsheet-label">${WILLSHEET_LABELS[k]}</div><div class="willsheet-value">${willsheetVal(ws,k)}</div></div>`).join('')}</div>
-       <div style="font-size:.68rem;color:var(--t3);margin-top:10px">${ws.updatedAt?'Mis à jour le '+dFr(ws.updatedAt):'Non daté'}</div>`}
-    </div>
-  </div>`;
+    <span style="font-size:1rem;color:var(--accent)">→</span>
+  </button>`;
 }
 function openWillsheetModal(key){
   const c=S.clients[key];if(!c)return;
@@ -1692,8 +1809,12 @@ function quickToggleTodo(id){const t=S.todos.find(x=>x.id===id);if(t){t.done=!t.
 ══════════════════════════════════════════ */
 function openAddEventModal(pf=''){
   document.getElementById('ev-client').innerHTML='<option value="">— Aucun —</option>'+Object.values(S.clients).map(c=>`<option value="${cKey(c.prenom,c.nom)}">${c.name}</option>`).join('');
-  document.getElementById('ev-title').value='';document.getElementById('ev-date').value=pf||toStr();
+  const isDate=/^\d{4}-\d{2}-\d{2}$/.test(pf);
+  const clientKey=!isDate&&S.clients[pf]?pf:'';
+  document.getElementById('ev-title').value=clientKey?'RDV '+S.clients[clientKey].name:'';
+  document.getElementById('ev-date').value=isDate?pf:toStr();
   document.getElementById('ev-time').value='';document.getElementById('ev-type').value='rdv';document.getElementById('ev-notes').value='';
+  document.getElementById('ev-client').value=clientKey;
   openModal('modal-add-event');
 }
 function addEvent(){
@@ -1874,6 +1995,35 @@ function addClient(){
   S.clients[key]={prenom,nom,name:prenom+' '+nom,email:document.getElementById('ac-email').value.trim(),phone:document.getElementById('ac-phone').value.trim(),interests:document.getElementById('ac-interests').value.trim(),calls:[],createdAt:toStr()};
   save();updateBadges();renderClientsGrid();closeModal('modal-add-client');toast('Fiche créée : '+prenom+' '+nom,'ok');openClientDetail(key);
 }
+function openEditClientModal(key=S.currentClient){
+  const c=S.clients[key];if(!c)return;
+  S.currentClient=key;
+  document.getElementById('ec-prenom').value=c.prenom||'';
+  document.getElementById('ec-nom').value=c.nom||'';
+  document.getElementById('ec-email').value=c.email||'';
+  document.getElementById('ec-phone').value=c.phone||'';
+  document.getElementById('ec-interests').value=c.interests||'';
+  openModal('modal-edit-client');
+}
+function saveEditClient(){
+  const oldKey=S.currentClient;const c=S.clients[oldKey];if(!c)return;
+  const prenom=document.getElementById('ec-prenom').value.trim();
+  const nom=document.getElementById('ec-nom').value.trim();
+  if(!prenom||!nom){toast('Prénom et nom requis','err');return;}
+  const nextKey=cKey(prenom,nom);
+  if(nextKey!==oldKey&&S.clients[nextKey]){toast('Un autre client porte déjà ce nom','err');return;}
+  const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),interests:document.getElementById('ec-interests').value.trim()};
+  if(nextKey!==oldKey){
+    delete S.clients[oldKey];
+    S.events.forEach(e=>{if(e.clientKey===oldKey){e.clientKey=nextKey;e.client=updated.name;}});
+    S.todos.forEach(t=>{if(t.clientKey===oldKey)t.clientKey=nextKey;});
+  }else{
+    S.events.forEach(e=>{if(e.clientKey===oldKey)e.client=updated.name;});
+  }
+  S.clients[nextKey]=updated;
+  S.currentClient=nextKey;
+  save();updateBadges();renderClientsGrid();renderDashboard();renderCalendar();closeModal('modal-edit-client');_renderClientDetail(nextKey);toast('Fiche client mise à jour ✓','ok');
+}
 function renderClientsGrid(){
   const keys=Object.keys(S.clients).sort((a,b)=>lastCallDate(b).localeCompare(lastCallDate(a)));
   const el=document.getElementById('clients-inner');
@@ -1911,68 +2061,100 @@ function _renderClientDetail(key){
   const todos=S.todos.filter(t=>t.clientKey===key);
   const pending=todos.filter(t=>!t.done);
   const hasApi=!!S.apiKey;
+  const ws=normalizeWillsheet(c.willsheet,c);
+  const nextEvent=events.find(e=>e.date>=toStr())||events[0];
+  const overdue=pending.filter(t=>past(t.dueDate));
+  const nextTodo=[...pending].sort((a,b)=>(a.dueDate||'9999-12-31').localeCompare(b.dueDate||'9999-12-31'))[0];
+  const lastCall=calls[0];
+  const projectMain=c.interests||ws.projectTitle||ws.cruisingArea||'Projet à qualifier';
+  const decision=ws.decisionDeadline||ws.decisionDate||'À qualifier';
 
   document.getElementById('client-detail-inner').innerHTML=`
-    <div class="client-hero">
-      <div class="ch-avatar">${ini(c.prenom,c.nom)}</div>
-      <div style="flex:1">
-        <div class="ch-name">${c.name}</div>
-        <div class="ch-meta">${c.email||''}${c.email&&c.phone?' · ':''}${c.phone||''}</div>
-        <div class="ch-stats">
-          <div><div class="ch-stat-n">${(c.calls||[]).length}</div><div class="ch-stat-l">Appels</div></div>
-          <div><div class="ch-stat-n">${events.length}</div><div class="ch-stat-l">RDV</div></div>
-          <div><div class="ch-stat-n" style="color:${pending.length>0?'#facc15':'#fff'}">${pending.length}</div><div class="ch-stat-l">Tâches</div></div>
+    <div class="client-hero compact">
+      <div class="client-topline">
+        <div class="client-title-wrap">
+          <div class="ch-avatar">${ini(c.prenom,c.nom)}</div>
+          <div style="min-width:0">
+            <div class="ch-name">${escapeHtml(c.name)}</div>
+            <div class="ch-meta">${escapeHtml(c.email||'Email non renseigné')}${c.phone?' · '+escapeHtml(c.phone):' · Téléphone non renseigné'}</div>
+          </div>
+        </div>
+        <div class="client-hero-actions">
+          <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openEditClientModal('${key}')">Modifier</button>
+          <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openTemplatesForClient('${key}')">Message</button>
+          <button class="btn btn-red" onclick="askDelClient('${key}')">Supprimer</button>
         </div>
       </div>
-      <div style="display:flex;gap:8px;align-items:flex-start;position:relative;z-index:1">
-        <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openAddCallModal('${key}')">📝 Saisie manuelle</button>
-        <button class="btn btn-outline" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff" onclick="openTemplatesForClient('${key}')">✉️ Message</button>
-        <button class="btn btn-red" onclick="askDelClient('${key}')">🗑</button>
+      <div class="client-summary-grid">
+        <div class="client-summary-card main">
+          <div class="client-summary-label">Projet</div>
+          <div class="client-summary-value">${escapeHtml(projectMain)}</div>
+          <div class="client-summary-sub">${escapeHtml(ws.cruisingArea||'Destination à confirmer')}</div>
+        </div>
+        <div class="client-summary-card">
+          <div class="client-summary-label">Prochaine étape</div>
+          <div class="client-summary-value">${nextEvent?escapeHtml(nextEvent.title):nextTodo?escapeHtml(nextTodo.text):'Aucune action'}</div>
+          <div class="client-summary-sub">${nextEvent?dFr(nextEvent.date)+(nextEvent.time?' · '+nextEvent.time:''):nextTodo&&nextTodo.dueDate?dFr(nextTodo.dueDate):'Créer un RDV ou une tâche'}</div>
+        </div>
+        <div class="client-summary-card">
+          <div class="client-summary-label">Décision</div>
+          <div class="client-summary-value">${escapeHtml(decision)}</div>
+          <div class="client-summary-sub">${escapeHtml(ws.budget||'Budget à qualifier')}</div>
+        </div>
+        <div class="client-summary-card">
+          <div class="client-summary-label">Activité</div>
+          <div class="client-summary-value">${(c.calls||[]).length} appel(s) · ${pending.length} tâche(s)</div>
+          <div class="client-summary-sub">${lastCall?'Dernier appel '+dFr(lastCall.date):'Aucun appel enregistré'}</div>
+        </div>
       </div>
+      ${overdue.length?`<div class="client-alert">⚠ ${overdue.length} tâche(s) en retard sur ce dossier</div>`:''}
+    </div>
+
+    <div class="client-action-row">
+      <button class="client-action-btn" onclick="openAddCallModal('${key}')">
+        <span class="client-action-ico">☎</span><span class="client-action-copy"><span class="client-action-title">Compte-rendu</span><span class="client-action-sub">Saisie manuelle</span></span>
+      </button>
+      <button class="client-action-btn" onclick="openAddEventModal('${key}')">
+        <span class="client-action-ico">📅</span><span class="client-action-copy"><span class="client-action-title">RDV / rappel</span><span class="client-action-sub">Planifier la suite</span></span>
+      </button>
+      <button class="client-action-btn" onclick="openAddTodoModal('${key}')">
+        <span class="client-action-ico">✓</span><span class="client-action-copy"><span class="client-action-title">Tâche</span><span class="client-action-sub">Action à faire</span></span>
+      </button>
+      <label class="mini-upload" id="gz-${key}"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleDrop(event,'${key}')">
+        <input type="file" id="gf-${key}" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac" onchange="handleFileSelect(this,'${key}')">
+        <span class="client-action-ico">🎙</span><span><span class="mini-upload-title">Importer MP3</span><span class="mini-upload-sub">${hasApi?'Transcription Gemini':'Clé Gemini requise'}</span></span>
+      </label>
+      <label class="mini-upload" id="gt-${key}"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleTranscriptDrop(event,'${key}')">
+        <input type="file" id="tf-${key}" accept="text/plain,.txt" onchange="handleTranscriptSelect(this,'${key}')">
+        <span class="client-action-ico">TXT</span><span><span class="mini-upload-title">Importer TXT</span><span class="mini-upload-sub">${hasApi?'Analyse transcript':'Clé Gemini requise'}</span></span>
+      </label>
     </div>
 
     <div class="client-layout">
       <div>
-        <!-- ZONE GEMINI -->
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-hd">
-            <div class="card-title">🎙️ Importer un enregistrement</div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="api-dot ${hasApi?'ok':''}" style="width:6px;height:6px;border-radius:50%;background:${hasApi?'var(--green)':'var(--red)'};${hasApi?'box-shadow:0 0 5px rgba(26,155,114,.6)':''}"></div>
-              <span style="font-size:.71rem;color:var(--t3)">${hasApi?'Gemini prêt':'<a href="#" onclick="openApiModal();return false" style="color:var(--red);text-decoration:underline">Configurer la clé Gemini</a>'}</span>
-            </div>
-          </div>
-          <div style="padding:16px">
-            ${!hasApi?`<div class="no-api-banner">⚠️ Clé API Gemini requise pour la transcription automatique. <a href="#" onclick="openApiModal();return false" style="font-weight:700;text-decoration:underline">Configurer maintenant →</a></div>`:''}
-            <div class="audio-zone" id="gz-${key}"
-              onclick="document.getElementById('gf-${key}').click()"
-              ondragover="event.preventDefault();this.classList.add('drag')"
-              ondragleave="this.classList.remove('drag')"
-              ondrop="handleDrop(event,'${key}')">
-              <input type="file" id="gf-${key}" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac" onchange="handleFileSelect(this,'${key}')">
-              <div class="gz-icon">🎵</div>
-              <div class="gz-title">Déposer ou cliquer pour importer un MP3</div>
-              <div class="gz-sub">Formats : MP3, M4A, WAV, OGG · Max 25 Mo<br>Gemini transcrit l'appel et extrait automatiquement résumé, actions et RDV</div>
-            </div>
-            <div class="process-card" id="pc-${key}">
-              <div class="process-title">🤖 Analyse Gemini en cours…</div>
-              <div class="process-step" id="ps1-${key}"><span class="step-ico">📤</span> Envoi de l'audio à Gemini</div>
-              <div class="process-step" id="ps2-${key}"><span class="step-ico">🎙️</span> Transcription de l'appel</div>
-              <div class="process-step" id="ps3-${key}"><span class="step-ico">🧠</span> Extraction des informations clés</div>
-              <div class="process-step" id="ps4-${key}"><span class="step-ico">💾</span> Sauvegarde dans la fiche client</div>
-            </div>
-            <div class="result-card" id="rc-${key}">
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.97rem;color:var(--nav);margin-bottom:14px">✅ Appel analysé et enregistré</div>
-              <div class="result-section">Résumé</div>
-              <div class="result-text" id="rsum-${key}">—</div>
-              <div id="ractions-${key}"></div>
-              <div id="revents-${key}"></div>
-              <button class="btn btn-outline" style="margin-top:4px" onclick="resetGemini('${key}')">＋ Importer un autre enregistrement</button>
-            </div>
-          </div>
+        <div class="process-card" id="pc-${key}" style="margin-bottom:16px">
+          <div class="process-title">Analyse Gemini en cours…</div>
+          <div class="process-step" id="ps1-${key}"><span class="step-ico">📤</span> Préparation de l'appel</div>
+          <div class="process-step" id="ps2-${key}"><span class="step-ico">🎙️</span> Analyse du contenu</div>
+          <div class="process-step" id="ps3-${key}"><span class="step-ico">🧠</span> Extraction des informations clés</div>
+          <div class="process-step" id="ps4-${key}"><span class="step-ico">💾</span> Sauvegarde dans la fiche client</div>
+        </div>
+        <div class="result-card" id="rc-${key}" style="margin-bottom:16px">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.97rem;color:var(--nav);margin-bottom:14px">Appel analysé et enregistré</div>
+          <div class="result-section">Résumé</div>
+          <div class="result-text" id="rsum-${key}">—</div>
+          <div id="ractions-${key}"></div>
+          <div id="revents-${key}"></div>
+          <button class="btn btn-outline" style="margin-top:4px" onclick="resetGemini('${key}')">Importer un autre enregistrement</button>
         </div>
 
-        ${renderWillsheetCard(key)}
+        ${renderProjectSnapshot(c,key)}
 
         <!-- JOURNAL -->
         <div class="card">
@@ -1980,13 +2162,13 @@ function _renderClientDetail(key){
             <div class="card-title">📞 Journal d'appels <span style="font-size:.72rem;font-weight:400;color:var(--t3);margin-left:4px">${calls.length} appel(s)</span></div>
           </div>
           <div id="calls-list-${key}">
-            ${calls.length===0?`<div class="empty" style="padding:28px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un enregistrement MP3 ci-dessus ou utilisez la saisie manuelle.</div></div>`:
+            ${calls.length===0?`<div class="empty" style="padding:28px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un MP3 ou un transcript TXT, ou utilisez la saisie manuelle.</div></div>`:
             calls.map(call=>`
               <div class="call-item">
                 <div class="call-item-top">
                   <div class="call-date">📞 ${dFr(call.date)}${call.duration?' · <span style="color:var(--t3)">'+call.duration+'</span>':''}</div>
                   <div style="display:flex;gap:6px;align-items:center">
-                    ${call.source==='gemini'?'<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 Gemini</span>':''}
+                    ${String(call.source||'').startsWith('gemini')?`<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 ${call.source==='gemini-transcript'?'TXT':'Gemini'}</span>`:''}
                     <button class="btn btn-red" style="padding:3px 8px;font-size:.66rem" onclick="deleteCall('${key}','${call.id}')">🗑</button>
                   </div>
                 </div>
@@ -2005,31 +2187,33 @@ function _renderClientDetail(key){
       <!-- RIGHT COLUMN -->
       <div>
         <div class="card" style="margin-bottom:13px">
-          <div class="card-hd"><div class="card-title">👤 Informations</div></div>
-          <div class="info-row"><div class="info-lbl">Email</div><div class="info-val">${c.email||'—'}</div></div>
-          <div class="info-row"><div class="info-lbl">Téléphone</div><div class="info-val">${c.phone||'—'}</div></div>
-          <div class="info-row"><div class="info-lbl">Projet</div><div class="info-val">${c.interests||'—'}</div></div>
+          <div class="card-hd"><div class="card-title">Informations</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openEditClientModal('${key}')">Modifier</button></div>
+          <div class="info-row"><div class="info-lbl">Email</div><div class="info-val">${escapeHtml(c.email||'—')}</div></div>
+          <div class="info-row"><div class="info-lbl">Téléphone</div><div class="info-val">${escapeHtml(c.phone||'—')}</div></div>
+          <div class="info-row"><div class="info-lbl">Langue</div><div class="info-val">${escapeHtml(ws.language||'—')}</div></div>
+          <div class="info-row"><div class="info-lbl">Tag</div><div class="info-val">${escapeHtml(ws.clientTag||'—')}</div></div>
           <div class="info-row"><div class="info-lbl">Créé le</div><div class="info-val">${dFr(c.createdAt)}</div></div>
         </div>
+        <div style="margin-bottom:13px">${renderWillsheetLaunch(key)}</div>
         <div class="card" style="margin-bottom:13px">
-          <div class="card-hd"><div class="card-title">✅ Tâches</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddTodoModal('${key}')">＋</button></div>
+          <div class="card-hd"><div class="card-title">Tâches</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddTodoModal('${key}')">＋</button></div>
           ${todos.length===0?`<div style="padding:13px 16px;font-size:.79rem;color:var(--t3)">Aucune tâche.</div>`:''}
           ${todos.sort((a,b)=>a.done-b.done).map(t=>`
             <div style="padding:9px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;cursor:pointer" onclick="openTodoDetail('${t.id}')">
               <div class="todo-check ${t.done?'checked':''}" onclick="event.stopPropagation();toggleTodo('${t.id}');setTimeout(()=>_renderClientDetail('${key}'),80)" style="width:15px;height:15px;border-radius:4px;font-size:.62rem">✓</div>
               <div style="flex:1;min-width:0">
-                <div style="font-size:.79rem;font-weight:500;${t.done?'text-decoration:line-through;opacity:.5':''}color:var(--t1)">${t.text}</div>
+                <div style="font-size:.79rem;font-weight:500;${t.done?'text-decoration:line-through;opacity:.5':''}color:var(--t1)">${escapeHtml(t.text)}</div>
                 ${t.dueDate?`<div style="font-size:.69rem;color:${past(t.dueDate)&&!t.done?'var(--red)':'var(--t3)'}">${dFr(t.dueDate)}</div>`:''}
               </div>
             </div>`).join('')}
         </div>
         <div class="card">
-          <div class="card-hd"><div class="card-title">📅 Événements</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddEventModal()">＋</button></div>
+          <div class="card-hd"><div class="card-title">Événements</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddEventModal('${key}')">＋</button></div>
           ${events.length===0?`<div style="padding:13px 16px;font-size:.79rem;color:var(--t3)">Aucun événement.</div>`:''}
           ${events.map(ev=>`
             <div style="padding:9px 15px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openEventDetail('${ev.id}')">
               <div style="font-size:.72rem;font-weight:700;color:var(--accent)">${dFr(ev.date)}${ev.time?' · '+ev.time:''}</div>
-              <div style="font-size:.79rem;color:var(--t1)">${ev.title}</div>
+              <div style="font-size:.79rem;color:var(--t1)">${escapeHtml(ev.title)}</div>
             </div>`).join('')}
         </div>
       </div>
@@ -2047,18 +2231,36 @@ function handleDrop(event,key){
   else toast('Fichier audio invalide (MP3, M4A, WAV…)','err');
 }
 function handleFileSelect(input,key){if(input.files&&input.files[0])loadAudioFile(input.files[0],key);}
+function handleTranscriptDrop(event,key){
+  event.preventDefault();
+  document.getElementById('gt-'+key)?.classList.remove('drag');
+  const file=event.dataTransfer.files[0];
+  if(file&&(/\.txt$/i.test(file.name)||file.type==='text/plain')) loadTranscriptFile(file,key);
+  else toast('Transcript invalide (.txt uniquement)','err');
+}
+function handleTranscriptSelect(input,key){if(input.files&&input.files[0])loadTranscriptFile(input.files[0],key);}
 
 function loadAudioFile(file,key){
   if(!S.apiKey){openApiModal();toast('Configurez d\'abord votre clé API Gemini','err');return;}
   if(file.size>26*1024*1024){toast('Fichier trop lourd (max 25 Mo)','err');return;}
-  const gz=document.getElementById('gz-'+key);
+  startCallAnalysisUi(key);
+  runGeminiAnalysis(file,key);
+}
+
+function loadTranscriptFile(file,key){
+  if(!S.apiKey){openApiModal();toast('Configurez d\'abord votre clé API Gemini','err');return;}
+  if(file.size>1024*1024){toast('Transcript trop lourd (max 1 Mo)','err');return;}
+  startCallAnalysisUi(key);
+  file.text().then(text=>runGeminiTranscriptAnalysis(text,file.name,key)).catch(()=>toast('Lecture du fichier impossible','err'));
+}
+
+function startCallAnalysisUi(key){
   const pc=document.getElementById('pc-'+key);
   const rc=document.getElementById('rc-'+key);
-  if(!gz||!pc||!rc)return;
-  gz.style.display='none';pc.classList.add('show');rc.classList.remove('show');
-  // Reset steps
-  ['ps1','ps2','ps3','ps4'].forEach(s=>{const el=document.getElementById(s+'-'+key);if(el){el.classList.remove('done','active');const ico=el.querySelector('.step-ico');if(ico)ico.textContent=['📤','🎙️','🧠','💾'][['ps1','ps2','ps3','ps4'].indexOf(s)];}});
-  runGeminiAnalysis(file,key);
+  if(!pc||!rc)return;
+  ['gz','gt'].forEach(prefix=>{const el=document.getElementById(prefix+'-'+key);if(el)el.style.display='none';});
+  pc.classList.add('show');rc.classList.remove('show');
+  ['ps1','ps2','ps3','ps4'].forEach((s,i)=>{const el=document.getElementById(s+'-'+key);if(el){el.classList.remove('done','active');const ico=el.querySelector('.step-ico');if(ico)ico.textContent=['📤','🎙️','🧠','💾'][i];}});
 }
 
 function setStep(id,status){
@@ -2075,8 +2277,94 @@ async function runGeminiAnalysis(file,key){
     setStep('ps1-'+key,'active');
     const b64=await fileToBase64(file);
     const mimeType=audioMimeType(file);
-    const prompt=`Tu es un assistant CRM pour Filovent, agence nautique française spécialisée en location de voiliers et catamarans.
-Analyse cet enregistrement d'appel téléphonique commercial avec le client ${c.name}.
+    const prompt=buildCallAnalysisPrompt(c,today,'audio');
+    setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
+
+    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt},{inline_data:{mime_type:mimeType,data:b64}}]}],
+        generationConfig:{temperature:0.1,maxOutputTokens:8192}
+      })
+    });
+    const data=await resp.json().catch(()=>({}));
+    if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
+
+    setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
+
+    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(!raw)throw new Error("Gemini n'a pas renvoyé de résultat. Vérifiez que le fichier contient de l'audio audible.");
+    const parsed=parseGeminiJson(raw);
+    setStep('ps3-'+key,'done');setStep('ps4-'+key,'active');
+    const callEvts=applyCallAnalysisResult(parsed,key,today,file.name,'gemini-audio');
+    setStep('ps4-'+key,'done');
+
+    await new Promise(r=>setTimeout(r,400));
+    showGeminiResult(parsed,key,callEvts);
+    renderDashboard();renderCalendar();
+    toast(`Appel de ${c.name} analysé ✓${callEvts.length?' + RDV ajouté':' + rappel de relance créé'}`, 'ok');
+
+  }catch(err){
+    console.error(err);
+    document.getElementById('pc-'+key)?.classList.remove('show');
+    ['gz','gt'].forEach(prefix=>{const el=document.getElementById(prefix+'-'+key);if(el)el.style.display='';});
+    const msg=err instanceof TypeError
+      ? "Connexion Gemini impossible depuis le navigateur. Vérifiez la clé API, le réseau ou utilisez un petit serveur proxy."
+      : err.message;
+    toast('Erreur Gemini : '+msg,'err');
+  }
+}
+
+async function runGeminiTranscriptAnalysis(transcript,fileName,key){
+  const c=S.clients[key];const today=toStr();
+  try{
+    const cleanTranscript=String(transcript||'').trim();
+    if(cleanTranscript.length<20)throw new Error('Transcript trop court pour être analysé.');
+    setStep('ps1-'+key,'active');
+    const prompt=buildCallAnalysisPrompt(c,today,'transcript')+`
+
+TRANSCRIPT À ANALYSER :
+"""
+${cleanTranscript}
+"""`;
+    setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
+    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{temperature:0.1,maxOutputTokens:8192}
+      })
+    });
+    const data=await resp.json().catch(()=>({}));
+    if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
+    setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
+    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(!raw)throw new Error("Gemini n'a pas renvoyé de résultat pour ce transcript.");
+    const parsed=parseGeminiJson(raw);
+    if(!parsed.transcription)parsed.transcription=cleanTranscript;
+    setStep('ps3-'+key,'done');setStep('ps4-'+key,'active');
+    const callEvts=applyCallAnalysisResult(parsed,key,today,fileName,'gemini-transcript');
+    setStep('ps4-'+key,'done');
+
+    await new Promise(r=>setTimeout(r,400));
+    showGeminiResult(parsed,key,callEvts);
+    renderDashboard();renderCalendar();
+    toast(`Transcript de ${c.name} analysé ✓${callEvts.length?' + RDV ajouté':' + rappel de relance créé'}`, 'ok');
+
+  }catch(err){
+    console.error(err);
+    document.getElementById('pc-'+key)?.classList.remove('show');
+    ['gz','gt'].forEach(prefix=>{const el=document.getElementById(prefix+'-'+key);if(el)el.style.display='';});
+    const msg=err instanceof TypeError
+      ? "Connexion Gemini impossible depuis le navigateur. Vérifiez la clé API, le réseau ou utilisez un petit serveur proxy."
+      : err.message;
+    toast('Erreur Gemini : '+msg,'err');
+  }
+}
+
+function buildCallAnalysisPrompt(c,today,sourceType='audio'){
+  return `Tu es un assistant CRM pour Filovent, agence nautique française spécialisée en location de voiliers et catamarans.
+Analyse ${sourceType==='transcript'?'ce transcript d’appel téléphonique commercial':'cet enregistrement d’appel téléphonique commercial'} avec le client ${c.name}.
 Date d'aujourd'hui : ${today}.
 
 Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de texte autour) :
@@ -2117,77 +2405,41 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de t
 Règles :
 - Si aucun RDV n'est explicitement fixé dans l'appel, renvoie events: []
 - Si aucune action concrète n'est mentionnée, renvoie actions: []
-- Le champ transcription doit retranscrire fidèlement tout ce qui est dit
+- Le champ transcription doit ${sourceType==='transcript'?'reprendre fidèlement le transcript fourni, corrigé seulement si nécessaire pour la lisibilité':'retranscrire fidèlement tout ce qui est dit'}
 - Remplis la WillSheet avec les informations dites pendant l'appel. Si une information n'est pas dite, mets une chaîne vide.
 - Le champ type dans events peut être : "rdv", "rappel" ou "suivi"`;
+}
 
-    setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
+function parseGeminiJson(raw){
+  const match=String(raw||'').match(/\{[\s\S]*\}/);
+  if(!match)throw new Error('Réponse Gemini non JSON : '+String(raw||'').slice(0,300));
+  return JSON.parse(match[0]);
+}
 
-    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt},{inline_data:{mime_type:mimeType,data:b64}}]}],
-        generationConfig:{temperature:0.1,maxOutputTokens:8192}
-      })
-    });
-    const data=await resp.json().catch(()=>({}));
-    if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
+function applyCallAnalysisResult(parsed,key,today,fileName,source){
+  const c=S.clients[key];if(!c)return [];
+  const callEvts=[];
+  (parsed.events||[]).forEach(ev=>{
+    if(!ev.date)return;
+    const newEv={id:uid(),title:ev.title||`RDV ${c.name}`,date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:ev.notes||`Détecté dans l'appel du ${today}`};
+    S.events.push(newEv);callEvts.push({title:newEv.title,date:ev.date,time:ev.time||''});
+  });
 
-    setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
-
-    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if(!raw)throw new Error("Gemini n'a pas renvoyé de résultat. Vérifiez que le fichier contient de l'audio audible.");
-    const match=raw.match(/\{[\s\S]*\}/);
-    if(!match)throw new Error('Réponse Gemini non JSON : '+raw.slice(0,300));
-    const parsed=JSON.parse(match[0]);
-
-    setStep('ps3-'+key,'done');setStep('ps4-'+key,'active');
-
-    // Events → calendrier
-    const callEvts=[];
-    (parsed.events||[]).forEach(ev=>{
-      if(!ev.date)return;
-      const newEv={id:uid(),title:ev.title||`RDV ${c.name}`,date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:ev.notes||`Détecté dans l'appel du ${today}`};
-      S.events.push(newEv);callEvts.push({title:newEv.title,date:ev.date,time:ev.time||''});
-    });
-
-    // Si aucun RDV → relance auto J+5
-    if(callEvts.length===0){
-      const fu=new Date();fu.setDate(fu.getDate()+5);const fuStr=fu.toISOString().split('T')[0];
-      S.events.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé lors de l'appel du ${today} — relance automatique`});
-      S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${parsed.summary}`,dueDate:fuStr,clientKey:key,done:false,createdAt:today,source:'auto'});
-    }
-
-    // Tâches pour chaque action
-    (parsed.actions||[]).forEach(a=>{S.todos.push({id:uid(),text:a,details:`Issue de l'appel du ${today} avec ${c.name}.`,dueDate:today,clientKey:key,done:false,createdAt:today,source:'auto'});});
-
-    // Enrichir les intérêts si vide
-    if(parsed.client_interests&&!c.interests)c.interests=parsed.client_interests;
-    if(!(c.willsheet&&willsheetCompletion(normalizeWillsheet(c.willsheet,c))>0)&&parsed.willsheet){
-      mergeWillsheet(key, parsed.willsheet);
-    }
-
-    // Ajouter au journal
-    if(!c.calls)c.calls=[];
-    c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:parsed.summary,transcription:parsed.transcription,actions:parsed.actions||[],events:callEvts,source:'gemini',fileName:file.name});
-
-    save();updateBadges();
-    setStep('ps4-'+key,'done');
-
-    await new Promise(r=>setTimeout(r,400));
-    showGeminiResult(parsed,key,callEvts);
-    renderDashboard();renderCalendar();
-    toast(`Appel de ${c.name} analysé ✓${callEvts.length?' + RDV ajouté':' + rappel de relance créé'}`, 'ok');
-
-  }catch(err){
-    console.error(err);
-    document.getElementById('pc-'+key)?.classList.remove('show');
-    const gz=document.getElementById('gz-'+key);if(gz)gz.style.display='';
-    const msg=err instanceof TypeError
-      ? "Connexion Gemini impossible depuis le navigateur. Vérifiez la clé API, le réseau ou utilisez un petit serveur proxy."
-      : err.message;
-    toast('Erreur Gemini : '+msg,'err');
+  if(callEvts.length===0){
+    const fu=new Date();fu.setDate(fu.getDate()+5);const fuStr=fu.toISOString().split('T')[0];
+    S.events.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé lors de l'appel du ${today} — relance automatique`});
+    S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${parsed.summary||'—'}`,dueDate:fuStr,clientKey:key,done:false,createdAt:today,source:'auto'});
   }
+
+  (parsed.actions||[]).forEach(a=>{S.todos.push({id:uid(),text:a,details:`Issue de l'appel du ${today} avec ${c.name}.`,dueDate:today,clientKey:key,done:false,createdAt:today,source:'auto'});});
+  if(parsed.client_interests)c.interests=parsed.client_interests;
+  if(parsed.willsheet)mergeWillsheet(key, parsed.willsheet);
+
+  if(!c.calls)c.calls=[];
+  c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:parsed.summary||'',transcription:parsed.transcription||'',actions:parsed.actions||[],events:callEvts,source,fileName});
+
+  save();updateBadges();
+  return callEvts;
 }
 
 function fileToBase64(file){
@@ -2224,13 +2476,13 @@ function showGeminiResult(parsed,key,callEvts){
 
 function _refreshCallsList(key,listEl){
   const calls=[...(S.clients[key]?.calls||[])].reverse();
-  if(!calls.length){listEl.innerHTML=`<div class="empty" style="padding:28px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un enregistrement MP3 ou utilisez la saisie manuelle.</div></div>`;return;}
+  if(!calls.length){listEl.innerHTML=`<div class="empty" style="padding:28px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un MP3 ou un transcript TXT, ou utilisez la saisie manuelle.</div></div>`;return;}
   listEl.innerHTML=calls.map(call=>`
     <div class="call-item">
       <div class="call-item-top">
         <div class="call-date">📞 ${dFr(call.date)}${call.duration?' · <span style="color:var(--t3)">'+call.duration+'</span>':''}</div>
         <div style="display:flex;gap:6px;align-items:center">
-          ${call.source==='gemini'?'<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 Gemini</span>':''}
+          ${String(call.source||'').startsWith('gemini')?`<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 ${call.source==='gemini-transcript'?'TXT':'Gemini'}</span>`:''}
           <button class="btn btn-red" style="padding:3px 8px;font-size:.66rem" onclick="deleteCall('${key}','${call.id}')">🗑</button>
         </div>
       </div>
@@ -2245,9 +2497,10 @@ function _refreshCallsList(key,listEl){
 }
 
 function resetGemini(key){
-  const gz=document.getElementById('gz-'+key);const pc=document.getElementById('pc-'+key);const rc=document.getElementById('rc-'+key);
-  if(gz)gz.style.display='';if(pc)pc.classList.remove('show');if(rc)rc.classList.remove('show');
+  const gz=document.getElementById('gz-'+key);const gt=document.getElementById('gt-'+key);const pc=document.getElementById('pc-'+key);const rc=document.getElementById('rc-'+key);
+  if(gz)gz.style.display='';if(gt)gt.style.display='';if(pc)pc.classList.remove('show');if(rc)rc.classList.remove('show');
   const fi=document.getElementById('gf-'+key);if(fi)fi.value='';
+  const ti=document.getElementById('tf-'+key);if(ti)ti.value='';
 }
 
 /* ══════════════════════════════════════════
@@ -2331,6 +2584,7 @@ document.getElementById('ov-todo').addEventListener('click',e=>{if(e.target===do
 ══════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded',()=>{
   load();
+  loadTemplateProfile();
   updateApiDot();
   updateBadges();
   renderDashboard();

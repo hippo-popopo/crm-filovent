@@ -1022,19 +1022,19 @@ function skipperLoop(){
 }
 function updateSkipperGame(){
   const g=skipperGame, c=document.getElementById('skipper-canvas');if(!c)return;
-  g.t++;g.score+=0.12+g.level*0.025;
-  g.level=1+Math.floor(g.score/22);
-  g.speed=2.3+g.level*.34;
+  g.t++;g.score+=0.11+g.level*0.012;
+  g.level=1+Math.floor(g.score/65);
+  g.speed=2.25+g.level*.18;
   const move=(skipperKeys.left?-1:0)+(skipperKeys.right?1:0)+g.hold;
   g.boat.x=Math.max(24,Math.min(c.width-24,g.boat.x+Math.max(-1,Math.min(1,move))*5.8));
   g.spawn--;
   if(g.spawn<=0){
     spawnSkipperRock();
-    g.spawn=Math.max(18,72-g.level*5-Math.random()*14);
-    if(g.level>4&&Math.random()<.35)spawnSkipperRock();
+    g.spawn=Math.max(30,82-g.level*2.8-Math.random()*12);
+    if(g.level>7&&Math.random()<.22)spawnSkipperRock();
   }
   g.bonusSpawn--;
-  if(g.bonusSpawn<=0){spawnSkipperStar();g.bonusSpawn=Math.max(70,150-g.level*6+Math.random()*50);}
+  if(g.bonusSpawn<=0){spawnSkipperStar();g.bonusSpawn=Math.max(85,165-g.level*3.5+Math.random()*55);}
   g.invincible=Math.max(0,g.invincible-1);
   [...g.rocks,...g.stars].forEach(o=>{o.y+=o.vy;o.x+=Math.sin((g.t+o.phase)/18)*o.drift;});
   g.rocks=g.rocks.filter(r=>r.y<c.height+40);
@@ -1057,8 +1057,8 @@ function updateSkipperGame(){
 }
 function spawnSkipperRock(){
   const g=skipperGame,c=document.getElementById('skipper-canvas');
-  const size=22+Math.random()*18+Math.min(18,g.level*1.2);
-  g.rocks.push({x:28+Math.random()*(c.width-56),y:-40,r:size,vy:g.speed+Math.random()*1.4,drift:(Math.random()-.5)*(1+g.level*.18),phase:Math.random()*99,hit:false});
+  const size=20+Math.random()*16+Math.min(14,g.level*.8);
+  g.rocks.push({x:28+Math.random()*(c.width-56),y:-40,r:size,vy:g.speed+Math.random()*1.05,drift:(Math.random()-.5)*(0.8+g.level*.1),phase:Math.random()*99,hit:false});
 }
 function spawnSkipperStar(){
   const g=skipperGame,c=document.getElementById('skipper-canvas');

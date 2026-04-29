@@ -1609,12 +1609,7 @@ Réponds UNIQUEMENT en JSON:
 "language":"","nationality":"","notes":""
 }}
 Si une information n'est pas dite, laisse une chaîne vide.`;
-  const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.1,maxOutputTokens:4096}})
-  });
-  const data=await resp.json().catch(()=>({}));
-  if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
+  const {data}=await geminiGenerateContent({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.1,maxOutputTokens:4096}});
   const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
   const match=raw.match(/\{[\s\S]*\}/);
   if(!match)throw new Error('Réponse Gemini non JSON');
@@ -2361,6 +2356,32 @@ function setStep(id,status){
   else if(status==='done'){el.classList.add('done');if(ico)ico.textContent='✅';}
 }
 
+const GEMINI_MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-2.0-flash'];
+const GEMINI_RETRY_STATUS=new Set([429,500,503,504]);
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function geminiErrorMessage(data,status,model){
+  const msg=data?.error?.message||'Erreur API Gemini ('+status+')';
+  return `${msg} · modèle ${model}`;
+}
+async function geminiGenerateContent(payload){
+  let lastError=null;
+  for(const model of GEMINI_MODELS){
+    for(let attempt=0;attempt<3;attempt++){
+      const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.apiKey}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      const data=await resp.json().catch(()=>({}));
+      if(resp.ok)return {data,model};
+      lastError=new Error(geminiErrorMessage(data,resp.status,model));
+      if(!GEMINI_RETRY_STATUS.has(resp.status))throw lastError;
+      await wait(900*Math.pow(2,attempt));
+    }
+  }
+  throw lastError||new Error('Gemini indisponible. Réessayez dans quelques minutes.');
+}
+
 async function runGeminiAnalysis(file,key){
   const c=S.clients[key];const today=toStr();
   try{
@@ -2370,15 +2391,10 @@ async function runGeminiAnalysis(file,key){
     const prompt=buildCallAnalysisPrompt(c,today,'audio');
     setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
 
-    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt},{inline_data:{mime_type:mimeType,data:b64}}]}],
-        generationConfig:{temperature:0.1,maxOutputTokens:8192}
-      })
+    const {data,model}=await geminiGenerateContent({
+      contents:[{parts:[{text:prompt},{inline_data:{mime_type:mimeType,data:b64}}]}],
+      generationConfig:{temperature:0.1,maxOutputTokens:8192}
     });
-    const data=await resp.json().catch(()=>({}));
-    if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
 
     setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
 
@@ -2392,7 +2408,7 @@ async function runGeminiAnalysis(file,key){
     await new Promise(r=>setTimeout(r,400));
     showGeminiResult(parsed,key,callEvts);
     renderDashboard();renderCalendar();
-    toast(`Appel de ${c.name} analysé ✓ + validation agenda`, 'ok');
+    toast(`Appel de ${c.name} analysé ✓ (${model})`, 'ok');
 
   }catch(err){
     console.error(err);
@@ -2418,15 +2434,10 @@ TRANSCRIPT À ANALYSER :
 ${cleanTranscript}
 """`;
     setStep('ps1-'+key,'done');setStep('ps2-'+key,'active');
-    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${S.apiKey}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt}]}],
-        generationConfig:{temperature:0.1,maxOutputTokens:8192}
-      })
+    const {data,model}=await geminiGenerateContent({
+      contents:[{parts:[{text:prompt}]}],
+      generationConfig:{temperature:0.1,maxOutputTokens:8192}
     });
-    const data=await resp.json().catch(()=>({}));
-    if(!resp.ok)throw new Error(data.error?.message||'Erreur API Gemini ('+resp.status+')');
     setStep('ps2-'+key,'done');setStep('ps3-'+key,'active');
     const raw=data.candidates?.[0]?.content?.parts?.[0]?.text;
     if(!raw)throw new Error("Gemini n'a pas renvoyé de résultat pour ce transcript.");
@@ -2439,7 +2450,7 @@ ${cleanTranscript}
     await new Promise(r=>setTimeout(r,400));
     showGeminiResult(parsed,key,callEvts);
     renderDashboard();renderCalendar();
-    toast(`Transcript de ${c.name} analysé ✓ + validation agenda`, 'ok');
+    toast(`Transcript de ${c.name} analysé ✓ (${model})`, 'ok');
 
   }catch(err){
     console.error(err);

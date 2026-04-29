@@ -364,10 +364,30 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .modal-box{background:var(--card);border-radius:8px;padding:26px;max-width:460px;width:92%;box-shadow:0 24px 60px rgba(11,31,58,.22);animation:popIn .22s cubic-bezier(.22,.68,0,1.2)}
 .modal-box.wide{max-width:560px}
 @keyframes popIn{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes logoBump{0%,100%{transform:rotate(0) scale(1)}40%{transform:rotate(-8deg) scale(1.12)}70%{transform:rotate(5deg) scale(1.04)}}
 .modal-title{font-family:'Syne',sans-serif;font-size:1.12rem;font-weight:800;color:var(--nav);margin-bottom:4px}
 .modal-sub{font-size:.79rem;color:var(--t3);margin-bottom:17px;line-height:1.5}
 .modal-close{float:right;color:var(--t3);font-size:1.05rem;cursor:pointer;margin-top:-2px}
 .modal-footer{display:flex;gap:8px;margin-top:17px}
+.skipper-game-box{max-width:560px;padding:0;overflow:hidden;background:#071524;color:#fff;border:1px solid rgba(255,255,255,.12)}
+.skipper-game-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,#071524,#0d2f4f)}
+.skipper-game-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.skipper-game-icon{width:42px;height:42px;border-radius:10px;background:#eaf7f8;display:grid;place-items:center;box-shadow:inset 0 -3px 0 rgba(7,21,36,.12)}
+.skipper-game-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff}
+.skipper-game-sub{font-size:.68rem;color:rgba(255,255,255,.55);margin-top:2px}
+.skipper-game-close{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-weight:800}
+.skipper-game-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.09)}
+.skipper-stat{background:#0a1e34;padding:10px 12px}
+.skipper-stat-label{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);font-weight:800}
+.skipper-stat-value{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#9bd7dd;margin-top:2px}
+.skipper-playfield{position:relative;background:linear-gradient(180deg,#0b3356,#0a7f9c);padding:12px}
+#skipper-canvas{display:block;width:100%;height:350px;border-radius:8px;background:#0a5f89;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.skipper-overlay{position:absolute;inset:12px;border-radius:8px;background:rgba(7,21,36,.7);backdrop-filter:blur(3px);display:grid;place-items:center;text-align:center;padding:24px}
+.skipper-overlay.hidden{display:none}
+.skipper-overlay-title{font-family:'Syne',sans-serif;font-size:1.32rem;font-weight:800;margin-bottom:8px}
+.skipper-overlay-copy{font-size:.82rem;line-height:1.5;color:rgba(255,255,255,.72);max-width:340px;margin:0 auto 16px}
+.sb-logo{cursor:pointer;user-select:none}
+.sb-logo.bump img{animation:logoBump .35s ease}
 .form-lbl{font-size:.73rem;font-weight:600;color:var(--t2);margin-bottom:5px;display:block}
 .form-ctrl{width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:.82rem;transition:.15s;color:var(--t1);background:var(--card)}
 .form-ctrl:focus{border-color:var(--accent)}
@@ -435,7 +455,7 @@ textarea.form-ctrl{resize:vertical}
         <i class="bi bi-compass" style="font-size:0.7rem;"></i> Poste de travail
     </a>
 
-    <div class="sb-logo"><img src="assets/filovent-mark.png" alt=""> <span>CRM 2.0</span></div>
+    <div class="sb-logo" onclick="tapSkipperLogo()"><img src="assets/filovent-mark.png" alt=""> <span>CRM 2.0</span></div>
     <div class="sb-sub">Outil commercial interne</div>
   </div>
   <div class="sb-nav">
@@ -841,6 +861,44 @@ textarea.form-ctrl{resize:vertical}
   </div>
 </div>
 
+<!-- SKIPPER EASTER EGG -->
+<div class="modal" id="modal-skipper">
+  <div class="modal-box skipper-game-box">
+    <div class="skipper-game-head">
+      <div class="skipper-game-brand">
+        <div class="skipper-game-icon">
+          <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M34 7c9 9 14 21 15 36H34V7Z" fill="#176a9c"/>
+            <path d="M29 14c-8 9-12 18-13 29h13V14Z" fill="#9bd7dd"/>
+            <path d="M14 48h38l-7 7H21l-7-7Z" fill="#071524"/>
+          </svg>
+        </div>
+        <div>
+          <div class="skipper-game-title">Sailing Sprint</div>
+          <div class="skipper-game-sub">Évite les rochers, récupère les étoiles.</div>
+        </div>
+      </div>
+      <button class="skipper-game-close" onclick="closeSkipperGame()">✕</button>
+    </div>
+    <div class="skipper-game-stats">
+      <div class="skipper-stat"><div class="skipper-stat-label">Score</div><div class="skipper-stat-value" id="sk-score">0</div></div>
+      <div class="skipper-stat"><div class="skipper-stat-label">Record</div><div class="skipper-stat-value" id="sk-best">0</div></div>
+      <div class="skipper-stat"><div class="skipper-stat-label">Niveau</div><div class="skipper-stat-value" id="sk-level">1</div></div>
+      <div class="skipper-stat"><div class="skipper-stat-label">Vie</div><div class="skipper-stat-value" id="sk-lives">3</div></div>
+    </div>
+    <div class="skipper-playfield">
+      <canvas id="skipper-canvas" width="520" height="350"></canvas>
+      <div class="skipper-overlay" id="skipper-overlay">
+        <div>
+          <div class="skipper-overlay-title" id="skipper-overlay-title">Mode Skipper</div>
+          <div class="skipper-overlay-copy" id="skipper-overlay-copy">Flèches, A/D ou boutons pour naviguer. Plus tu tiens longtemps, plus la mer se complique.</div>
+          <button class="btn btn-navy" style="justify-content:center" onclick="startSkipperGame()">Lancer la course</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TODO DETAIL -->
 <div class="overlay" id="ov-todo">
   <div class="overlay-box">
@@ -900,6 +958,159 @@ function toast(msg, type='') {
   document.getElementById('toasts').appendChild(el);
   setTimeout(()=>el.remove(), 3500);
 }
+let skipperTapCount=0, skipperTapTimer=null;
+function tapSkipperLogo(){
+  const logo=document.querySelector('.sb-logo');
+  skipperTapCount++;
+  logo?.classList.add('bump');
+  setTimeout(()=>logo?.classList.remove('bump'),360);
+  clearTimeout(skipperTapTimer);
+  skipperTapTimer=setTimeout(()=>skipperTapCount=0,1500);
+  if(skipperTapCount>=5){
+    skipperTapCount=0;
+    openSkipperGame();
+  }
+}
+const skipperKeys={left:false,right:false};
+const skipperGame={
+  running:false,raf:null,hold:0,score:0,best:Number(localStorage.getItem('filo_sailing_sprint_best')||0),
+  level:1,lives:3,t:0,speed:2.4,spawn:0,bonusSpawn:0,invincible:0,boat:{x:260,y:294,w:34,h:46},rocks:[],stars:[],foam:[]
+};
+function openSkipperGame(){
+  openModal('modal-skipper');
+  resetSkipperGame(false);
+  drawSkipperFrame();
+}
+function closeSkipperGame(){
+  skipperGame.running=false;
+  if(skipperGame.raf)cancelAnimationFrame(skipperGame.raf);
+  closeModal('modal-skipper');
+}
+function skipperHold(dir){skipperGame.hold=dir;}
+function resetSkipperGame(clearBest=false){
+  const g=skipperGame;
+  g.running=false;g.score=0;g.level=1;g.lives=3;g.t=0;g.speed=2.4;g.spawn=0;g.bonusSpawn=60;g.invincible=0;
+  g.boat={x:260,y:294,w:34,h:46};g.rocks=[];g.stars=[];g.foam=[];
+  if(clearBest){g.best=0;localStorage.removeItem('filo_sailing_sprint_best');}
+  updateSkipperHud();
+  showSkipperOverlay('Mode Skipper','Flèches, A/D ou boutons pour naviguer. Plus tu tiens longtemps, plus la mer se complique.','Lancer la course');
+}
+function startSkipperGame(){
+  resetSkipperGame();
+  skipperGame.running=true;
+  document.getElementById('skipper-overlay')?.classList.add('hidden');
+  skipperLoop();
+}
+function showSkipperOverlay(title,copy,button){
+  const ov=document.getElementById('skipper-overlay');if(!ov)return;
+  document.getElementById('skipper-overlay-title').textContent=title;
+  document.getElementById('skipper-overlay-copy').textContent=copy;
+  ov.querySelector('button').textContent=button;
+  ov.classList.remove('hidden');
+}
+function updateSkipperHud(){
+  document.getElementById('sk-score').textContent=Math.floor(skipperGame.score);
+  document.getElementById('sk-best').textContent=skipperGame.best;
+  document.getElementById('sk-level').textContent=skipperGame.level;
+  document.getElementById('sk-lives').textContent='●'.repeat(skipperGame.lives)||'0';
+}
+function skipperLoop(){
+  const g=skipperGame;if(!g.running)return;
+  updateSkipperGame();
+  drawSkipperFrame();
+  g.raf=requestAnimationFrame(skipperLoop);
+}
+function updateSkipperGame(){
+  const g=skipperGame, c=document.getElementById('skipper-canvas');if(!c)return;
+  g.t++;g.score+=0.12+g.level*0.025;
+  g.level=1+Math.floor(g.score/22);
+  g.speed=2.3+g.level*.34;
+  const move=(skipperKeys.left?-1:0)+(skipperKeys.right?1:0)+g.hold;
+  g.boat.x=Math.max(24,Math.min(c.width-24,g.boat.x+Math.max(-1,Math.min(1,move))*5.8));
+  g.spawn--;
+  if(g.spawn<=0){
+    spawnSkipperRock();
+    g.spawn=Math.max(18,72-g.level*5-Math.random()*14);
+    if(g.level>4&&Math.random()<.35)spawnSkipperRock();
+  }
+  g.bonusSpawn--;
+  if(g.bonusSpawn<=0){spawnSkipperStar();g.bonusSpawn=Math.max(70,150-g.level*6+Math.random()*50);}
+  g.invincible=Math.max(0,g.invincible-1);
+  [...g.rocks,...g.stars].forEach(o=>{o.y+=o.vy;o.x+=Math.sin((g.t+o.phase)/18)*o.drift;});
+  g.rocks=g.rocks.filter(r=>r.y<c.height+40);
+  g.stars=g.stars.filter(s=>s.y<c.height+30);
+  for(const r of g.rocks){
+    if(!r.hit&&skipperCollides(g.boat,r)){
+      r.hit=true;g.lives--;g.invincible=70;burstFoam(g.boat.x,g.boat.y,'#d85d4a');
+      if(g.lives<=0)return endSkipperGame();
+    }
+  }
+  for(const s of g.stars){
+    if(!s.hit&&skipperCollides(g.boat,s)){
+      s.hit=true;g.score+=6+g.level;burstFoam(s.x,s.y,'#f6c453');
+    }
+  }
+  g.stars=g.stars.filter(s=>!s.hit);
+  g.foam.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;});
+  g.foam=g.foam.filter(p=>p.life>0);
+  updateSkipperHud();
+}
+function spawnSkipperRock(){
+  const g=skipperGame,c=document.getElementById('skipper-canvas');
+  const size=22+Math.random()*18+Math.min(18,g.level*1.2);
+  g.rocks.push({x:28+Math.random()*(c.width-56),y:-40,r:size,vy:g.speed+Math.random()*1.4,drift:(Math.random()-.5)*(1+g.level*.18),phase:Math.random()*99,hit:false});
+}
+function spawnSkipperStar(){
+  const g=skipperGame,c=document.getElementById('skipper-canvas');
+  g.stars.push({x:26+Math.random()*(c.width-52),y:-30,r:14,vy:g.speed*.85,drift:(Math.random()-.5)*1.5,phase:Math.random()*99,hit:false});
+}
+function skipperCollides(a,o){
+  if(skipperGame.invincible&&o.r>16)return false;
+  const dx=a.x-o.x,dy=a.y-o.y;
+  return Math.hypot(dx,dy)<o.r+18;
+}
+function burstFoam(x,y,color){
+  for(let i=0;i<14;i++)skipperGame.foam.push({x,y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:24+Math.random()*12,color});
+}
+function endSkipperGame(){
+  const g=skipperGame;g.running=false;
+  if(g.score>g.best){g.best=Math.floor(g.score);localStorage.setItem('filo_sailing_sprint_best',g.best);}
+  updateSkipperHud();
+  showSkipperOverlay('Course terminée',`Score ${Math.floor(g.score)}. La mer devient plus rude à chaque niveau : retente le run pour battre le record.`,`Rejouer`);
+}
+function drawSkipperFrame(){
+  const c=document.getElementById('skipper-canvas');if(!c)return;
+  const x=c.getContext('2d'),g=skipperGame;
+  x.clearRect(0,0,c.width,c.height);
+  const grad=x.createLinearGradient(0,0,0,c.height);grad.addColorStop(0,'#0b78a0');grad.addColorStop(1,'#064a72');x.fillStyle=grad;x.fillRect(0,0,c.width,c.height);
+  x.strokeStyle='rgba(255,255,255,.14)';x.lineWidth=2;
+  for(let y=(g.t*g.speed)%42;y<c.height;y+=42){x.beginPath();for(let px=0;px<c.width;px+=26)x.lineTo(px,y+Math.sin((px+g.t)/32)*6);x.stroke();}
+  g.stars.forEach(drawSkipperStar);g.rocks.forEach(drawSkipperRock);drawSkipperBoat(g.boat);
+  g.foam.forEach(p=>{x.globalAlpha=Math.max(0,p.life/32);x.fillStyle=p.color;x.beginPath();x.arc(p.x,p.y,3,0,Math.PI*2);x.fill();x.globalAlpha=1;});
+}
+function drawSkipperBoat(b){
+  const c=document.getElementById('skipper-canvas'),x=c.getContext('2d');
+  x.save();x.translate(b.x,b.y);
+  if(skipperGame.invincible){x.globalAlpha=.72;x.strokeStyle='#9bd7dd';x.lineWidth=4;x.beginPath();x.arc(0,0,34,0,Math.PI*2);x.stroke();x.globalAlpha=1;}
+  x.fillStyle='#071524';roundRect(x,-20,13,40,14,7);x.fill();
+  x.fillStyle='#f7fbfc';x.beginPath();x.moveTo(-5,-34);x.lineTo(-5,10);x.lineTo(-24,10);x.closePath();x.fill();
+  x.fillStyle='#9bd7dd';x.beginPath();x.moveTo(1,-39);x.lineTo(1,10);x.lineTo(24,10);x.closePath();x.fill();
+  x.strokeStyle='#176a9c';x.lineWidth=3;x.beginPath();x.moveTo(0,-40);x.lineTo(0,14);x.stroke();
+  x.restore();
+}
+function drawSkipperRock(r){
+  const c=document.getElementById('skipper-canvas'),x=c.getContext('2d');
+  x.save();x.translate(r.x,r.y);x.fillStyle=r.hit?'#d85d4a':'#415365';x.strokeStyle='rgba(255,255,255,.18)';x.lineWidth=2;
+  x.beginPath();for(let i=0;i<8;i++){const a=i/8*Math.PI*2,rr=r.r*(.72+Math.sin(i*2.1)*.18);x.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);}x.closePath();x.fill();x.stroke();x.restore();
+}
+function drawSkipperStar(s){
+  const c=document.getElementById('skipper-canvas'),x=c.getContext('2d');
+  x.save();x.translate(s.x,s.y);x.rotate(skipperGame.t/22);x.fillStyle='#f6c453';x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=2;
+  x.beginPath();for(let i=0;i<10;i++){const a=i/10*Math.PI*2-Math.PI/2,rr=i%2?s.r*.45:s.r;x.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);}x.closePath();x.fill();x.stroke();x.restore();
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')skipperKeys.left=true;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')skipperKeys.right=true;});
+document.addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')skipperKeys.left=false;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')skipperKeys.right=false;});
 function replaceTextValue(value,oldText,newText){
   if(!oldText||!newText||typeof value!=='string')return value;
   return value.split(oldText).join(newText);
@@ -2710,7 +2921,7 @@ function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function closeOverlay(id){document.getElementById(id).classList.remove('open');}
 
-document.querySelectorAll('.modal').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});});
+document.querySelectorAll('.modal').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m){if(m.id==='modal-skipper')closeSkipperGame();else m.classList.remove('open');}});});
 document.getElementById('ov-todo').addEventListener('click',e=>{if(e.target===document.getElementById('ov-todo'))closeOverlay('ov-todo');});
 
 /* ══════════════════════════════════════════

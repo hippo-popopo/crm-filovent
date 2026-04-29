@@ -40,9 +40,6 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.35rem,3.7vw,3.45rem);line-hei
 .unlock:hover{background:var(--nav2);transform:translateY(-1px)}
 .error{min-height:20px;color:var(--red);font-size:.78rem;font-weight:700;margin-top:10px}
 .hint{margin-top:18px;padding:12px;border-radius:8px;background:#f3f8fa;border:1px solid #dce9ee;color:#6a7e89;font-size:.78rem;line-height:1.55}
-.quick{display:none;margin-top:12px}
-.quick.show{display:block}
-.quick a{display:flex;align-items:center;justify-content:center;height:42px;border-radius:8px;border:1px solid #d6e4ea;text-decoration:none;color:var(--accent);font-weight:800}
 @media(max-width:900px){body{overflow:auto}.shell{padding:14px}.login{grid-template-columns:1fr;min-height:0}.panel{padding:24px}.hero-copy{margin:46px 0 24px}.form-panel{padding:26px}.status-row{display:none}h1{font-size:clamp(2.15rem,10vw,3rem)}}
 </style>
 </head>
@@ -78,7 +75,6 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.35rem,3.7vw,3.45rem);line-hei
       </div>
       <button class="unlock" type="submit">Accéder au site</button>
       <div class="error" id="error"></div>
-      <div class="quick" id="quick"><a href="agenda.html">Ouvrir le CRM</a></div>
       <div class="hint">Protection légère adaptée à GitHub Pages. Pour une sécurité forte, il faudra un hébergement avec authentification serveur.</div>
     </form>
   </section>
@@ -88,9 +84,6 @@ const SITE_PASSWORD='jesaispas';
 const AUTH_KEY='filovent_site_auth';
 const requested=new URLSearchParams(location.search).get('next')||'';
 const DESTINATION=requested&&!requested.includes('://')&&!requested.startsWith('/')?requested:'agenda.html';
-const quick=document.getElementById('quick');
-quick.querySelector('a').href=DESTINATION;
-if(sessionStorage.getItem(AUTH_KEY)==='ok')quick.classList.add('show');
 function unlock(event){
   event.preventDefault();
   const input=document.getElementById('password');

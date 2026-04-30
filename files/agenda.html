@@ -265,7 +265,7 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .client-alert{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 11px;border-radius:8px;background:rgba(250,204,21,.13);color:#fff;font-size:.78rem;font-weight:700;position:relative;z-index:1}
 .client-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
 .client-section-title{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:800;color:var(--nav)}
-.client-action-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.client-action-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
 .client-action-btn{display:flex;align-items:center;gap:9px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 12px;color:var(--t1);box-shadow:0 6px 18px rgba(7,21,36,.04);transition:.15s}
 .client-action-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
 .client-action-ico{width:28px;height:28px;border-radius:8px;background:rgba(23,106,156,.09);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.88rem;flex-shrink:0}
@@ -517,6 +517,10 @@ textarea.form-ctrl{resize:vertical}
             <div class="card-hd"><div class="card-title">📅 Prochains événements</div><button class="btn btn-outline" style="font-size:.72rem;padding:4px 10px" onclick="nav('calendar')">Agenda →</button></div>
             <div id="dash-events"></div>
           </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-hd"><div class="card-title">📈 Reporting commercial</div></div>
+            <div id="dash-reports"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -663,6 +667,7 @@ textarea.form-ctrl{resize:vertical}
     </div>
     <div class="form-grp"><label class="form-lbl">Email</label><input class="form-ctrl" id="ec-email"></div>
     <div class="form-grp"><label class="form-lbl">Téléphone</label><input class="form-ctrl" id="ec-phone"></div>
+    <div class="form-grp"><label class="form-lbl">Statut commercial</label><select class="form-ctrl" id="ec-stage"></select></div>
     <div class="form-grp"><label class="form-lbl">Brief projet</label><textarea class="form-ctrl" id="ec-interests" rows="3" placeholder="Destination, dates, bateau, budget, niveau de maturité..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveEditClient()">Enregistrer</button>
@@ -704,16 +709,20 @@ textarea.form-ctrl{resize:vertical}
 <div class="modal" id="modal-add-todo">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-add-todo')">✕</button>
-    <div class="modal-title">✅ Nouvelle tâche</div>
-    <div class="modal-sub">Ajouter une action à votre liste.</div>
+    <div class="modal-title" id="todo-modal-title">✅ Nouvelle tâche</div>
+    <div class="modal-sub" id="todo-modal-sub">Ajouter une action à votre liste.</div>
     <div class="form-grp"><label class="form-lbl">Description *</label><input class="form-ctrl" id="td-text" placeholder="ex: Envoyer devis catamaran"></div>
     <div class="form-grp"><label class="form-lbl">Détails / Précisions</label><textarea class="form-ctrl" id="td-details" rows="2" placeholder="Informations complémentaires…"></textarea></div>
     <div class="form-row2 form-grp">
       <div><label class="form-lbl">Échéance</label><input class="form-ctrl" type="date" id="td-date"></div>
       <div><label class="form-lbl">Client lié</label><select class="form-ctrl" id="td-client"></select></div>
     </div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Type</label><select class="form-ctrl" id="td-type"><option value="relance">Relance</option><option value="devis">Devis / proposition</option><option value="appel">Appel</option><option value="document">Document</option><option value="option">Option</option><option value="autre">Autre</option></select></div>
+      <div><label class="form-lbl">Priorité</label><select class="form-ctrl" id="td-priority"><option value="normal">Normale</option><option value="high">Urgente</option><option value="low">Faible</option></select></div>
+    </div>
     <div class="modal-footer">
-      <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="addTodo()">Créer la tâche</button>
+      <button class="btn btn-navy" id="todo-modal-save" style="flex:1;justify-content:center" onclick="saveTodoFromModal()">Créer la tâche</button>
       <button class="btn btn-outline" onclick="closeModal('modal-add-todo')">Annuler</button>
     </div>
   </div>
@@ -914,16 +923,18 @@ textarea.form-ctrl{resize:vertical}
    STATE
 ══════════════════════════════════════════ */
 const S = {
-  apiKey:'', clients:{}, events:[], pendingEvents:[], todos:[], templates:[],
+  apiKey:'', clients:{}, events:[], pendingEvents:[], pendingActions:[], pendingUpdates:[], todos:[], templates:[],
   calDate:new Date(), calView:'week',
   currentClient:null, pendingDelKey:null, currentCallClient:null, todoFilter:'all',
-  templateFilter:'all', currentTemplate:null, editingTemplate:null
+  templateFilter:'all', currentTemplate:null, editingTemplate:null, editingTodo:null
 };
 
 function save() {
   localStorage.setItem('filo_clients', JSON.stringify(S.clients));
   localStorage.setItem('filo_events',  JSON.stringify(S.events));
   localStorage.setItem('filo_pending_events', JSON.stringify(S.pendingEvents));
+  localStorage.setItem('filo_pending_actions', JSON.stringify(S.pendingActions));
+  localStorage.setItem('filo_pending_updates', JSON.stringify(S.pendingUpdates));
   localStorage.setItem('filo_todos',   JSON.stringify(S.todos));
   localStorage.setItem('filo_templates', JSON.stringify(S.templates));
   localStorage.setItem('filo_gemini_api_key', S.apiKey);
@@ -934,6 +945,8 @@ function load() {
     const c = localStorage.getItem('filo_clients'); if(c) S.clients = JSON.parse(c);
     const e = localStorage.getItem('filo_events');  if(e) S.events  = JSON.parse(e);
     const pe = localStorage.getItem('filo_pending_events'); if(pe) S.pendingEvents = JSON.parse(pe);
+    const pa = localStorage.getItem('filo_pending_actions'); if(pa) S.pendingActions = JSON.parse(pa);
+    const pu = localStorage.getItem('filo_pending_updates'); if(pu) S.pendingUpdates = JSON.parse(pu);
     const t = localStorage.getItem('filo_todos');   if(t) S.todos   = JSON.parse(t);
     const tpl = localStorage.getItem('filo_templates');
     S.templates = mergeDefaultTemplates(tpl ? JSON.parse(tpl) : []);
@@ -1143,25 +1156,25 @@ function renderSb(filter='') {
   const el=document.getElementById('sb-clients');
   const keys=Object.keys(S.clients)
     .filter(k=>!filter||S.clients[k].name.toLowerCase().includes(filter.toLowerCase()))
-    .sort((a,b)=>lastCallDate(b).localeCompare(lastCallDate(a)));
+    .sort((a,b)=>clientPriorityScore(S.clients[b],b)-clientPriorityScore(S.clients[a],a));
   if(!keys.length){el.innerHTML='<div class="sb-empty">Aucun client</div>';return;}
   el.innerHTML=keys.slice(0,15).map(k=>{
     const c=S.clients[k]; const pd=pendingCount(k);
     return `<div class="sb-client ${S.currentClient===k?'active':''}" onclick="openClientDetail('${k}')">
       <div class="sb-avatar">${ini(c.prenom,c.nom)}</div>
-      <div style="flex:1;min-width:0"><div class="sb-cname">${c.name}</div><div class="sb-cmeta">${(c.calls||[]).length} appel(s)</div></div>
+      <div style="flex:1;min-width:0"><div class="sb-cname">${c.name}</div><div class="sb-cmeta">${clientPriorityScore(c,k)}/100 · ${(c.calls||[]).length} appel(s)</div></div>
       ${pd>0?`<div class="sb-badge">${pd}</div>`:''}
     </div>`;
   }).join('');
 }
 function filterSb(v){renderSb(v);}
 function lastCallDate(k){const calls=S.clients[k]?.calls||[];return calls.length?calls[calls.length-1].date:'';}
-function pendingCount(k){return S.todos.filter(t=>t.clientKey===k&&!t.done).length;}
+function pendingCount(k){return S.todos.filter(t=>t.clientKey===k&&!t.done).length+S.pendingEvents.filter(e=>e.clientKey===k).length+S.pendingActions.filter(a=>a.clientKey===k).length+S.pendingUpdates.filter(u=>u.clientKey===k).length;}
 
 function updateBadges() {
   const today=toStr();
   document.getElementById('bdg-events').textContent=S.events.filter(e=>e.date>=today).length;
-  document.getElementById('bdg-todos').textContent=S.todos.filter(t=>!t.done).length;
+  document.getElementById('bdg-todos').textContent=S.todos.filter(t=>!t.done).length+S.pendingActions.length+S.pendingUpdates.length;
   document.getElementById('bdg-clients').textContent=Object.keys(S.clients).length;
   renderSb(document.getElementById('sb-search')?.value||'');
 }
@@ -1232,6 +1245,28 @@ function renderDashboard(){
       <div style="font-size:.82rem;font-weight:500;color:var(--t1)">${ev.title}</div>
       ${ev.client?`<div style="font-size:.71rem;color:var(--t3)">${ev.client}</div>`:''}
     </div>`).join('');}
+  renderSalesReports();
+}
+
+function renderSalesReports(){
+  const el=document.getElementById('dash-reports');if(!el)return;
+  const clients=Object.entries(S.clients);
+  const stages={};CLIENT_STAGES.forEach(([id])=>stages[id]=0);
+  clients.forEach(([k,c])=>{stages[clientStage(c)]++;});
+  const hot=clients.filter(([k,c])=>clientPriorityScore(c,k)>=55).length;
+  const dormant=clients.filter(([k,c])=>clientRisk(c,k)[0]==='danger').length;
+  const options=clients.filter(([k,c])=>clientStage(c)==='option').length;
+  const booked=clients.filter(([k,c])=>clientStage(c)==='booked').length;
+  const pendingAi=S.pendingEvents.length+S.pendingActions.length+S.pendingUpdates.length;
+  el.innerHTML=`
+    <div class="project-field-grid" style="padding:12px">
+      <div class="project-field"><div class="project-field-label">Clients chauds</div><div class="project-field-value">${hot}</div></div>
+      <div class="project-field"><div class="project-field-label">Dossiers dormants</div><div class="project-field-value">${dormant}</div></div>
+      <div class="project-field"><div class="project-field-label">Options en cours</div><div class="project-field-value">${options}</div></div>
+      <div class="project-field"><div class="project-field-label">Réservés</div><div class="project-field-value">${booked}</div></div>
+      <div class="project-field wide"><div class="project-field-label">Validations IA en attente</div><div class="project-field-value">${pendingAi}</div></div>
+      <div class="project-field wide"><div class="project-field-label">Pipeline</div><div class="project-field-value">${CLIENT_STAGES.map(([id,label])=>`${label}: ${stages[id]||0}`).join(' · ')}</div></div>
+    </div>`;
 }
 
 /* ══════════════════════════════════════════
@@ -1607,6 +1642,8 @@ function exportBackup(){
     clients:S.clients,
     events:S.events,
     pendingEvents:S.pendingEvents,
+    pendingActions:S.pendingActions,
+    pendingUpdates:S.pendingUpdates,
     todos:S.todos,
     templates:S.templates
   };
@@ -1634,6 +1671,8 @@ function importBackupFile(input){
       S.clients=data.clients&&typeof data.clients==='object'?data.clients:{};
       S.events=Array.isArray(data.events)?data.events:[];
       S.pendingEvents=Array.isArray(data.pendingEvents)?data.pendingEvents:[];
+      S.pendingActions=Array.isArray(data.pendingActions)?data.pendingActions:[];
+      S.pendingUpdates=Array.isArray(data.pendingUpdates)?data.pendingUpdates:[];
       S.todos=Array.isArray(data.todos)?data.todos:[];
       S.templates=mergeDefaultTemplates(Array.isArray(data.templates)?data.templates:[]);
       S.currentClient=null;S.currentTemplate=null;
@@ -1663,6 +1702,15 @@ function textValue(value,fallback=''){
   }
   return fallback;
 }
+function daysSince(dateStr){
+  if(!dateStr)return 999;
+  const a=new Date(dateStr+'T00:00:00');const b=new Date(toStr()+'T00:00:00');
+  return Math.max(0,Math.floor((b-a)/86400000));
+}
+function addDays(dateStr,days){
+  const d=new Date((dateStr||toStr())+'T00:00:00');d.setDate(d.getDate()+days);
+  return d.toISOString().split('T')[0];
+}
 function normalizeClientTextFields(){
   Object.values(S.clients||{}).forEach(c=>{
     if(!c)return;
@@ -1683,14 +1731,14 @@ const WILLSHEET_FIELDS=[
   'language','nationality','notes'
 ];
 const WILLSHEET_LABELS={
-  projectTitle:'Project title',serviceType:'Type of service',charterRecord:'Charter track record',
-  cruisingArea:'Cruising area',whyDestination:'Why this destination',departureBase:'Departure base',
-  transport:'Means of transport',datesDuration:'Dates and duration',departureDate:'Departure date',
-  flexibility:'Flexibility and precisions',boatType:'Type of boat',boatCriteria:'Criteria for choosing a boat',
-  people:'Number of people',crewComposition:'Composition of the crew',budget:'Budget',
-  competitors:'Competitors',alternatives:'Offers / alternatives',decisionDeadline:'Decision deadline / RDV',
-  decisionDate:'Decision date',knowledge:'Knowledge of Filovent',clientTag:'Client tag',
-  language:'Language spoken',nationality:'Nationality',notes:'Notes'
+  projectTitle:'Titre du projet',serviceType:'Type de service',charterRecord:'Historique location',
+  cruisingArea:'Zone de navigation',whyDestination:'Pourquoi cette destination',departureBase:'Base de départ',
+  transport:'Moyen de transport',datesDuration:'Dates et durée',departureDate:'Date de départ',
+  flexibility:'Flexibilité et précisions',boatType:'Type de bateau',boatCriteria:'Critères de choix du bateau',
+  people:'Nombre de personnes',crewComposition:'Composition de l’équipage',budget:'Budget',
+  competitors:'Concurrents',alternatives:'Offres / alternatives',decisionDeadline:'Deadline décision / RDV',
+  decisionDate:'Date de décision',knowledge:'Niveau de connaissance Filovent',clientTag:'Tag client',
+  language:'Langue parlée',nationality:'Nationalité',notes:'Notes'
 };
 
 function defaultWillsheet(c={}){
@@ -1716,8 +1764,170 @@ function projectVal(ws,c,k,fallback='—'){
   const value=textValue((ws&&ws[k])||fallback,'');
   return escapeHtml(value||'—');
 }
+function firstUseful(...values){return values.map(v=>textValue(v,'').trim()).find(Boolean)||'';}
+function compactText(str,max=105){
+  const txt=textValue(str,'').replace(/\s+/g,' ').trim();
+  return txt.length>max?txt.slice(0,max-1).trim()+'…':txt;
+}
+function shortTaskTitle(str){return compactText(str,86)||'Action commerciale';}
+function actionTitle(action){
+  if(action&&typeof action==='object')return firstUseful(action.title,action.titre,action.action,action.task,action.text,action.summary);
+  return textValue(action,'');
+}
+function actionDetails(action){
+  if(action&&typeof action==='object')return firstUseful(action.details,action.detail,action.notes,action.context,action.contexte,action.description);
+  return '';
+}
+function actionDueDate(action,fallback){
+  if(action&&typeof action==='object')return firstUseful(action.dueDate,action.date,action.echeance,action.deadline)||fallback;
+  return fallback;
+}
+function inferTaskType(text){
+  const s=textValue(text,'').toLowerCase();
+  if(/devis|proposition|sélection|selection|offre/.test(s))return 'devis';
+  if(/option|bloqu|deadline/.test(s))return 'option';
+  if(/appel|appeler|téléphon|telephone/.test(s))return 'appel';
+  if(/document|contrat|passeport|permis/.test(s))return 'document';
+  return 'relance';
+}
+function taskTypeLabel(t){return {relance:'Relance',devis:'Devis',appel:'Appel',document:'Document',option:'Option',autre:'Autre'}[t||'relance']||'Action';}
+function taskPriorityLabel(p){return {high:'Urgente',normal:'Normale',low:'Faible'}[p||'normal']||'Normale';}
+function mergeLongText(current,incoming,label='MAJ'){
+  const old=textValue(current,'').trim();
+  const next=textValue(incoming,'').trim();
+  if(!next)return old;
+  if(!old)return next;
+  const oldLow=old.toLowerCase(), nextLow=next.toLowerCase();
+  if(oldLow.includes(nextLow))return old;
+  if(nextLow.includes(oldLow))return next;
+  return `${old}\n${label} ${dFr(toStr())} : ${next}`;
+}
+function mergeClientBrief(current,incoming){
+  return mergeLongText(current,incoming,'Nouvel appel');
+}
+function normalizedActionList(actions){
+  return (actions||[]).map(a=>shortTaskTitle(actionTitle(a)||textValue(a))).filter(Boolean);
+}
+const CLIENT_STAGES=[
+  ['new','Nouveau lead'],['contacted','Contact fait'],['qualified','Besoin qualifié'],['proposal','Proposition envoyée'],
+  ['option','Option posée'],['negotiation','Décision / négo'],['booked','Réservé'],['lost','Perdu']
+];
+function clientStage(c,ws=normalizeWillsheet(c.willsheet,c)){
+  const explicit=c.stage||'';
+  if(explicit)return explicit;
+  const hay=[c.interests,ws.projectTitle,ws.notes,ws.alternatives,ws.decisionDeadline,ws.clientTag,(c.calls||[]).map(call=>call.summary).join(' ')].join(' ').toLowerCase();
+  if(/perdu|abandonn|annul/.test(hay))return 'lost';
+  if(/réserv|reserv|confirm|booké|booking confirmé/.test(hay))return 'booked';
+  if(/option|bloqu|hold/.test(hay))return 'option';
+  if(/devis|proposition|sélection|selection|offre envoy/.test(hay))return 'proposal';
+  if(ws.cruisingArea||ws.datesDuration||ws.boatType||ws.people||ws.budget)return 'qualified';
+  if((c.calls||[]).length)return 'contacted';
+  return 'new';
+}
+function stageLabel(stage){return (CLIENT_STAGES.find(s=>s[0]===stage)||CLIENT_STAGES[0])[1];}
+function lastClientActivity(c,key){
+  const dates=[c.updatedAt,c.createdAt,(c.calls||[]).map(x=>x.date),S.todos.filter(t=>t.clientKey===key).map(t=>t.updatedAt||t.createdAt||t.dueDate),S.events.filter(e=>e.clientKey===key).map(e=>e.date)].flat().filter(Boolean);
+  return dates.sort().pop()||c.createdAt||toStr();
+}
+function clientRisk(c,key,ws=normalizeWillsheet(c.willsheet,c)){
+  const age=daysSince(lastClientActivity(c,key));
+  const overdue=S.todos.some(t=>t.clientKey===key&&!t.done&&t.dueDate&&t.dueDate<toStr());
+  const stage=clientStage(c,ws);
+  if(stage==='booked')return ['ok','Réservé'];
+  if(overdue)return ['danger','Tâche en retard'];
+  if(age>=7)return ['danger','Dossier dormant'];
+  if(age>=3)return ['warn','À relancer'];
+  if(S.pendingEvents.some(e=>e.clientKey===key)||S.pendingActions.some(a=>a.clientKey===key)||S.pendingUpdates.some(u=>u.clientKey===key))return ['warn','IA à valider'];
+  return ['ok','Suivi OK'];
+}
+function clientPriorityScore(c,key){
+  const ws=normalizeWillsheet(c.willsheet,c);
+  const [risk]=clientRisk(c,key,ws);
+  let score=20;
+  if(risk==='danger')score+=35;else if(risk==='warn')score+=18;
+  if(clientStage(c,ws)==='option')score+=25;
+  if(/réserv|reserv|confirmer|confirmation|chaud|urgent/.test([c.interests,ws.notes,ws.decisionDeadline,ws.clientTag].join(' ').toLowerCase()))score+=18;
+  if(S.pendingEvents.some(e=>e.clientKey===key)||S.pendingActions.some(a=>a.clientKey===key)||S.pendingUpdates.some(u=>u.clientKey===key))score+=12;
+  if(S.todos.some(t=>t.clientKey===key&&!t.done&&t.dueDate&&t.dueDate<=toStr()))score+=10;
+  if(ws.budget)score+=5;
+  return Math.min(100,score);
+}
+function priorityLabel(score){return score>=75?'Très chaud':score>=55?'Prioritaire':score>=35?'À suivre':'Faible';}
+function projectSignals(c,key,ws){
+  const hay=[c.interests,ws.projectTitle,ws.notes,ws.alternatives,ws.decisionDeadline,ws.clientTag,(c.calls||[]).map(call=>call.summary).join(' ')].join(' ').toLowerCase();
+  const option=/option|bloqu|hold|réserv|reserv|booking|booké/.test(hay);
+  const wantsBook=/veut réserver|pret a reserver|prêt à réserver|souhaite réserver|confirmer|confirmation|réservation/.test(hay);
+  const qualified=!!(ws.cruisingArea||ws.datesDuration||ws.boatType||ws.budget||ws.people||c.interests);
+  const hasNext=S.todos.some(t=>t.clientKey===key&&!t.done)||S.pendingEvents.some(e=>e.clientKey===key);
+  return {option,wantsBook,qualified,hasNext};
+}
+function projectProgressStatus(c,key,ws){
+  const sig=projectSignals(c,key,ws);
+  const stage=clientStage(c,ws);
+  if(stage==='booked')return ['Réservé','Dossier gagné : garder le suivi client et les documents de départ propres.'];
+  if(stage==='lost')return ['Perdu','Dossier à garder en historique avec la raison de perte si connue.'];
+  if(sig.wantsBook)return ['Réservation à sécuriser','Client chaud : clarifier les derniers points et pousser la confirmation.'];
+  if(sig.option)return ['Option en attente','Une option ou une alternative semble en cours : suivre la deadline de près.'];
+  if(sig.hasNext)return ['Suivi actif','Des actions ou RDV sont en cours, le dossier avance.'];
+  if(sig.qualified)return ['Projet qualifié','Les besoins principaux sont identifiés, prochaine étape commerciale à cadrer.'];
+  return ['À qualifier','Il manque encore les informations clés du projet.'];
+}
+function renderProjectProgress(c,key){
+  const ws=normalizeWillsheet(c.willsheet,c);
+  const calls=c.calls||[];
+  const first=calls[0]||{};
+  const last=calls[calls.length-1]||{};
+  const pendingTodos=S.todos.filter(t=>t.clientKey===key&&!t.done).sort((a,b)=>(a.dueDate||'9999').localeCompare(b.dueDate||'9999'));
+  const pendingReview=pendingEventsForClient(key).sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999'));
+  const [status,statusSub]=projectProgressStatus(c,key,ws);
+  const score=clientPriorityScore(c,key);
+  const [riskClass,riskLabel]=clientRisk(c,key,ws);
+  const next=pendingReview[0]
+    ? `${pendingReview[0].type==='rdv'?'Valider le RDV':'Valider le rappel'} : ${pendingReview[0].title||'événement détecté'} (${dFr(pendingReview[0].date)})`
+    : pendingTodos[0]
+      ? `${shortTaskTitle(pendingTodos[0].text)}${pendingTodos[0].dueDate?' ('+dFr(pendingTodos[0].dueDate)+')':''}`
+      : firstUseful(ws.decisionDeadline,ws.decisionDate,'Aucune prochaine action claire');
+  const start=firstUseful(first.summary,c.interests,ws.projectTitle,'Aucun historique exploitable pour le moment.');
+  const latest=firstUseful(last.summary,ws.notes,'Pas encore de dernier point enregistré.');
+  return `<div class="card" style="margin-bottom:16px">
+    <div class="card-hd">
+      <div class="card-title">Avancement du projet</div>
+      <span class="willsheet-status ${riskClass==='danger'?'':riskClass==='warn'?'':'ready'}">${escapeHtml(status)}</span>
+    </div>
+    <div class="project-field-grid">
+      <div class="project-field wide"><div class="project-field-label">Lecture commerciale</div><div class="project-field-value">${escapeHtml(statusSub)}</div></div>
+      <div class="project-field"><div class="project-field-label">Score priorité</div><div class="project-field-value">${score}/100 · ${escapeHtml(priorityLabel(score))}</div></div>
+      <div class="project-field"><div class="project-field-label">Santé dossier</div><div class="project-field-value">${escapeHtml(riskLabel)} · ${daysSince(lastClientActivity(c,key))} j sans mouvement</div></div>
+      <div class="project-field wide"><div class="project-field-label">Prochaine étape</div><div class="project-field-value">${escapeHtml(next)}</div></div>
+      <div class="project-field"><div class="project-field-label">Départ du dossier</div><div class="project-field-value">${escapeHtml(compactText(start,150))}</div></div>
+      <div class="project-field"><div class="project-field-label">Dernière mise à jour</div><div class="project-field-value">${escapeHtml(compactText(latest,150))}</div></div>
+    </div>
+  </div>`;
+}
+function renderClientTimeline(c,key){
+  const items=[];
+  items.push({date:c.createdAt||toStr(),title:'Fiche client créée',sub:'Début du dossier',type:'Client'});
+  (c.calls||[]).forEach(call=>items.push({date:call.date,title:'Appel enregistré',sub:compactText(call.summary||'Compte-rendu sans résumé',130),type:String(call.source||'manual').startsWith('gemini')?'Gemini':'Appel'}));
+  S.events.filter(e=>e.clientKey===key).forEach(e=>items.push({date:e.date,title:e.title||'Événement',sub:e.time?e.time:'Agenda',type:e.type||'RDV'}));
+  S.todos.filter(t=>t.clientKey===key).forEach(t=>items.push({date:t.updatedAt||t.createdAt||t.dueDate||toStr(),title:t.done?'Tâche terminée':'Tâche créée',sub:shortTaskTitle(t.text),type:taskTypeLabel(t.type||inferTaskType(t.text))}));
+  S.pendingEvents.filter(e=>e.clientKey===key).forEach(e=>items.push({date:e.createdAt||toStr(),title:'RDV/Rappel à valider',sub:e.title,type:'Validation'}));
+  S.pendingActions.filter(a=>a.clientKey===key).forEach(a=>items.push({date:a.createdAt||toStr(),title:'Tâche Gemini à valider',sub:a.text,type:'Validation'}));
+  S.pendingUpdates.filter(u=>u.clientKey===key).forEach(u=>items.push({date:u.createdAt||toStr(),title:'Mise à jour fiche à valider',sub:u.label||u.field,type:'Validation'}));
+  items.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  return `<div class="card" style="margin-bottom:16px">
+    <div class="card-hd"><div class="card-title">Timeline commerciale</div><span class="willsheet-status ready">${items.length}</span></div>
+    <div style="padding:8px 14px 12px">
+      ${items.slice(0,10).map(it=>`<div style="display:grid;grid-template-columns:84px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:.69rem;color:var(--t3);font-weight:800">${dFr(it.date)}</div>
+        <div><div style="font-size:.8rem;font-weight:800;color:var(--nav)">${escapeHtml(it.title)} <span style="font-size:.62rem;color:var(--accent);font-weight:800">· ${escapeHtml(it.type)}</span></div>
+        <div style="font-size:.74rem;color:var(--t2);line-height:1.45">${escapeHtml(it.sub||'—')}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
 function renderProjectSnapshot(c,key){
   const ws=normalizeWillsheet(c.willsheet,c);
+  const stage=clientStage(c,ws);
   const fields=[
     ['Destination',projectVal(ws,c,'cruisingArea',textValue(c.interests))],
     ['Dates',projectVal(ws,c,'datesDuration',ws.departureDate)],
@@ -1729,7 +1939,10 @@ function renderProjectSnapshot(c,key){
   return `<div class="card" style="margin-bottom:16px">
     <div class="card-hd">
       <div class="card-title">Projet commercial</div>
-      <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openEditClientModal('${key}')">Modifier</button>
+      <div style="display:flex;gap:7px;align-items:center">
+        <span class="willsheet-status ready">${escapeHtml(stageLabel(stage))}</span>
+        <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openEditClientModal('${key}')">Modifier</button>
+      </div>
     </div>
     <div class="project-field-grid">
       <div class="project-field wide"><div class="project-field-label">Brief rapide</div><div class="project-field-value">${escapeHtml(textValue(c.interests)||textValue(ws.projectTitle)||'Aucun brief renseigné')}</div></div>
@@ -1808,7 +2021,13 @@ function saveWillsheetFromModal(){
 function mergeWillsheet(key,incoming){
   const c=S.clients[key];if(!c||!incoming||typeof incoming!=='object')return;
   const current=normalizeWillsheet(c.willsheet,c);
-  WILLSHEET_FIELDS.forEach(k=>{if(incoming[k]!=null&&String(incoming[k]).trim())current[k]=String(incoming[k]).trim();});
+  const appendFields=new Set(['budget','competitors','alternatives','decisionDeadline','decisionDate','notes','boatCriteria','flexibility']);
+  WILLSHEET_FIELDS.forEach(k=>{
+    const next=textValue(incoming[k],'').trim();
+    if(!next)return;
+    if(!current[k]){current[k]=next;return;}
+    if(appendFields.has(k))current[k]=mergeLongText(current[k],next,'Nouvel appel');
+  });
   current.updatedAt=toStr();
   c.willsheet=current;
 }
@@ -1825,7 +2044,7 @@ async function prefillWillsheetFromFirstCall(key){
   }catch(err){toast('Préremplissage impossible : '+err.message,'err');}
 }
 async function geminiExtractWillsheet(c,call,today){
-  const prompt=`Tu es un assistant commercial Filovent. À partir du premier appel client ci-dessous, remplis une WillSheet.
+  const prompt=`Tu es un assistant commercial Filovent. À partir du premier appel client ci-dessous, remplis une WillSheet en français professionnel.
 Client: ${c.name}
 Email: ${c.email||''}
 Téléphone: ${c.phone||''}
@@ -1833,7 +2052,7 @@ Projet déjà connu: ${textValue(c.interests)}
 Date: ${today}
 Résumé appel: ${call.summary||''}
 Transcription: ${call.transcription||''}
-Actions: ${(call.actions||[]).join(' | ')}
+Actions: ${normalizedActionList(call.actions||[]).join(' | ')}
 
 Réponds UNIQUEMENT en JSON:
 {"willsheet":{
@@ -1842,7 +2061,10 @@ Réponds UNIQUEMENT en JSON:
 "budget":"","competitors":"","alternatives":"","decisionDeadline":"","decisionDate":"","knowledge":"","clientTag":"",
 "language":"","nationality":"","notes":""
 }}
-Si une information n'est pas dite, laisse une chaîne vide.`;
+Règles :
+- Tous les champs texte doivent être en français, sauf noms propres, lieux et termes nautiques usuels.
+- Ne remplace pas une information certaine par une hypothèse.
+- Si une information n'est pas dite, laisse une chaîne vide.`;
   const {data}=await geminiGenerateContent({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.1,maxOutputTokens:4096}});
   const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
   const match=raw.match(/\{[\s\S]*\}/);
@@ -2142,20 +2364,127 @@ function rejectAllPendingEvents(key){
   S.pendingEvents=S.pendingEvents.filter(e=>e.clientKey!==key);
   save();_renderClientDetail(key);toast('Événements détectés ignorés');
 }
+function renderPendingAiReview(key){
+  const actions=S.pendingActions.filter(a=>a.clientKey===key);
+  const updates=S.pendingUpdates.filter(u=>u.clientKey===key);
+  if(!actions.length&&!updates.length)return '';
+  return `<div class="card" style="margin-bottom:16px;border-color:rgba(23,106,156,.28)">
+    <div class="card-hd">
+      <div class="card-title">Suggestions Gemini à valider <span class="willsheet-status">${actions.length+updates.length}</span></div>
+      <button class="btn btn-outline" style="font-size:.72rem;padding:4px 9px" onclick="rejectAllPendingAi('${key}')">Tout ignorer</button>
+    </div>
+    <div class="pending-events">
+      ${updates.map(u=>`
+        <div class="pending-event" id="pu-card-${u.id}">
+          <div class="pending-event-top">
+            <div>
+              <div class="pending-event-title">Mettre à jour : ${escapeHtml(u.label||u.field)}</div>
+              <div class="pending-event-sub">Valeur actuelle : ${escapeHtml(compactText(u.current||'vide',120))}</div>
+            </div>
+            <span class="ev-badge ev-suivi">Fiche</span>
+          </div>
+          <textarea class="form-ctrl" id="pu-value-${u.id}" rows="3">${escapeHtml(u.value||'')}</textarea>
+          <div class="pending-event-actions">
+            <button class="btn btn-outline" onclick="rejectPendingUpdate('${u.id}')">Ignorer</button>
+            <button class="btn btn-navy" onclick="approvePendingUpdate('${u.id}')">Valider la mise à jour</button>
+          </div>
+        </div>`).join('')}
+      ${actions.map(a=>`
+        <div class="pending-event" id="pa-card-${a.id}">
+          <div class="pending-event-top">
+            <div>
+              <div class="pending-event-title">${escapeHtml(a.text||'Action détectée')}</div>
+              <div class="pending-event-sub">Issue de ${escapeHtml(a.sourceLabel||'Gemini')} · modifiez avant création si besoin.</div>
+            </div>
+            <span class="ev-badge ev-rappel">Tâche</span>
+          </div>
+          <div class="pending-event-grid">
+            <input id="pa-text-${a.id}" value="${escapeHtml(a.text||'')}" placeholder="Titre court">
+            <input id="pa-date-${a.id}" type="date" value="${escapeHtml(a.dueDate||toStr())}">
+            <select id="pa-type-${a.id}"><option value="relance" ${a.type==='relance'?'selected':''}>Relance</option><option value="devis" ${a.type==='devis'?'selected':''}>Devis</option><option value="appel" ${a.type==='appel'?'selected':''}>Appel</option><option value="option" ${a.type==='option'?'selected':''}>Option</option><option value="document" ${a.type==='document'?'selected':''}>Document</option><option value="autre" ${a.type==='autre'?'selected':''}>Autre</option></select>
+            <select id="pa-priority-${a.id}"><option value="normal" ${a.priority!=='high'&&a.priority!=='low'?'selected':''}>Normale</option><option value="high" ${a.priority==='high'?'selected':''}>Urgente</option><option value="low" ${a.priority==='low'?'selected':''}>Faible</option></select>
+          </div>
+          <textarea class="form-ctrl" id="pa-details-${a.id}" rows="2" placeholder="Détails">${escapeHtml(a.details||'')}</textarea>
+          <div class="pending-event-actions">
+            <button class="btn btn-outline" onclick="rejectPendingAction('${a.id}')">Ignorer</button>
+            <button class="btn btn-navy" onclick="approvePendingAction('${a.id}')">Créer la tâche</button>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+function rejectAllPendingAi(key){
+  S.pendingActions=S.pendingActions.filter(a=>a.clientKey!==key);
+  S.pendingUpdates=S.pendingUpdates.filter(u=>u.clientKey!==key);
+  save();_renderClientDetail(key);updateBadges();toast('Suggestions Gemini ignorées');
+}
+function approvePendingAction(id){
+  const a=S.pendingActions.find(x=>x.id===id);if(!a)return;
+  const text=document.getElementById('pa-text-'+id)?.value.trim()||a.text;
+  if(!text){toast('Titre requis','err');return;}
+  S.todos.push({id:uid(),text,details:document.getElementById('pa-details-'+id)?.value.trim()||'',dueDate:document.getElementById('pa-date-'+id)?.value||toStr(),clientKey:a.clientKey,done:false,createdAt:toStr(),source:'gemini-approved',type:document.getElementById('pa-type-'+id)?.value||a.type||'relance',priority:document.getElementById('pa-priority-'+id)?.value||a.priority||'normal'});
+  S.pendingActions=S.pendingActions.filter(x=>x.id!==id);
+  save();updateBadges();renderTodos();renderDashboard();if(S.currentClient)_renderClientDetail(S.currentClient);toast('Tâche validée ✓','ok');
+}
+function rejectPendingAction(id){S.pendingActions=S.pendingActions.filter(x=>x.id!==id);save();updateBadges();if(S.currentClient)_renderClientDetail(S.currentClient);toast('Tâche Gemini ignorée');}
+function approvePendingUpdate(id){
+  const u=S.pendingUpdates.find(x=>x.id===id);if(!u)return;
+  const c=S.clients[u.clientKey];if(!c)return;
+  const value=document.getElementById('pu-value-'+id)?.value.trim()||u.value;
+  if(u.scope==='client')c[u.field]=mergeClientBrief(c[u.field],value);
+  else{
+    const ws=normalizeWillsheet(c.willsheet,c);
+    ws[u.field]=mergeLongText(ws[u.field],value,'Validation Gemini');
+    ws.updatedAt=toStr();c.willsheet=ws;
+  }
+  c.updatedAt=toStr();
+  S.pendingUpdates=S.pendingUpdates.filter(x=>x.id!==id);
+  save();updateBadges();renderClientsGrid();renderDashboard();if(S.currentClient)_renderClientDetail(S.currentClient);toast('Fiche mise à jour ✓','ok');
+}
+function rejectPendingUpdate(id){S.pendingUpdates=S.pendingUpdates.filter(x=>x.id!==id);save();updateBadges();if(S.currentClient)_renderClientDetail(S.currentClient);toast('Mise à jour ignorée');}
 
 /* ══════════════════════════════════════════
    TODOS
 ══════════════════════════════════════════ */
+function fillTodoClientSelect(selected=''){
+  document.getElementById('td-client').innerHTML='<option value="">— Aucun —</option>'+Object.values(S.clients).map(c=>`<option value="${cKey(c.prenom,c.nom)}" ${cKey(c.prenom,c.nom)===selected?'selected':''}>${escapeHtml(c.name)}</option>`).join('');
+}
 function openAddTodoModal(pc=''){
-  document.getElementById('td-client').innerHTML='<option value="">— Aucun —</option>'+Object.values(S.clients).map(c=>`<option value="${cKey(c.prenom,c.nom)}" ${cKey(c.prenom,c.nom)===pc?'selected':''}>${c.name}</option>`).join('');
+  S.editingTodo=null;
+  document.getElementById('todo-modal-title').textContent='✅ Nouvelle tâche';
+  document.getElementById('todo-modal-sub').textContent='Ajouter une action à votre liste.';
+  document.getElementById('todo-modal-save').textContent='Créer la tâche';
+  fillTodoClientSelect(pc||S.currentClient||'');
   document.getElementById('td-text').value='';document.getElementById('td-details').value='';document.getElementById('td-date').value=toStr();
+  document.getElementById('td-type').value='relance';document.getElementById('td-priority').value='normal';
   openModal('modal-add-todo');
 }
-function addTodo(){
+function openEditTodoModal(id){
+  const t=S.todos.find(t=>t.id===id);if(!t)return;
+  S.editingTodo=id;
+  document.getElementById('todo-modal-title').textContent='Modifier la tâche';
+  document.getElementById('todo-modal-sub').textContent='Ajuster le titre court, les détails et l’échéance.';
+  document.getElementById('todo-modal-save').textContent='Enregistrer';
+  fillTodoClientSelect(t.clientKey||'');
+  document.getElementById('td-text').value=t.text||'';
+  document.getElementById('td-details').value=t.details||'';
+  document.getElementById('td-date').value=t.dueDate||toStr();
+  document.getElementById('td-type').value=t.type||'relance';
+  document.getElementById('td-priority').value=t.priority||'normal';
+  openModal('modal-add-todo');
+}
+function saveTodoFromModal(){
   const text=document.getElementById('td-text').value.trim();if(!text){toast('Description requise','err');return;}
   const ck=document.getElementById('td-client').value;
-  S.todos.push({id:uid(),text,details:document.getElementById('td-details').value.trim(),dueDate:document.getElementById('td-date').value,clientKey:ck||'',done:false,createdAt:toStr(),source:'manual'});
-  save();updateBadges();renderTodos();renderDashboard();closeModal('modal-add-todo');toast('Tâche ajoutée ✓','ok');
+  const payload={text,details:document.getElementById('td-details').value.trim(),dueDate:document.getElementById('td-date').value,clientKey:ck||'',type:document.getElementById('td-type').value||'relance',priority:document.getElementById('td-priority').value||'normal'};
+  if(S.editingTodo){
+    const t=S.todos.find(t=>t.id===S.editingTodo);
+    if(t)Object.assign(t,payload,{updatedAt:toStr()});
+  }else{
+    S.todos.push({id:uid(),...payload,done:false,createdAt:toStr(),source:'manual'});
+  }
+  const edited=!!S.editingTodo;S.editingTodo=null;
+  save();updateBadges();renderTodos();renderDashboard();if(S.currentClient)_renderClientDetail(S.currentClient);closeModal('modal-add-todo');toast(edited?'Tâche modifiée ✓':'Tâche ajoutée ✓','ok');
 }
 function toggleTodo(id){const t=S.todos.find(t=>t.id===id);if(t){t.done=!t.done;save();updateBadges();renderTodos();renderDashboard();}}
 
@@ -2236,7 +2565,7 @@ function buildTaskRow(t, isOverdue){
   const chk=document.createElement('div');chk.className='task-check-sq'+(t.done?' done':'');chk.innerHTML='✓';
   chk.onclick=e=>{e.stopPropagation();toggleTodo(t.id);};
 
-  const txt=document.createElement('div');txt.className='task-txt'+(t.done?' done':'');txt.textContent=t.text;
+  const txt=document.createElement('div');txt.className='task-txt'+(t.done?' done':'');txt.textContent=shortTaskTitle(t.text);
 
   const due=document.createElement('div');due.className='task-due'+(isOverdue&&!t.done?' ov':'');due.textContent=t.dueDate?dFr(t.dueDate):'';
 
@@ -2244,10 +2573,12 @@ function buildTaskRow(t, isOverdue){
 
   // Expandable detail
   const exp=document.createElement('div');exp.className='task-exp';
+  const meta=document.createElement('div');meta.className='task-exp-txt';meta.textContent=`${taskTypeLabel(t.type||inferTaskType(t.text))} · Priorité ${taskPriorityLabel(t.priority)}`;exp.appendChild(meta);
   if(t.details){const dt=document.createElement('div');dt.className='task-exp-txt';dt.textContent=t.details;exp.appendChild(dt);}
   const acts=document.createElement('div');acts.style.cssText='display:flex;gap:6px;flex-wrap:wrap';
   acts.innerHTML=`
     <button class="btn btn-navy" style="font-size:.69rem;padding:4px 10px" onclick="toggleTodo('${t.id}')">${t.done?'Rouvrir':'✓ Marquer faite'}</button>
+    <button class="btn btn-outline" style="font-size:.69rem;padding:4px 10px" onclick="openEditTodoModal('${t.id}')">Modifier</button>
     <button class="btn btn-red" style="font-size:.69rem;padding:4px 8px" onclick="deleteTodo('${t.id}')">🗑</button>
     ${t.clientKey?`<button class="btn btn-outline" style="font-size:.69rem;padding:4px 10px" onclick="openClientDetail('${t.clientKey}')">Fiche →</button>`:''}`;
   exp.appendChild(acts);
@@ -2273,20 +2604,63 @@ function openTodoDetail(id){
   document.getElementById('todo-detail-content').innerHTML=`
     <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
       <div class="todo-check ${t.done?'checked':''}" onclick="toggleTodo('${t.id}');closeOverlay('ov-todo')" style="width:22px;height:22px;border-radius:6px;cursor:pointer">✓</div>
-      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--nav);line-height:1.3;${t.done?'text-decoration:line-through;opacity:.5':''}">  ${t.text}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--nav);line-height:1.3;${t.done?'text-decoration:line-through;opacity:.5':''}">  ${escapeHtml(t.text)}</div>
     </div>
-    ${t.details?`<div style="background:var(--bg);border-radius:8px;padding:12px;font-size:.82rem;line-height:1.6;color:var(--t2);margin-bottom:13px">${t.details}</div>`:''}
+    ${t.details?`<div style="background:var(--bg);border-radius:8px;padding:12px;font-size:.82rem;line-height:1.6;color:var(--t2);margin-bottom:13px;white-space:pre-wrap">${escapeHtml(t.details)}</div>`:''}
+    <div class="ev-row"><div class="ev-dl">Type</div><div class="ev-dv">${escapeHtml(taskTypeLabel(t.type||inferTaskType(t.text)))}</div></div>
+    <div class="ev-row"><div class="ev-dl">Priorité</div><div class="ev-dv">${escapeHtml(taskPriorityLabel(t.priority))}</div></div>
     <div class="ev-row"><div class="ev-dl">📅 Échéance</div><div class="ev-dv">${dFr(t.dueDate)||'—'}</div></div>
     ${cl?`<div class="ev-row"><div class="ev-dl">👤 Client</div><div class="ev-dv" style="cursor:pointer;color:var(--accent)" onclick="closeOverlay('ov-todo');openClientDetail('${t.clientKey}')">${cl.name} →</div></div>`:''}
     <div class="ev-row"><div class="ev-dl">Statut</div><div class="ev-dv">${t.done?'<span style="color:var(--green);font-weight:700">✅ Terminée</span>':'<span style="color:var(--gold);font-weight:700">⏳ En attente</span>'}</div></div>
     <div class="ev-row"><div class="ev-dl">Source</div><div class="ev-dv">${t.source==='auto'?'Générée automatiquement':'Manuelle'}</div></div>
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="toggleTodo('${t.id}');closeOverlay('ov-todo')">${t.done?'Rouvrir':'Marquer terminée'}</button>
+      <button class="btn btn-outline" onclick="closeOverlay('ov-todo');openEditTodoModal('${t.id}')">Modifier</button>
       <button class="btn btn-red" onclick="deleteTodo('${t.id}');closeOverlay('ov-todo')">🗑</button>
     </div>`;
   document.getElementById('ov-todo').classList.add('open');
 }
 function deleteTodo(id){S.todos=S.todos.filter(t=>t.id!==id);save();updateBadges();renderTodos();renderDashboard();toast('Tâche supprimée');}
+
+function sequenceLibrary(){
+  return {
+    first:{label:'Premier contact',items:[
+      ['Appeler pour qualifier le projet',0,'appel','high'],
+      ['Envoyer le template premier contact',0,'relance','normal'],
+      ['Relancer si pas de retour',2,'relance','normal']
+    ]},
+    offer:{label:'Devis envoyé',items:[
+      ['Vérifier ouverture/retour sur la proposition',1,'devis','high'],
+      ['Relancer avec alternative si hésitation',3,'relance','normal'],
+      ['Appel décision sur le devis',5,'appel','high']
+    ]},
+    option:{label:'Option posée',items:[
+      ['Confirmer la deadline de l’option',0,'option','high'],
+      ['Relancer avant expiration option',1,'option','high'],
+      ['Dernier appel de confirmation',2,'appel','high']
+    ]},
+    cold:{label:'Pas de réponse',items:[
+      ['Relance courte SMS / WhatsApp',0,'relance','normal'],
+      ['Appel de suivi',2,'appel','normal'],
+      ['Dernière relance avant classement',5,'relance','low']
+    ]}
+  };
+}
+function openSequenceMenu(key){
+  const libs=sequenceLibrary();
+  const choice=prompt('Séquence à ajouter :\\n1 - Premier contact\\n2 - Devis envoyé\\n3 - Option posée\\n4 - Pas de réponse');
+  const map={'1':'first','2':'offer','3':'option','4':'cold'};
+  if(!map[choice])return;
+  applySequence(key,map[choice]);
+}
+function applySequence(key,type){
+  const c=S.clients[key];const seq=sequenceLibrary()[type];if(!c||!seq)return;
+  seq.items.forEach(([text,offset,taskType,priority])=>{
+    S.todos.push({id:uid(),text,details:`Séquence "${seq.label}" pour ${c.name}.`,dueDate:addDays(toStr(),offset),clientKey:key,done:false,createdAt:toStr(),source:'sequence',type:taskType,priority});
+  });
+  c.updatedAt=toStr();
+  save();updateBadges();renderTodos();renderDashboard();_renderClientDetail(key);toast(`Séquence ajoutée : ${seq.label} ✓`,'ok');
+}
 
 /* ══════════════════════════════════════════
    CLIENTS
@@ -2307,6 +2681,7 @@ function openEditClientModal(key=S.currentClient){
   document.getElementById('ec-email').value=c.email||'';
   document.getElementById('ec-phone').value=c.phone||'';
   document.getElementById('ec-interests').value=textValue(c.interests);
+  document.getElementById('ec-stage').innerHTML=CLIENT_STAGES.map(([id,label])=>`<option value="${id}" ${clientStage(c)===id?'selected':''}>${label}</option>`).join('');
   openModal('modal-edit-client');
 }
 function saveEditClient(){
@@ -2317,7 +2692,7 @@ function saveEditClient(){
   if(!prenom||!nom){toast('Prénom et nom requis','err');return;}
   const nextKey=cKey(prenom,nom);
   if(nextKey!==oldKey&&S.clients[nextKey]){toast('Un autre client porte déjà ce nom','err');return;}
-  const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),interests:document.getElementById('ec-interests').value.trim()};
+  const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),stage:document.getElementById('ec-stage').value,interests:document.getElementById('ec-interests').value.trim(),updatedAt:toStr()};
   syncClientReferences(oldKey,nextKey,oldName,updated.name);
   if(nextKey!==oldKey) delete S.clients[oldKey];
   S.clients[nextKey]=updated;
@@ -2337,16 +2712,19 @@ function syncClientReferences(oldKey,nextKey,oldName,newName){
   };
   S.events.forEach(patchRecord);
   S.pendingEvents.forEach(patchRecord);
+  S.pendingActions.forEach(patchRecord);
+  S.pendingUpdates.forEach(patchRecord);
   S.todos.forEach(patchRecord);
   const calls=S.clients[oldKey]?.calls||[];
   calls.forEach(call=>patchRecord(call,true));
 }
 function renderClientsGrid(){
-  const keys=Object.keys(S.clients).sort((a,b)=>lastCallDate(b).localeCompare(lastCallDate(a)));
+  const keys=Object.keys(S.clients).sort((a,b)=>clientPriorityScore(S.clients[b],b)-clientPriorityScore(S.clients[a],a));
   const el=document.getElementById('clients-inner');
   if(!keys.length){el.innerHTML=`<div class="empty" style="height:60vh"><div class="empty-icon">👥</div><div class="empty-title">Aucun client</div><div class="empty-sub">Créez votre premier client avec le bouton + Client.</div></div>`;return;}
   el.innerHTML=`<div class="clients-grid">${keys.map(k=>{
     const c=S.clients[k];const pd=pendingCount(k);const lc=lastCallDate(k);
+    const score=clientPriorityScore(c,k);const [riskClass,riskLabel]=clientRisk(c,k);const stage=clientStage(c);
     return `<div class="client-card" onclick="openClientDetail('${k}')">
       <div style="display:flex;align-items:center;gap:11px;margin-bottom:11px">
         <div class="ch-avatar" style="width:42px;height:42px;font-size:.95rem">${ini(c.prenom,c.nom)}</div>
@@ -2354,6 +2732,11 @@ function renderClientsGrid(){
           <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.93rem;color:var(--nav)">${c.name}</div>
           <div style="font-size:.7rem;color:var(--t3)">${lc?'Dernier appel : '+dFr(lc):'Aucun appel'}</div>
         </div>${pd>0?`<div class="sb-badge">${pd}</div>`:''}
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <span class="willsheet-status ${riskClass==='ok'?'ready':''}">${escapeHtml(riskLabel)}</span>
+        <span class="willsheet-status ready">${escapeHtml(stageLabel(stage))}</span>
+        <span class="willsheet-status ${score>=55?'ready':''}">Score ${score}</span>
       </div>
       ${textValue(c.interests)?`<div style="font-size:.76rem;color:var(--t2);background:var(--bg);padding:6px 9px;border-radius:7px;margin-bottom:8px">${escapeHtml(textValue(c.interests))}</div>`:''}
       <div style="font-size:.71rem;color:var(--t3);display:flex;gap:10px"><span>${(c.calls||[]).length} appel(s)</span><span>·</span><span>${S.events.filter(e=>e.clientKey===k).length} événement(s)</span></div>
@@ -2385,6 +2768,9 @@ function _renderClientDetail(key){
   const lastCall=calls[0];
   const projectMain=textValue(c.interests)||textValue(ws.projectTitle)||textValue(ws.cruisingArea)||'Projet à qualifier';
   const decision=ws.decisionDeadline||ws.decisionDate||'À qualifier';
+  const score=clientPriorityScore(c,key);
+  const [riskClass,riskLabel]=clientRisk(c,key,ws);
+  const stage=clientStage(c,ws);
 
   document.getElementById('client-detail-inner').innerHTML=`
     <div class="client-hero compact">
@@ -2393,7 +2779,7 @@ function _renderClientDetail(key){
           <div class="ch-avatar">${ini(c.prenom,c.nom)}</div>
           <div style="min-width:0">
             <div class="ch-name">${escapeHtml(c.name)}</div>
-            <div class="ch-meta">${escapeHtml(c.email||'Email non renseigné')}${c.phone?' · '+escapeHtml(c.phone):' · Téléphone non renseigné'}</div>
+            <div class="ch-meta">${escapeHtml(c.email||'Email non renseigné')}${c.phone?' · '+escapeHtml(c.phone):' · Téléphone non renseigné'} · ${escapeHtml(stageLabel(stage))}</div>
           </div>
         </div>
         <div class="client-hero-actions">
@@ -2414,6 +2800,11 @@ function _renderClientDetail(key){
           <div class="client-summary-sub">${nextEvent?dFr(nextEvent.date)+(nextEvent.time?' · '+nextEvent.time:''):nextTodo&&nextTodo.dueDate?dFr(nextTodo.dueDate):'Créer un RDV ou une tâche'}</div>
         </div>
         <div class="client-summary-card">
+          <div class="client-summary-label">Priorité</div>
+          <div class="client-summary-value">${score}/100 · ${escapeHtml(priorityLabel(score))}</div>
+          <div class="client-summary-sub">${escapeHtml(riskLabel)} · ${daysSince(lastClientActivity(c,key))} j sans mouvement</div>
+        </div>
+        <div class="client-summary-card">
           <div class="client-summary-label">Décision</div>
           <div class="client-summary-value">${escapeHtml(decision)}</div>
           <div class="client-summary-sub">${escapeHtml(ws.budget||'Budget à qualifier')}</div>
@@ -2424,7 +2815,7 @@ function _renderClientDetail(key){
           <div class="client-summary-sub">${lastCall?'Dernier appel '+dFr(lastCall.date):'Aucun appel enregistré'}</div>
         </div>
       </div>
-      ${overdue.length?`<div class="client-alert">⚠ ${overdue.length} tâche(s) en retard sur ce dossier</div>`:''}
+      ${overdue.length?`<div class="client-alert">⚠ ${overdue.length} tâche(s) en retard sur ce dossier</div>`:riskClass==='danger'?`<div class="client-alert">⚠ ${escapeHtml(riskLabel)} : une relance est recommandée</div>`:''}
     </div>
 
     <div class="client-action-row">
@@ -2436,6 +2827,9 @@ function _renderClientDetail(key){
       </button>
       <button class="client-action-btn" onclick="openAddTodoModal('${key}')">
         <span class="client-action-ico">✓</span><span class="client-action-copy"><span class="client-action-title">Tâche</span><span class="client-action-sub">Action à faire</span></span>
+      </button>
+      <button class="client-action-btn" onclick="openSequenceMenu('${key}')">
+        <span class="client-action-ico">↻</span><span class="client-action-copy"><span class="client-action-title">Séquence</span><span class="client-action-sub">Relances auto</span></span>
       </button>
       <label class="mini-upload" id="gz-${key}"
         ondragover="event.preventDefault();this.classList.add('drag')"
@@ -2455,7 +2849,7 @@ function _renderClientDetail(key){
 
     <div class="client-layout">
       <div>
-        <div id="pending-review-${key}">${renderPendingEventReview(key)}</div>
+        <div id="pending-review-${key}">${renderPendingEventReview(key)}${renderPendingAiReview(key)}</div>
 
         <div class="process-card" id="pc-${key}" style="margin-bottom:16px">
           <div class="process-title">Analyse Gemini en cours…</div>
@@ -2474,6 +2868,8 @@ function _renderClientDetail(key){
         </div>
 
         ${renderProjectSnapshot(c,key)}
+        ${renderProjectProgress(c,key)}
+        ${renderClientTimeline(c,key)}
 
         <!-- JOURNAL -->
         <div class="card">
@@ -2493,7 +2889,7 @@ function _renderClientDetail(key){
                 </div>
                 ${call.transcription?`<details style="margin-bottom:7px"><summary style="font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:600">📄 Voir la transcription complète</summary><div style="font-size:.77rem;line-height:1.65;color:var(--t2);background:var(--bg);padding:11px;border-radius:8px;margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap">${call.transcription}</div></details>`:''}
                 <div class="call-summary-txt">${call.summary||'—'}</div>
-                ${(call.actions||[]).length?`<div style="margin-top:8px">${call.actions.map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${a}</div>`).join('')}</div>`:''}
+                ${(call.actions||[]).length?`<div style="margin-top:8px">${normalizedActionList(call.actions).map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${escapeHtml(a)}</div>`).join('')}</div>`:''}
                 <div class="call-tags">
                   ${callEventBadge(call)}
                   ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
@@ -2521,7 +2917,7 @@ function _renderClientDetail(key){
             <div style="padding:9px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;cursor:pointer" onclick="openTodoDetail('${t.id}')">
               <div class="todo-check ${t.done?'checked':''}" onclick="event.stopPropagation();toggleTodo('${t.id}');setTimeout(()=>_renderClientDetail('${key}'),80)" style="width:15px;height:15px;border-radius:4px;font-size:.62rem">✓</div>
               <div style="flex:1;min-width:0">
-                <div style="font-size:.79rem;font-weight:500;${t.done?'text-decoration:line-through;opacity:.5':''}color:var(--t1)">${escapeHtml(t.text)}</div>
+                <div style="font-size:.79rem;font-weight:500;${t.done?'text-decoration:line-through;opacity:.5':''}color:var(--t1)">${escapeHtml(shortTaskTitle(t.text))}</div>
                 ${t.dueDate?`<div style="font-size:.69rem;color:${past(t.dueDate)&&!t.done?'var(--red)':'var(--t3)'}">${dFr(t.dueDate)}</div>`:''}
               </div>
             </div>`).join('')}
@@ -2706,14 +3102,14 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de t
 {
   "transcription": "Transcription complète et fidèle de l'appel, mot pour mot",
   "summary": "Résumé commercial en 2-3 phrases : besoins exprimés, budget, destination, état d'avancement",
-  "actions": ["Action commerciale à faire suite à cet appel", "Autre action si nécessaire"],
-  "events": [{"title": "Titre du RDV ou rappel", "type": "rdv", "date": "YYYY-MM-DD", "time": "HH:MM", "notes": "contexte"}],
+  "actions": [{"title": "Titre court de l'action", "details": "Contexte utile, critères, objections ou informations à ne pas perdre", "dueDate": "YYYY-MM-DD"}],
+  "events": [{"title": "Titre court du RDV ou rappel", "type": "rdv", "date": "YYYY-MM-DD", "time": "HH:MM", "notes": "contexte détaillé"}],
   "client_interests": "Destination, type de bateau, période, budget, nombre de personnes détectés",
   "duration_estimate": "X min",
   "willsheet": {
-    "projectTitle": "Cruising area - month of departure - year",
-    "serviceType": "One of the guests, Skippered, Crewed, Cruise, River...",
-    "charterRecord": "First charter ou Previous charters",
+    "projectTitle": "Zone de navigation - mois de départ - année",
+    "serviceType": "Sans skipper, avec skipper, équipage complet, croisière cabine, fluvial...",
+    "charterRecord": "Première location ou locations précédentes",
     "cruisingArea": "Destination(s) demandée(s)",
     "whyDestination": "Pourquoi cette destination",
     "departureBase": "Base(s) de départ",
@@ -2730,7 +3126,7 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de t
     "alternatives": "Offres concurrentes et alternatives",
     "decisionDeadline": "Deadline de décision et prochain RDV",
     "decisionDate": "Date de décision précise ou approximative",
-    "knowledge": "Enlightened ou Newbie",
+    "knowledge": "Client expérimenté ou débutant",
     "clientTag": "Tag client pertinent",
     "language": "Langue parlée",
     "nationality": "Nationalité",
@@ -2738,6 +3134,9 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de balises markdown, pas de t
   }
 }
 Règles :
+- Tous les champs texte doivent être en français professionnel, jamais en anglais, sauf noms propres, lieux et termes nautiques usuels.
+- Les actions doivent avoir un titre court lisible dans une to-do list. Mets les longs détails dans "details", pas dans "title".
+- Les événements doivent avoir un titre court. Mets tout le contexte dans "notes".
 - Si aucun RDV n'est explicitement fixé dans l'appel, renvoie events: []
 - Si aucune action concrète n'est mentionnée, renvoie actions: []
 - Le champ transcription doit ${sourceType==='transcript'?'reprendre fidèlement le transcript fourni, corrigé seulement si nécessaire pour la lisibilité':'retranscrire fidèlement tout ce qui est dit'}
@@ -2751,12 +3150,31 @@ function parseGeminiJson(raw){
   return JSON.parse(match[0]);
 }
 
+function queueGeminiUpdates(parsed,key,today,fileName,source){
+  const c=S.clients[key];if(!c)return;
+  if(parsed.client_interests){
+    const next=textValue(parsed.client_interests,'').trim();
+    const cur=textValue(c.interests,'').trim();
+    if(next&&next!==cur)S.pendingUpdates.push({id:uid(),clientKey:key,scope:'client',field:'interests',label:'Brief projet',current:cur,value:next,createdAt:today,source,sourceLabel:fileName||'appel'});
+  }
+  if(parsed.willsheet&&typeof parsed.willsheet==='object'){
+    const ws=normalizeWillsheet(c.willsheet,c);
+    WILLSHEET_FIELDS.forEach(field=>{
+      const next=textValue(parsed.willsheet[field],'').trim();
+      const cur=textValue(ws[field],'').trim();
+      if(!next||next===cur)return;
+      if(cur&&cur.toLowerCase().includes(next.toLowerCase()))return;
+      S.pendingUpdates.push({id:uid(),clientKey:key,scope:'willsheet',field,label:WILLSHEET_LABELS[field]||field,current:cur,value:next,createdAt:today,source,sourceLabel:fileName||'appel'});
+    });
+  }
+}
+
 function applyCallAnalysisResult(parsed,key,today,fileName,source){
   const c=S.clients[key];if(!c)return [];
   const callEvts=[];
   (parsed.events||[]).forEach(ev=>{
     if(!ev.date)return;
-    const pending={id:uid(),title:ev.title||`RDV ${c.name}`,date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:ev.notes||`Détecté dans l'appel du ${today}`,source,sourceLabel:fileName||'appel',createdAt:today};
+    const pending={id:uid(),title:shortTaskTitle(ev.title||`RDV ${c.name}`),date:ev.date,time:ev.time||'',type:ev.type||'rdv',client:c.name,clientKey:key,notes:textValue(ev.notes,`Détecté dans l'appel du ${today}`),source,sourceLabel:fileName||'appel',createdAt:today};
     S.pendingEvents.push(pending);callEvts.push({title:pending.title,date:ev.date,time:ev.time||'',pending:true});
   });
 
@@ -2764,15 +3182,18 @@ function applyCallAnalysisResult(parsed,key,today,fileName,source){
     const fu=new Date();fu.setDate(fu.getDate()+5);const fuStr=fu.toISOString().split('T')[0];
     const reminder={id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé lors de l'appel du ${today} — relance automatique`,source,sourceLabel:fileName||'appel',createdAt:today};
     S.pendingEvents.push(reminder);callEvts.push({title:reminder.title,date:fuStr,time:'',pending:true});
-    S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${parsed.summary||'—'}`,dueDate:fuStr,clientKey:key,done:false,createdAt:today,source:'auto'});
+    S.pendingActions.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${parsed.summary||'—'}`,dueDate:fuStr,clientKey:key,createdAt:today,source,sourceLabel:fileName||'appel',type:'relance',priority:'normal'});
   }
 
-  (parsed.actions||[]).forEach(a=>{S.todos.push({id:uid(),text:a,details:`Issue de l'appel du ${today} avec ${c.name}.`,dueDate:today,clientKey:key,done:false,createdAt:today,source:'auto'});});
-  if(parsed.client_interests)c.interests=textValue(parsed.client_interests);
-  if(parsed.willsheet)mergeWillsheet(key, parsed.willsheet);
+  (parsed.actions||[]).forEach(a=>{
+    const title=shortTaskTitle(actionTitle(a)||textValue(a));
+    const details=actionDetails(a);
+    S.pendingActions.push({id:uid(),text:title,details:details?`${details}\n\nIssue de l'appel du ${today} avec ${c.name}.`:`Issue de l'appel du ${today} avec ${c.name}.`,dueDate:actionDueDate(a,today),clientKey:key,createdAt:today,source,sourceLabel:fileName||'appel',type:inferTaskType(title+' '+details),priority:/urgent|option|deadline|expire/i.test(title+' '+details)?'high':'normal'});
+  });
+  queueGeminiUpdates(parsed,key,today,fileName,source);
 
   if(!c.calls)c.calls=[];
-  c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:parsed.summary||'',transcription:parsed.transcription||'',actions:parsed.actions||[],events:callEvts,source,fileName});
+  c.calls.push({id:uid(),date:today,duration:parsed.duration_estimate||'',summary:textValue(parsed.summary,''),transcription:textValue(parsed.transcription,''),actions:parsed.actions||[],events:callEvts,source,fileName});
 
   save();updateBadges();
   return callEvts;
@@ -2802,14 +3223,14 @@ function showGeminiResult(parsed,key,callEvts){
   if(pc)pc.classList.remove('show');if(rc)rc.classList.add('show');
   const rsumEl=document.getElementById('rsum-'+key);if(rsumEl)rsumEl.textContent=parsed.summary||'—';
   const raEl=document.getElementById('ractions-'+key);
-  if(raEl){raEl.innerHTML='';if((parsed.actions||[]).length){raEl.innerHTML=`<div class="result-section" style="margin-top:4px">Actions créées dans la to-do</div>`+parsed.actions.map(a=>`<div class="result-action">→ ${a}</div>`).join('');}}
+  if(raEl){raEl.innerHTML='';if((parsed.actions||[]).length){raEl.innerHTML=`<div class="result-section" style="margin-top:4px">Actions proposées à valider</div>`+normalizedActionList(parsed.actions).map(a=>`<div class="result-action">→ ${escapeHtml(a)}</div>`).join('');}}
   const reEl=document.getElementById('revents-'+key);
-  if(reEl){reEl.innerHTML='';if(callEvts.length){reEl.innerHTML=`<div class="result-section" style="margin-top:4px">Événements à valider avant ajout agenda</div>`+callEvts.map(ev=>`<div class="result-event"><span class="result-event-dt">${dFr(ev.date)}</span>${ev.time?ev.time+' · ':''}${ev.title}</div>`).join('');}}
+  if(reEl){reEl.innerHTML='';if(callEvts.length){reEl.innerHTML=`<div class="result-section" style="margin-top:4px">Événements à valider avant ajout agenda</div>`+callEvts.map(ev=>`<div class="result-event"><span class="result-event-dt">${dFr(ev.date)}</span>${ev.time?escapeHtml(ev.time)+' · ':''}${escapeHtml(ev.title)}</div>`).join('');}}
   // Refresh journal
   const listEl=document.getElementById('calls-list-'+key);
   if(listEl)_refreshCallsList(key,listEl);
   const pendingEl=document.getElementById('pending-review-'+key);
-  if(pendingEl)pendingEl.innerHTML=renderPendingEventReview(key);
+  if(pendingEl)pendingEl.innerHTML=renderPendingEventReview(key)+renderPendingAiReview(key);
 }
 function callEventBadge(call){
   const events=call.events||[];
@@ -2833,7 +3254,7 @@ function _refreshCallsList(key,listEl){
       </div>
       ${call.transcription?`<details style="margin-bottom:7px"><summary style="font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:600">📄 Transcription complète</summary><div style="font-size:.77rem;line-height:1.65;color:var(--t2);background:var(--bg);padding:11px;border-radius:8px;margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap">${call.transcription}</div></details>`:''}
       <div class="call-summary-txt">${call.summary||'—'}</div>
-      ${(call.actions||[]).length?`<div style="margin-top:8px">${call.actions.map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${a}</div>`).join('')}</div>`:''}
+      ${(call.actions||[]).length?`<div style="margin-top:8px">${normalizedActionList(call.actions).map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${escapeHtml(a)}</div>`).join('')}</div>`:''}
       <div class="call-tags">
         ${callEventBadge(call)}
         ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
@@ -2877,7 +3298,7 @@ function saveCall(){
     S.pendingEvents.push({id:uid(),title:`🔔 Relancer ${c.name}`,date:fuStr,time:'',type:'rappel',client:c.name,clientKey:key,notes:`Aucun RDV fixé le ${dFr(callDate)}`,source:'manual-call',sourceLabel:'saisie manuelle',createdAt:toStr()});
     S.todos.push({id:uid(),text:`Relancer ${c.name}`,details:`Aucun RDV fixé. Résumé : ${summary}`,dueDate:fuStr,clientKey:key,done:false,createdAt:toStr(),source:'auto'});
   }
-  actions.forEach(a=>S.todos.push({id:uid(),text:a,details:`Action issue de l'appel du ${dFr(callDate)} avec ${c.name}.`,dueDate:callDate,clientKey:key,done:false,createdAt:toStr(),source:'auto'}));
+  actions.forEach(a=>S.todos.push({id:uid(),text:shortTaskTitle(a),details:`${a}\n\nAction issue de l'appel du ${dFr(callDate)} avec ${c.name}.`,dueDate:callDate,clientKey:key,done:false,createdAt:toStr(),source:'auto'}));
   if(!c.calls)c.calls=[];
   const call={id:uid(),date:callDate,duration:document.getElementById('call-duration').value.trim(),summary,actions,events:callEvts,source:'manual'};
   c.calls.push(call);
@@ -2910,7 +3331,7 @@ function deleteCall(clientKey,callId){
 function askDelClient(key){S.pendingDelKey=key;document.getElementById('confirm-del-msg').textContent=`Supprimer définitivement ${S.clients[key]?.name} ? Tous les appels, tâches et événements liés seront effacés.`;openModal('modal-confirm-del');}
 function confirmDelClient(){
   const key=S.pendingDelKey;if(!key)return;const name=S.clients[key]?.name;
-  delete S.clients[key];S.events=S.events.filter(e=>e.clientKey!==key);S.pendingEvents=S.pendingEvents.filter(e=>e.clientKey!==key);S.todos=S.todos.filter(t=>t.clientKey!==key);
+  delete S.clients[key];S.events=S.events.filter(e=>e.clientKey!==key);S.pendingEvents=S.pendingEvents.filter(e=>e.clientKey!==key);S.pendingActions=S.pendingActions.filter(e=>e.clientKey!==key);S.pendingUpdates=S.pendingUpdates.filter(e=>e.clientKey!==key);S.todos=S.todos.filter(t=>t.clientKey!==key);
   S.pendingDelKey=null;save();updateBadges();renderSb();renderClientsGrid();closeModal('modal-confirm-del');toast(`${name} supprimé`);nav('clients');
 }
 

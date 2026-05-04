@@ -262,6 +262,12 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .client-summary-label{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.42);margin-bottom:6px}
 .client-summary-value{font-size:.86rem;font-weight:800;line-height:1.35;color:#fff}
 .client-summary-sub{font-size:.7rem;color:rgba(255,255,255,.55);margin-top:4px;line-height:1.35}
+.client-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.client-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.1);border-radius:999px;padding:6px 10px;color:#fff;font-size:.72rem;font-weight:800}
+.client-chip.star{background:rgba(246,196,83,.17);border-color:rgba(246,196,83,.36);color:#ffe29a}
+.client-chip.bien{background:rgba(35,138,115,.18);border-color:rgba(35,138,115,.35);color:#b9f4e2}
+.client-chip.dilemme{background:rgba(201,145,58,.18);border-color:rgba(201,145,58,.34);color:#f7d99d}
+.client-chip.nul{background:rgba(217,93,74,.18);border-color:rgba(217,93,74,.34);color:#ffc4bb}
 .client-alert{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 11px;border-radius:8px;background:rgba(250,204,21,.13);color:#fff;font-size:.78rem;font-weight:700;position:relative;z-index:1}
 .client-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
 .client-section-title{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:800;color:var(--nav)}
@@ -282,6 +288,35 @@ input,textarea,select{font-family:inherit;outline:none;background:transparent}
 .project-field.wide{grid-column:1/-1}
 .project-field-label{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:5px}
 .project-field-value{font-size:.81rem;line-height:1.45;color:var(--t2);white-space:pre-wrap}
+.pipeline-card{background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.pipeline-track{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.pipeline-step{display:flex;align-items:center;gap:6px;min-width:0;color:var(--t3);font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.pipeline-dot{width:24px;height:24px;border-radius:999px;border:1px solid #d7e3e8;background:#f4f8fa;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--t3);flex-shrink:0}
+.pipeline-step.done .pipeline-dot,.pipeline-step.active .pipeline-dot{background:var(--green);border-color:var(--green);color:#fff}
+.pipeline-step.active{color:var(--nav)}
+.pipeline-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.visual-project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px}
+.visual-tile{display:flex;gap:10px;align-items:flex-start;background:#f7fbfc;border:1px solid var(--border);border-radius:8px;padding:12px;min-height:78px}
+.visual-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(23,106,156,.1);color:var(--accent);font-size:1rem;flex-shrink:0}
+.visual-label{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:4px}
+.visual-value{font-size:.86rem;line-height:1.35;font-weight:800;color:var(--nav)}
+.visual-sub{font-size:.7rem;color:var(--t3);margin-top:3px;line-height:1.35}
+.now-panel{background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
+.now-main{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:linear-gradient(90deg,#fff,#f4fafb)}
+.now-ico{width:38px;height:38px;border-radius:12px;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.now-title{font-size:.92rem;font-weight:900;color:var(--nav);line-height:1.35}
+.now-sub{font-size:.75rem;color:var(--t3);margin-top:3px;line-height:1.45}
+.detail-accordion{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.detail-accordion>details{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 5px 14px rgba(7,21,36,.04)}
+.detail-accordion>details>summary{list-style:none;cursor:pointer;padding:13px 15px;font-size:.84rem;font-weight:900;color:var(--nav);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.detail-accordion>details>summary::-webkit-details-marker{display:none}
+.detail-accordion>details>summary::after{content:'+';width:22px;height:22px;border-radius:8px;background:#eef6f8;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:900}
+.detail-accordion>details[open]>summary::after{content:'−'}
+.detail-panel-body{border-top:1px solid var(--border);padding:12px 14px}
+.compact-list-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.compact-list-row:last-child{border-bottom:none}
+.compact-row-title{font-size:.79rem;font-weight:800;color:var(--nav);line-height:1.3}
+.compact-row-sub{font-size:.69rem;color:var(--t3);margin-top:2px}
 .willsheet-launch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;text-align:left;width:100%}
 .willsheet-launch:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(7,21,36,.07)}
 .willsheet-launch-title{font-size:.84rem;font-weight:800;color:var(--nav)}
@@ -436,7 +471,8 @@ textarea.form-ctrl{resize:vertical}
   .tb-actions{flex-wrap:wrap;justify-content:flex-end}
   .panel,.panel.active{overflow:visible}
   .panel-scroll{overflow:visible;padding:14px}
-  .three-col,.two-col,.client-layout,.client-summary-grid,.client-action-row,.project-field-grid,.pending-event-grid{grid-template-columns:1fr}
+  .three-col,.two-col,.client-layout,.client-summary-grid,.client-action-row,.project-field-grid,.visual-project-grid,.pending-event-grid{grid-template-columns:1fr}
+  .pipeline-track{grid-template-columns:1fr 1fr}
   .client-topline{display:block}
   .client-title-wrap{margin-bottom:12px}
   .client-hero-actions{justify-content:flex-start}
@@ -647,6 +683,10 @@ textarea.form-ctrl{resize:vertical}
     </div>
     <div class="form-grp"><label class="form-lbl">Email</label><input class="form-ctrl" id="ac-email" placeholder="marie@email.com"></div>
     <div class="form-grp"><label class="form-lbl">Téléphone</label><input class="form-ctrl" id="ac-phone" placeholder="+33 6 …"></div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Statut commercial</label><select class="form-ctrl" id="ac-stage"></select></div>
+      <div><label class="form-lbl">Note client</label><select class="form-ctrl" id="ac-score"></select></div>
+    </div>
     <div class="form-grp"><label class="form-lbl">Intérêts / Projet</label><input class="form-ctrl" id="ac-interests" placeholder="ex: Catamaran Croatie juillet"></div>
     <div class="modal-footer">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="addClient()">Créer la fiche</button>
@@ -667,7 +707,10 @@ textarea.form-ctrl{resize:vertical}
     </div>
     <div class="form-grp"><label class="form-lbl">Email</label><input class="form-ctrl" id="ec-email"></div>
     <div class="form-grp"><label class="form-lbl">Téléphone</label><input class="form-ctrl" id="ec-phone"></div>
-    <div class="form-grp"><label class="form-lbl">Statut commercial</label><select class="form-ctrl" id="ec-stage"></select></div>
+    <div class="form-row2 form-grp">
+      <div><label class="form-lbl">Statut commercial</label><select class="form-ctrl" id="ec-stage"></select></div>
+      <div><label class="form-lbl">Note client</label><select class="form-ctrl" id="ec-score"></select></div>
+    </div>
     <div class="form-grp"><label class="form-lbl">Brief projet</label><textarea class="form-ctrl" id="ec-interests" rows="3" placeholder="Destination, dates, bateau, budget, niveau de maturité..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="saveEditClient()">Enregistrer</button>
@@ -1162,7 +1205,7 @@ function renderSb(filter='') {
     const c=S.clients[k]; const pd=pendingCount(k);
     return `<div class="sb-client ${S.currentClient===k?'active':''}" onclick="openClientDetail('${k}')">
       <div class="sb-avatar">${ini(c.prenom,c.nom)}</div>
-      <div style="flex:1;min-width:0"><div class="sb-cname">${c.name}</div><div class="sb-cmeta">${clientPriorityScore(c,k)}/100 · ${(c.calls||[]).length} appel(s)</div></div>
+      <div style="flex:1;min-width:0"><div class="sb-cname">${c.name}</div><div class="sb-cmeta">${escapeHtml(scoreDisplay(c))} · ${(c.calls||[]).length} appel(s)</div></div>
       ${pd>0?`<div class="sb-badge">${pd}</div>`:''}
     </div>`;
   }).join('');
@@ -1253,14 +1296,14 @@ function renderSalesReports(){
   const clients=Object.entries(S.clients);
   const stages={};CLIENT_STAGES.forEach(([id])=>stages[id]=0);
   clients.forEach(([k,c])=>{stages[clientStage(c)]++;});
-  const hot=clients.filter(([k,c])=>clientPriorityScore(c,k)>=55).length;
+  const hot=clients.filter(([k,c])=>clientNote(c)==='star'||clientNote(c)==='bien').length;
   const dormant=clients.filter(([k,c])=>clientRisk(c,k)[0]==='danger').length;
   const options=clients.filter(([k,c])=>clientStage(c)==='option').length;
   const booked=clients.filter(([k,c])=>clientStage(c)==='booked').length;
   const pendingAi=S.pendingEvents.length+S.pendingActions.length+S.pendingUpdates.length;
   el.innerHTML=`
     <div class="project-field-grid" style="padding:12px">
-      <div class="project-field"><div class="project-field-label">Clients chauds</div><div class="project-field-value">${hot}</div></div>
+      <div class="project-field"><div class="project-field-label">BIEN / STAR</div><div class="project-field-value">${hot}</div></div>
       <div class="project-field"><div class="project-field-label">Dossiers dormants</div><div class="project-field-value">${dormant}</div></div>
       <div class="project-field"><div class="project-field-label">Options en cours</div><div class="project-field-value">${options}</div></div>
       <div class="project-field"><div class="project-field-label">Réservés</div><div class="project-field-value">${booked}</div></div>
@@ -1812,19 +1855,35 @@ const CLIENT_STAGES=[
   ['new','Nouveau lead'],['contacted','Contact fait'],['qualified','Besoin qualifié'],['proposal','Proposition envoyée'],
   ['option','Option posée'],['negotiation','Décision / négo'],['booked','Réservé'],['lost','Perdu']
 ];
-function clientStage(c,ws=normalizeWillsheet(c.willsheet,c)){
-  const explicit=c.stage||'';
-  if(explicit)return explicit;
-  const hay=[c.interests,ws.projectTitle,ws.notes,ws.alternatives,ws.decisionDeadline,ws.clientTag,(c.calls||[]).map(call=>call.summary).join(' ')].join(' ').toLowerCase();
-  if(/perdu|abandonn|annul/.test(hay))return 'lost';
-  if(/réserv|reserv|confirm|booké|booking confirmé/.test(hay))return 'booked';
-  if(/option|bloqu|hold/.test(hay))return 'option';
-  if(/devis|proposition|sélection|selection|offre envoy/.test(hay))return 'proposal';
-  if(ws.cruisingArea||ws.datesDuration||ws.boatType||ws.people||ws.budget)return 'qualified';
-  if((c.calls||[]).length)return 'contacted';
-  return 'new';
+const CLIENT_NOTES=[
+  ['','Non noté'],['nul','NUL'],['dilemme','DILEMME'],['bien','BIEN'],['star','STAR']
+];
+const CLIENT_NOTE_WEIGHT={star:4,bien:3,dilemme:2,nul:1,'':0};
+function clientStage(c){
+  return c.stage||'new';
 }
 function stageLabel(stage){return (CLIENT_STAGES.find(s=>s[0]===stage)||CLIENT_STAGES[0])[1];}
+function normalizeClientNote(value){
+  if(value==null||value==='')return '';
+  const raw=String(value).toLowerCase();
+  if(CLIENT_NOTE_WEIGHT[raw]!=null)return raw;
+  const n=Number(value);
+  if(Number.isFinite(n)){
+    if(n>=75)return 'star';
+    if(n>=55)return 'bien';
+    if(n>=35)return 'dilemme';
+    return 'nul';
+  }
+  return '';
+}
+function clientNote(c){return normalizeClientNote(c.priorityScore||c.clientNote||'');}
+function clientNoteLabel(note){return (CLIENT_NOTES.find(n=>n[0]===note)||CLIENT_NOTES[0])[1];}
+function clientNoteOptions(selected=''){
+  return CLIENT_NOTES.map(([id,label])=>`<option value="${id}" ${id===selected?'selected':''}>${label}</option>`).join('');
+}
+function readClientNoteInput(id){
+  return normalizeClientNote(document.getElementById(id)?.value||'');
+}
 function lastClientActivity(c,key){
   const dates=[c.updatedAt,c.createdAt,(c.calls||[]).map(x=>x.date),S.todos.filter(t=>t.clientKey===key).map(t=>t.updatedAt||t.createdAt||t.dueDate),S.events.filter(e=>e.clientKey===key).map(e=>e.date)].flat().filter(Boolean);
   return dates.sort().pop()||c.createdAt||toStr();
@@ -1840,19 +1899,13 @@ function clientRisk(c,key,ws=normalizeWillsheet(c.willsheet,c)){
   if(S.pendingEvents.some(e=>e.clientKey===key)||S.pendingActions.some(a=>a.clientKey===key)||S.pendingUpdates.some(u=>u.clientKey===key))return ['warn','IA à valider'];
   return ['ok','Suivi OK'];
 }
-function clientPriorityScore(c,key){
-  const ws=normalizeWillsheet(c.willsheet,c);
-  const [risk]=clientRisk(c,key,ws);
-  let score=20;
-  if(risk==='danger')score+=35;else if(risk==='warn')score+=18;
-  if(clientStage(c,ws)==='option')score+=25;
-  if(/réserv|reserv|confirmer|confirmation|chaud|urgent/.test([c.interests,ws.notes,ws.decisionDeadline,ws.clientTag].join(' ').toLowerCase()))score+=18;
-  if(S.pendingEvents.some(e=>e.clientKey===key)||S.pendingActions.some(a=>a.clientKey===key)||S.pendingUpdates.some(u=>u.clientKey===key))score+=12;
-  if(S.todos.some(t=>t.clientKey===key&&!t.done&&t.dueDate&&t.dueDate<=toStr()))score+=10;
-  if(ws.budget)score+=5;
-  return Math.min(100,score);
+function clientPriorityScore(c){
+  return CLIENT_NOTE_WEIGHT[clientNote(c)]||0;
 }
-function priorityLabel(score){return score>=75?'Très chaud':score>=55?'Prioritaire':score>=35?'À suivre':'Faible';}
+function scoreDisplay(c){
+  return clientNoteLabel(clientNote(c));
+}
+function clientNoteClass(c){return clientNote(c)||'none';}
 function projectSignals(c,key,ws){
   const hay=[c.interests,ws.projectTitle,ws.notes,ws.alternatives,ws.decisionDeadline,ws.clientTag,(c.calls||[]).map(call=>call.summary).join(' ')].join(' ').toLowerCase();
   const option=/option|bloqu|hold|réserv|reserv|booking|booké/.test(hay);
@@ -1862,15 +1915,15 @@ function projectSignals(c,key,ws){
   return {option,wantsBook,qualified,hasNext};
 }
 function projectProgressStatus(c,key,ws){
-  const sig=projectSignals(c,key,ws);
   const stage=clientStage(c,ws);
   if(stage==='booked')return ['Réservé','Dossier gagné : garder le suivi client et les documents de départ propres.'];
   if(stage==='lost')return ['Perdu','Dossier à garder en historique avec la raison de perte si connue.'];
-  if(sig.wantsBook)return ['Réservation à sécuriser','Client chaud : clarifier les derniers points et pousser la confirmation.'];
-  if(sig.option)return ['Option en attente','Une option ou une alternative semble en cours : suivre la deadline de près.'];
-  if(sig.hasNext)return ['Suivi actif','Des actions ou RDV sont en cours, le dossier avance.'];
-  if(sig.qualified)return ['Projet qualifié','Les besoins principaux sont identifiés, prochaine étape commerciale à cadrer.'];
-  return ['À qualifier','Il manque encore les informations clés du projet.'];
+  if(stage==='option')return ['Option posée','Statut choisi par le commercial : suivre la deadline et sécuriser la confirmation.'];
+  if(stage==='negotiation')return ['Décision / négo','Statut choisi par le commercial : clarifier les freins et la prochaine étape.'];
+  if(stage==='proposal')return ['Proposition envoyée','Statut choisi par le commercial : relancer et obtenir un retour sur le devis.'];
+  if(stage==='qualified')return ['Besoin qualifié','Statut choisi par le commercial : transformer le besoin en proposition concrète.'];
+  if(stage==='contacted')return ['Contact fait','Statut choisi par le commercial : compléter les informations projet.'];
+  return ['Nouveau lead','Statut choisi par le commercial : premier contact ou qualification à lancer.'];
 }
 function renderProjectProgress(c,key){
   const ws=normalizeWillsheet(c.willsheet,c);
@@ -1880,7 +1933,6 @@ function renderProjectProgress(c,key){
   const pendingTodos=S.todos.filter(t=>t.clientKey===key&&!t.done).sort((a,b)=>(a.dueDate||'9999').localeCompare(b.dueDate||'9999'));
   const pendingReview=pendingEventsForClient(key).sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999'));
   const [status,statusSub]=projectProgressStatus(c,key,ws);
-  const score=clientPriorityScore(c,key);
   const [riskClass,riskLabel]=clientRisk(c,key,ws);
   const next=pendingReview[0]
     ? `${pendingReview[0].type==='rdv'?'Valider le RDV':'Valider le rappel'} : ${pendingReview[0].title||'événement détecté'} (${dFr(pendingReview[0].date)})`
@@ -1896,11 +1948,39 @@ function renderProjectProgress(c,key){
     </div>
     <div class="project-field-grid">
       <div class="project-field wide"><div class="project-field-label">Lecture commerciale</div><div class="project-field-value">${escapeHtml(statusSub)}</div></div>
-      <div class="project-field"><div class="project-field-label">Score priorité</div><div class="project-field-value">${score}/100 · ${escapeHtml(priorityLabel(score))}</div></div>
+      <div class="project-field"><div class="project-field-label">Note client</div><div class="project-field-value">${escapeHtml(scoreDisplay(c))}</div></div>
       <div class="project-field"><div class="project-field-label">Santé dossier</div><div class="project-field-value">${escapeHtml(riskLabel)} · ${daysSince(lastClientActivity(c,key))} j sans mouvement</div></div>
       <div class="project-field wide"><div class="project-field-label">Prochaine étape</div><div class="project-field-value">${escapeHtml(next)}</div></div>
       <div class="project-field"><div class="project-field-label">Départ du dossier</div><div class="project-field-value">${escapeHtml(compactText(start,150))}</div></div>
       <div class="project-field"><div class="project-field-label">Dernière mise à jour</div><div class="project-field-value">${escapeHtml(compactText(latest,150))}</div></div>
+    </div>
+  </div>`;
+}
+function renderStagePipeline(c){
+  const stage=clientStage(c);
+  const idx=Math.max(0,CLIENT_STAGES.findIndex(([id])=>id===stage));
+  return `<div class="pipeline-card">
+    <div class="pipeline-track">
+      ${CLIENT_STAGES.map(([id,label],i)=>`<div class="pipeline-step ${i<idx?'done':i===idx?'active':''}">
+        <div class="pipeline-dot">${i<idx?'✓':i+1}</div>
+        <div class="pipeline-label">${escapeHtml(label)}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+function renderNowPanel(c,key,nextEvent,nextTodo,riskLabel){
+  const pendingAi=S.pendingEvents.filter(e=>e.clientKey===key).length+S.pendingActions.filter(a=>a.clientKey===key).length+S.pendingUpdates.filter(u=>u.clientKey===key).length;
+  const title=pendingAi?`${pendingAi} suggestion(s) Gemini à valider`:nextEvent?nextEvent.title:nextTodo?shortTaskTitle(nextTodo.text):'Aucune action immédiate';
+  const sub=pendingAi?'Validez ou ignorez les propositions avant de modifier la fiche.':nextEvent?`${dFr(nextEvent.date)}${nextEvent.time?' · '+nextEvent.time:''}`:nextTodo&&nextTodo.dueDate?dFr(nextTodo.dueDate):'Le dossier est propre, ajoutez une action si nécessaire.';
+  const icon=pendingAi?'✦':nextEvent?'📅':nextTodo?'✓':'OK';
+  return `<div class="now-panel">
+    <div class="now-main">
+      <div class="now-ico">${icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="now-title">${escapeHtml(title)}</div>
+        <div class="now-sub">${escapeHtml(sub)} · ${escapeHtml(riskLabel)}</div>
+      </div>
+      ${nextEvent?`<button class="btn btn-outline" onclick="openEventDetail('${nextEvent.id}')">Ouvrir</button>`:nextTodo?`<button class="btn btn-outline" onclick="openTodoDetail('${nextTodo.id}')">Ouvrir</button>`:''}
     </div>
   </div>`;
 }
@@ -1929,24 +2009,30 @@ function renderProjectSnapshot(c,key){
   const ws=normalizeWillsheet(c.willsheet,c);
   const stage=clientStage(c,ws);
   const fields=[
-    ['Destination',projectVal(ws,c,'cruisingArea',textValue(c.interests))],
-    ['Dates',projectVal(ws,c,'datesDuration',ws.departureDate)],
-    ['Bateau',projectVal(ws,c,'boatType')],
-    ['Budget',projectVal(ws,c,'budget')],
-    ['Équipage',projectVal(ws,c,'people')],
-    ['Décision',projectVal(ws,c,'decisionDeadline',ws.decisionDate)]
+    ['🧭','Destination',firstUseful(ws.cruisingArea,textValue(c.interests),'À confirmer'),ws.departureBase||''],
+    ['📅','Dates',firstUseful(ws.datesDuration,ws.departureDate,'À confirmer'),ws.flexibility||''],
+    ['⛵','Bateau',firstUseful(ws.boatType,'À qualifier'),ws.boatCriteria||''],
+    ['€','Budget',firstUseful(ws.budget,'À qualifier'),ws.alternatives||''],
+    ['👥','Équipage',firstUseful(ws.people,'À qualifier'),ws.crewComposition||''],
+    ['⏱','Décision',firstUseful(ws.decisionDeadline,ws.decisionDate,'À qualifier'),ws.notes||'']
   ];
   return `<div class="card" style="margin-bottom:16px">
     <div class="card-hd">
-      <div class="card-title">Projet commercial</div>
+      <div class="card-title">Projet en un coup d’œil</div>
       <div style="display:flex;gap:7px;align-items:center">
         <span class="willsheet-status ready">${escapeHtml(stageLabel(stage))}</span>
         <button class="btn btn-outline" style="font-size:.73rem;padding:5px 9px" onclick="openEditClientModal('${key}')">Modifier</button>
       </div>
     </div>
-    <div class="project-field-grid">
-      <div class="project-field wide"><div class="project-field-label">Brief rapide</div><div class="project-field-value">${escapeHtml(textValue(c.interests)||textValue(ws.projectTitle)||'Aucun brief renseigné')}</div></div>
-      ${fields.map(([label,value])=>`<div class="project-field"><div class="project-field-label">${label}</div><div class="project-field-value">${value}</div></div>`).join('')}
+    <div class="visual-project-grid">
+      ${fields.map(([ico,label,value,sub])=>`<div class="visual-tile">
+        <div class="visual-ico">${ico}</div>
+        <div style="min-width:0">
+          <div class="visual-label">${label}</div>
+          <div class="visual-value">${escapeHtml(compactText(value,58))}</div>
+          ${sub?`<div class="visual-sub">${escapeHtml(compactText(sub,70))}</div>`:''}
+        </div>
+      </div>`).join('')}
     </div>
   </div>`;
 }
@@ -1962,6 +2048,48 @@ function renderWillsheetLaunch(key){
     </div>
     <span style="font-size:1rem;color:var(--accent)">→</span>
   </button>`;
+}
+function renderClientDetailsAccordion(c,key,calls,todos,events){
+  return `<div class="detail-accordion">
+    <details>
+      <summary>Avancement détaillé</summary>
+      <div class="detail-panel-body">${renderProjectProgress(c,key)}</div>
+    </details>
+    <details>
+      <summary>Timeline commerciale</summary>
+      <div class="detail-panel-body">${renderClientTimeline(c,key)}</div>
+    </details>
+    <details>
+      <summary>Journal d’appels <span class="willsheet-status ready">${calls.length}</span></summary>
+      <div class="detail-panel-body" id="calls-list-${key}">
+        ${calls.length===0?`<div class="empty" style="padding:24px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un MP3 ou un transcript TXT, ou utilisez la saisie manuelle.</div></div>`:
+        calls.map(call=>`
+          <div class="call-item">
+            <div class="call-item-top">
+              <div class="call-date">📞 ${dFr(call.date)}${call.duration?' · <span style="color:var(--t3)">'+call.duration+'</span>':''}</div>
+              <div style="display:flex;gap:6px;align-items:center">
+                ${String(call.source||'').startsWith('gemini')?`<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 ${call.source==='gemini-transcript'?'TXT':'Gemini'}</span>`:''}
+                <button class="btn btn-red" style="padding:3px 8px;font-size:.66rem" onclick="deleteCall('${key}','${call.id}')">🗑</button>
+              </div>
+            </div>
+            ${call.transcription?`<details style="margin-bottom:7px"><summary style="font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:600">📄 Transcription complète</summary><div style="font-size:.77rem;line-height:1.65;color:var(--t2);background:var(--bg);padding:11px;border-radius:8px;margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap">${escapeHtml(call.transcription)}</div></details>`:''}
+            <div class="call-summary-txt">${escapeHtml(call.summary||'—')}</div>
+            ${(call.actions||[]).length?`<div style="margin-top:8px">${normalizedActionList(call.actions).map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${escapeHtml(a)}</div>`).join('')}</div>`:''}
+            <div class="call-tags">
+              ${callEventBadge(call)}
+              ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
+            </div>
+          </div>`).join('')}
+      </div>
+    </details>
+    <details>
+      <summary>Tâches et événements <span class="willsheet-status ready">${todos.length+events.length}</span></summary>
+      <div class="detail-panel-body">
+        ${todos.length?todos.map(t=>`<div class="compact-list-row" onclick="openTodoDetail('${t.id}')"><div class="todo-check ${t.done?'checked':''}" style="width:16px;height:16px;border-radius:5px;font-size:.62rem">✓</div><div><div class="compact-row-title">${escapeHtml(shortTaskTitle(t.text))}</div><div class="compact-row-sub">${taskTypeLabel(t.type||inferTaskType(t.text))}${t.dueDate?' · '+dFr(t.dueDate):''}</div></div></div>`).join(''):'<div class="empty" style="padding:18px">Aucune tâche.</div>'}
+        ${events.length?events.map(ev=>`<div class="compact-list-row" onclick="openEventDetail('${ev.id}')"><div class="client-action-ico">📅</div><div><div class="compact-row-title">${escapeHtml(ev.title)}</div><div class="compact-row-sub">${dFr(ev.date)}${ev.time?' · '+ev.time:''}</div></div></div>`).join(''):''}
+      </div>
+    </details>
+  </div>`;
 }
 function pendingEventsForClient(key){return S.pendingEvents.filter(e=>e.clientKey===key);}
 function renderPendingEventReview(key){
@@ -2665,12 +2793,17 @@ function applySequence(key,type){
 /* ══════════════════════════════════════════
    CLIENTS
 ══════════════════════════════════════════ */
-function openAddClientModal(){['ac-prenom','ac-nom','ac-email','ac-phone','ac-interests'].forEach(id=>document.getElementById(id).value='');openModal('modal-add-client');}
+function openAddClientModal(){
+  ['ac-prenom','ac-nom','ac-email','ac-phone','ac-interests'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ac-stage').innerHTML=CLIENT_STAGES.map(([id,label])=>`<option value="${id}" ${id==='new'?'selected':''}>${label}</option>`).join('');
+  document.getElementById('ac-score').innerHTML=clientNoteOptions('');
+  openModal('modal-add-client');
+}
 function addClient(){
   const prenom=document.getElementById('ac-prenom').value.trim();const nom=document.getElementById('ac-nom').value.trim();
   if(!prenom||!nom){toast('Prénom et nom requis','err');return;}
   const key=cKey(prenom,nom);if(S.clients[key]){toast('Ce client existe déjà','err');return;}
-  S.clients[key]={prenom,nom,name:prenom+' '+nom,email:document.getElementById('ac-email').value.trim(),phone:document.getElementById('ac-phone').value.trim(),interests:document.getElementById('ac-interests').value.trim(),calls:[],createdAt:toStr()};
+  S.clients[key]={prenom,nom,name:prenom+' '+nom,email:document.getElementById('ac-email').value.trim(),phone:document.getElementById('ac-phone').value.trim(),stage:document.getElementById('ac-stage').value||'new',priorityScore:readClientNoteInput('ac-score'),interests:document.getElementById('ac-interests').value.trim(),calls:[],createdAt:toStr()};
   save();updateBadges();renderClientsGrid();closeModal('modal-add-client');toast('Fiche créée : '+prenom+' '+nom,'ok');openClientDetail(key);
 }
 function openEditClientModal(key=S.currentClient){
@@ -2682,6 +2815,7 @@ function openEditClientModal(key=S.currentClient){
   document.getElementById('ec-phone').value=c.phone||'';
   document.getElementById('ec-interests').value=textValue(c.interests);
   document.getElementById('ec-stage').innerHTML=CLIENT_STAGES.map(([id,label])=>`<option value="${id}" ${clientStage(c)===id?'selected':''}>${label}</option>`).join('');
+  document.getElementById('ec-score').innerHTML=clientNoteOptions(clientNote(c));
   openModal('modal-edit-client');
 }
 function saveEditClient(){
@@ -2692,7 +2826,7 @@ function saveEditClient(){
   if(!prenom||!nom){toast('Prénom et nom requis','err');return;}
   const nextKey=cKey(prenom,nom);
   if(nextKey!==oldKey&&S.clients[nextKey]){toast('Un autre client porte déjà ce nom','err');return;}
-  const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),stage:document.getElementById('ec-stage').value,interests:document.getElementById('ec-interests').value.trim(),updatedAt:toStr()};
+  const updated={...c,prenom,nom,name:prenom+' '+nom,email:document.getElementById('ec-email').value.trim(),phone:document.getElementById('ec-phone').value.trim(),stage:document.getElementById('ec-stage').value,priorityScore:readClientNoteInput('ec-score'),interests:document.getElementById('ec-interests').value.trim(),updatedAt:toStr()};
   syncClientReferences(oldKey,nextKey,oldName,updated.name);
   if(nextKey!==oldKey) delete S.clients[oldKey];
   S.clients[nextKey]=updated;
@@ -2724,7 +2858,7 @@ function renderClientsGrid(){
   if(!keys.length){el.innerHTML=`<div class="empty" style="height:60vh"><div class="empty-icon">👥</div><div class="empty-title">Aucun client</div><div class="empty-sub">Créez votre premier client avec le bouton + Client.</div></div>`;return;}
   el.innerHTML=`<div class="clients-grid">${keys.map(k=>{
     const c=S.clients[k];const pd=pendingCount(k);const lc=lastCallDate(k);
-    const score=clientPriorityScore(c,k);const [riskClass,riskLabel]=clientRisk(c,k);const stage=clientStage(c);
+    const [riskClass,riskLabel]=clientRisk(c,k);const stage=clientStage(c);
     return `<div class="client-card" onclick="openClientDetail('${k}')">
       <div style="display:flex;align-items:center;gap:11px;margin-bottom:11px">
         <div class="ch-avatar" style="width:42px;height:42px;font-size:.95rem">${ini(c.prenom,c.nom)}</div>
@@ -2736,7 +2870,7 @@ function renderClientsGrid(){
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
         <span class="willsheet-status ${riskClass==='ok'?'ready':''}">${escapeHtml(riskLabel)}</span>
         <span class="willsheet-status ready">${escapeHtml(stageLabel(stage))}</span>
-        <span class="willsheet-status ${score>=55?'ready':''}">Score ${score}</span>
+        <span class="willsheet-status ${clientNote(c)?'ready':''}">${escapeHtml(scoreDisplay(c))}</span>
       </div>
       ${textValue(c.interests)?`<div style="font-size:.76rem;color:var(--t2);background:var(--bg);padding:6px 9px;border-radius:7px;margin-bottom:8px">${escapeHtml(textValue(c.interests))}</div>`:''}
       <div style="font-size:.71rem;color:var(--t3);display:flex;gap:10px"><span>${(c.calls||[]).length} appel(s)</span><span>·</span><span>${S.events.filter(e=>e.clientKey===k).length} événement(s)</span></div>
@@ -2768,7 +2902,6 @@ function _renderClientDetail(key){
   const lastCall=calls[0];
   const projectMain=textValue(c.interests)||textValue(ws.projectTitle)||textValue(ws.cruisingArea)||'Projet à qualifier';
   const decision=ws.decisionDeadline||ws.decisionDate||'À qualifier';
-  const score=clientPriorityScore(c,key);
   const [riskClass,riskLabel]=clientRisk(c,key,ws);
   const stage=clientStage(c,ws);
 
@@ -2780,6 +2913,11 @@ function _renderClientDetail(key){
           <div style="min-width:0">
             <div class="ch-name">${escapeHtml(c.name)}</div>
             <div class="ch-meta">${escapeHtml(c.email||'Email non renseigné')}${c.phone?' · '+escapeHtml(c.phone):' · Téléphone non renseigné'} · ${escapeHtml(stageLabel(stage))}</div>
+            <div class="client-chip-row">
+              <span class="client-chip ${clientNoteClass(c)}">${escapeHtml(scoreDisplay(c))}</span>
+              <span class="client-chip">${escapeHtml(stageLabel(stage))}</span>
+              <span class="client-chip ${riskClass==='danger'?'nul':riskClass==='warn'?'dilemme':'bien'}">${escapeHtml(riskLabel)}</span>
+            </div>
           </div>
         </div>
         <div class="client-hero-actions">
@@ -2790,23 +2928,18 @@ function _renderClientDetail(key){
       </div>
       <div class="client-summary-grid">
         <div class="client-summary-card main">
-          <div class="client-summary-label">Projet</div>
-          <div class="client-summary-value">${escapeHtml(projectMain)}</div>
-          <div class="client-summary-sub">${escapeHtml(ws.cruisingArea||'Destination à confirmer')}</div>
+          <div class="client-summary-label">À faire maintenant</div>
+          <div class="client-summary-value">${nextEvent?escapeHtml(nextEvent.title):nextTodo?escapeHtml(shortTaskTitle(nextTodo.text)):'Aucune action'}</div>
+          <div class="client-summary-sub">${nextEvent?dFr(nextEvent.date)+(nextEvent.time?' · '+nextEvent.time:''):nextTodo&&nextTodo.dueDate?dFr(nextTodo.dueDate):'Dossier sans action urgente'}</div>
         </div>
         <div class="client-summary-card">
-          <div class="client-summary-label">Prochaine étape</div>
-          <div class="client-summary-value">${nextEvent?escapeHtml(nextEvent.title):nextTodo?escapeHtml(nextTodo.text):'Aucune action'}</div>
-          <div class="client-summary-sub">${nextEvent?dFr(nextEvent.date)+(nextEvent.time?' · '+nextEvent.time:''):nextTodo&&nextTodo.dueDate?dFr(nextTodo.dueDate):'Créer un RDV ou une tâche'}</div>
-        </div>
-        <div class="client-summary-card">
-          <div class="client-summary-label">Priorité</div>
-          <div class="client-summary-value">${score}/100 · ${escapeHtml(priorityLabel(score))}</div>
-          <div class="client-summary-sub">${escapeHtml(riskLabel)} · ${daysSince(lastClientActivity(c,key))} j sans mouvement</div>
+          <div class="client-summary-label">Destination</div>
+          <div class="client-summary-value">${escapeHtml(compactText(ws.cruisingArea||textValue(c.interests)||'À confirmer',38))}</div>
+          <div class="client-summary-sub">${escapeHtml(compactText(ws.datesDuration||ws.departureDate||'Dates à confirmer',42))}</div>
         </div>
         <div class="client-summary-card">
           <div class="client-summary-label">Décision</div>
-          <div class="client-summary-value">${escapeHtml(decision)}</div>
+          <div class="client-summary-value">${escapeHtml(compactText(decision,38))}</div>
           <div class="client-summary-sub">${escapeHtml(ws.budget||'Budget à qualifier')}</div>
         </div>
         <div class="client-summary-card">
@@ -2847,6 +2980,9 @@ function _renderClientDetail(key){
       </label>
     </div>
 
+    ${renderStagePipeline(c)}
+    ${renderNowPanel(c,key,nextEvent,nextTodo,riskLabel)}
+
     <div class="client-layout">
       <div>
         <div id="pending-review-${key}">${renderPendingEventReview(key)}${renderPendingAiReview(key)}</div>
@@ -2868,68 +3004,30 @@ function _renderClientDetail(key){
         </div>
 
         ${renderProjectSnapshot(c,key)}
-        ${renderProjectProgress(c,key)}
-        ${renderClientTimeline(c,key)}
-
-        <!-- JOURNAL -->
-        <div class="card">
-          <div class="card-hd">
-            <div class="card-title">📞 Journal d'appels <span style="font-size:.72rem;font-weight:400;color:var(--t3);margin-left:4px">${calls.length} appel(s)</span></div>
-          </div>
-          <div id="calls-list-${key}">
-            ${calls.length===0?`<div class="empty" style="padding:28px"><div class="empty-icon">📞</div><div class="empty-title">Aucun appel enregistré</div><div class="empty-sub">Importez un MP3 ou un transcript TXT, ou utilisez la saisie manuelle.</div></div>`:
-            calls.map(call=>`
-              <div class="call-item">
-                <div class="call-item-top">
-                  <div class="call-date">📞 ${dFr(call.date)}${call.duration?' · <span style="color:var(--t3)">'+call.duration+'</span>':''}</div>
-                  <div style="display:flex;gap:6px;align-items:center">
-                    ${String(call.source||'').startsWith('gemini')?`<span class="call-tag" style="background:rgba(26,115,232,.1);color:#1a73e8;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px">🤖 ${call.source==='gemini-transcript'?'TXT':'Gemini'}</span>`:''}
-                    <button class="btn btn-red" style="padding:3px 8px;font-size:.66rem" onclick="deleteCall('${key}','${call.id}')">🗑</button>
-                  </div>
-                </div>
-                ${call.transcription?`<details style="margin-bottom:7px"><summary style="font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:600">📄 Voir la transcription complète</summary><div style="font-size:.77rem;line-height:1.65;color:var(--t2);background:var(--bg);padding:11px;border-radius:8px;margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap">${call.transcription}</div></details>`:''}
-                <div class="call-summary-txt">${call.summary||'—'}</div>
-                ${(call.actions||[]).length?`<div style="margin-top:8px">${normalizedActionList(call.actions).map(a=>`<div style="font-size:.77rem;color:var(--gold);padding:2px 0">→ ${escapeHtml(a)}</div>`).join('')}</div>`:''}
-                <div class="call-tags">
-                  ${callEventBadge(call)}
-                  ${(call.actions||[]).length?`<span class="call-tag ct-action">→ ${call.actions.length} action(s)</span>`:''}
-                </div>
-              </div>`).join('')}
-          </div>
-        </div>
+        ${renderClientDetailsAccordion(c,key,calls,todos,events)}
       </div>
 
       <!-- RIGHT COLUMN -->
       <div>
         <div class="card" style="margin-bottom:13px">
-          <div class="card-hd"><div class="card-title">Informations</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openEditClientModal('${key}')">Modifier</button></div>
+          <div class="card-hd"><div class="card-title">Contact</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openEditClientModal('${key}')">Modifier</button></div>
           <div class="info-row"><div class="info-lbl">Email</div><div class="info-val">${escapeHtml(c.email||'—')}</div></div>
           <div class="info-row"><div class="info-lbl">Téléphone</div><div class="info-val">${escapeHtml(c.phone||'—')}</div></div>
           <div class="info-row"><div class="info-lbl">Langue</div><div class="info-val">${escapeHtml(ws.language||'—')}</div></div>
-          <div class="info-row"><div class="info-lbl">Tag</div><div class="info-val">${escapeHtml(ws.clientTag||'—')}</div></div>
-          <div class="info-row"><div class="info-lbl">Créé le</div><div class="info-val">${dFr(c.createdAt)}</div></div>
         </div>
         <div style="margin-bottom:13px">${renderWillsheetLaunch(key)}</div>
         <div class="card" style="margin-bottom:13px">
-          <div class="card-hd"><div class="card-title">Tâches</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddTodoModal('${key}')">＋</button></div>
-          ${todos.length===0?`<div style="padding:13px 16px;font-size:.79rem;color:var(--t3)">Aucune tâche.</div>`:''}
-          ${todos.sort((a,b)=>a.done-b.done).map(t=>`
-            <div style="padding:9px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;cursor:pointer" onclick="openTodoDetail('${t.id}')">
+          <div class="card-hd"><div class="card-title">Actions actives</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddTodoModal('${key}')">＋</button></div>
+          ${pending.length===0?`<div style="padding:13px 16px;font-size:.79rem;color:var(--t3)">Aucune action active.</div>`:''}
+          ${pending.slice(0,5).map(t=>`
+            <div style="padding:10px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;cursor:pointer" onclick="openTodoDetail('${t.id}')">
               <div class="todo-check ${t.done?'checked':''}" onclick="event.stopPropagation();toggleTodo('${t.id}');setTimeout(()=>_renderClientDetail('${key}'),80)" style="width:15px;height:15px;border-radius:4px;font-size:.62rem">✓</div>
               <div style="flex:1;min-width:0">
-                <div style="font-size:.79rem;font-weight:500;${t.done?'text-decoration:line-through;opacity:.5':''}color:var(--t1)">${escapeHtml(shortTaskTitle(t.text))}</div>
+                <div style="font-size:.79rem;font-weight:800;color:var(--nav)">${escapeHtml(shortTaskTitle(t.text))}</div>
                 ${t.dueDate?`<div style="font-size:.69rem;color:${past(t.dueDate)&&!t.done?'var(--red)':'var(--t3)'}">${dFr(t.dueDate)}</div>`:''}
               </div>
             </div>`).join('')}
-        </div>
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Événements</div><button class="btn btn-outline" style="font-size:.71rem;padding:4px 9px" onclick="openAddEventModal('${key}')">＋</button></div>
-          ${events.length===0?`<div style="padding:13px 16px;font-size:.79rem;color:var(--t3)">Aucun événement.</div>`:''}
-          ${events.map(ev=>`
-            <div style="padding:9px 15px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openEventDetail('${ev.id}')">
-              <div style="font-size:.72rem;font-weight:700;color:var(--accent)">${dFr(ev.date)}${ev.time?' · '+ev.time:''}</div>
-              <div style="font-size:.79rem;color:var(--t1)">${escapeHtml(ev.title)}</div>
-            </div>`).join('')}
+          ${pending.length>5?`<div style="padding:10px 15px;font-size:.72rem;color:var(--accent);font-weight:800;cursor:pointer" onclick="document.querySelector('.detail-accordion details:last-child')?.setAttribute('open','')">Voir toutes les actions →</div>`:''}
         </div>
       </div>
     </div>`;

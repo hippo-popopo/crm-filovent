@@ -560,6 +560,136 @@
         .search-result-item .res-title { color: white; font-size: 0.82rem; font-weight: 600; }
         .search-result-item .res-context { color: rgba(255,255,255,0.4); font-size: 0.73rem; margin-top: 2px; }
         #search-results-empty { padding: 12px 14px; color: rgba(255,255,255,0.35); font-size: 0.8rem; }
+
+        /* ─── BLUEBOOK DIGITALISATION ─────────────── */
+        .source-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            border-radius: 999px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 800;
+            color: var(--wave); background: #eef5fd;
+            border: 1px solid #c7dcef; margin-bottom: 14px;
+        }
+        .bb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .bb-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 6px rgba(13,34,64,0.05);
+        }
+        .bb-card h3, .bb-card h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.98rem;
+            color: var(--navy);
+            margin-bottom: 9px;
+        }
+        .bb-card p, .bb-card li { font-size: 0.84rem; }
+        .boat-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+        }
+        .boat-plan-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(13,34,64,0.05);
+        }
+        .boat-plan-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            background: #f7fafc;
+            cursor: zoom-in;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .boat-plan-card .boat-plan-body { padding: 12px 14px; }
+        .boat-plan-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .boat-plan-meta {
+            color: var(--text-3);
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+        .source-list {
+            display: grid;
+            gap: 9px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .source-list li {
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #f8fbfc;
+        }
+        .source-list i { color: var(--seafoam); margin-top: 2px; }
+        .blue-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            background: rgba(3,10,18,.88);
+            backdrop-filter: blur(12px);
+            padding: 24px;
+        }
+        .blue-lightbox.open {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 14px;
+        }
+        .blue-lightbox-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            color: white;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .blue-lightbox-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+        .blue-lightbox button {
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.1);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: .82rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .blue-lightbox-body {
+            overflow: auto;
+            display: grid;
+            place-items: start center;
+        }
+        .blue-lightbox-body img {
+            max-width: min(1200px, 100%);
+            height: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 24px 80px rgba(0,0,0,.38);
+        }
     </style>
     <link rel="stylesheet" href="assets/resource-shell.css">
 </head>
@@ -697,6 +827,21 @@
                 </div>
             </div>
 
+            <!-- Section 4b : Plans bateaux -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc4b">
+                        🛥️ Plans bateaux
+                    </button>
+                </h2>
+                <div id="acc4b" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="boat-plans">Plans & configurations</a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Section 5 : Fluvial -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -711,6 +856,21 @@
                         <a href="#" class="dest-link" data-section="fluvial-ecluses">Les écluses</a>
                         <a href="#" class="dest-link" data-section="fluvial-activites">Activités & vie à bord</a>
                         <a href="#" class="dest-link" data-section="fluvial-equipement">Équipement & ravitaillement</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5b : Météo marine -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc5b">
+                        🌦️ Météo marine
+                    </button>
+                </h2>
+                <div id="acc5b" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="weather-basics">Concepts de base</a>
                     </div>
                 </div>
             </div>
@@ -749,6 +909,40 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Section 8 : Contenu commercial -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc8">
+                        🧩 Contenu commercial
+                    </button>
+                </h2>
+                <div id="acc8" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="competitors">Nos concurrents</a>
+                        <a href="#" class="dest-link" data-section="fpp-canalous">FPP / Les Canalous</a>
+                        <a href="#" class="dest-link" data-section="lazuli-nil">Lazuli Nil</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 9 : Lexiques multilingues -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc9">
+                        🌍 Lexiques multilingues
+                    </button>
+                </h2>
+                <div id="acc9" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" data-section="lexique-italien">Italien</a>
+                        <a href="#" class="dest-link" data-section="lexique-allemand">Allemand</a>
+                        <a href="#" class="dest-link" data-section="lexique-espagnol">Espagnol</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -766,27 +960,27 @@
             <div>
                 <div style="font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--wave); margin-bottom:6px;">Formation Commerciale</div>
                 <h1 style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--navy); line-height:1.2; margin-bottom:10px;">📘 Bluebook Filovent</h1>
-                <p style="color:var(--text-2); font-size:0.97rem; max-width:540px; line-height:1.7;">Vocabulaire, budgets, chantiers navals, loueurs premium et charter luxe. Tout ce qu'il faut savoir au-delà des destinations.</p>
+                <p style="color:var(--text-2); font-size:0.97rem; max-width:540px; line-height:1.7;">Vocabulaire, budgets, chantiers navals, météo, plans bateaux, concurrents et charter luxe. Tout ce qu'il faut savoir au-delà des destinations.</p>
             </div>
         </div>
 
         <!-- STATS -->
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:44px;">
             <div style="background:var(--navy); border-radius:14px; padding:20px 22px; color:white;">
-                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif;">7</div>
+                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif;">12</div>
                 <div style="font-size:0.8rem; opacity:0.7; margin-top:2px;">chapitres</div>
             </div>
             <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--wave);">5</div>
+                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--wave);">15</div>
+                <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">plans bateaux</div>
+            </div>
+            <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
+                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--seafoam);">5</div>
                 <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">langues couvertes</div>
             </div>
             <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--seafoam);">60+</div>
+                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--gold);">60+</div>
                 <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">termes nautiques</div>
-            </div>
-            <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-                <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--gold);">14</div>
-                <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">fiches vocabulaire</div>
             </div>
         </div>
 
@@ -820,11 +1014,23 @@
                 <div class="home-card-sub">Gammes monocoques, catamarans, comparatifs</div>
                 <div class="home-card-tags"><span class="hct hct-red">Expertise produit</span></div>
             </div>
+            <div class="home-card" onclick="showSection('boat-plans')" style="border-left:3px solid var(--wave);">
+                <div class="home-card-icon">🛥️</div>
+                <div class="home-card-name">Plans bateaux</div>
+                <div class="home-card-sub">Configurations cabines issues des fichiers Bluebook</div>
+                <div class="home-card-tags"><span class="hct hct-blue">15 plans</span></div>
+            </div>
             <div class="home-card" onclick="showSection('fluvial-navigation')" style="border-left:3px solid var(--seafoam);">
                 <div class="home-card-icon">🚢</div>
                 <div class="home-card-name">Fluvial</div>
                 <div class="home-card-sub">Navigation fluviale, écluses, équipement, activités</div>
                 <div class="home-card-tags"><span class="hct hct-green">Sans permis</span></div>
+            </div>
+            <div class="home-card" onclick="showSection('weather-basics')" style="border-left:3px solid var(--seafoam);">
+                <div class="home-card-icon">🌦️</div>
+                <div class="home-card-name">Météo marine</div>
+                <div class="home-card-sub">Vent, houle, grain et rafale depuis le document météo</div>
+                <div class="home-card-tags"><span class="hct hct-green">Notions clés</span></div>
             </div>
             <div class="home-card" onclick="showSection('sunsail-presentation')" style="border-left:3px solid var(--wave);">
                 <div class="home-card-icon">⛵</div>
@@ -837,6 +1043,30 @@
                 <div class="home-card-name">Luxury Crewed Charter</div>
                 <div class="home-card-sub">Acteurs, MYBA, processus de réservation, APA</div>
                 <div class="home-card-tags"><span class="hct hct-gold">+20 000 €/sem.</span></div>
+            </div>
+            <div class="home-card" onclick="showSection('competitors')" style="border-left:3px solid var(--coral);">
+                <div class="home-card-icon">🧩</div>
+                <div class="home-card-name">Concurrents</div>
+                <div class="home-card-sub">GlobeSailor, Click&Boat, Samboat, Boataround et loueurs directs</div>
+                <div class="home-card-tags"><span class="hct hct-red">Argumentaire</span></div>
+            </div>
+            <div class="home-card" onclick="showSection('fpp-canalous')" style="border-left:3px solid var(--seafoam);">
+                <div class="home-card-icon">🚢</div>
+                <div class="home-card-name">FPP / Les Canalous</div>
+                <div class="home-card-sub">Réseau, conditions, durées et infos pratiques</div>
+                <div class="home-card-tags"><span class="hct hct-green">Fluvial partenaire</span></div>
+            </div>
+            <div class="home-card" onclick="showSection('lazuli-nil')" style="border-left:3px solid var(--gold);">
+                <div class="home-card-icon">🌊</div>
+                <div class="home-card-name">Lazuli Nil</div>
+                <div class="home-card-sub">Présentation, contacts et formats de croisières</div>
+                <div class="home-card-tags"><span class="hct hct-gold">Nil</span></div>
+            </div>
+            <div class="home-card" onclick="showSection('lexique-italien')" style="border-left:3px solid var(--wave);">
+                <div class="home-card-icon">🌍</div>
+                <div class="home-card-name">Lexiques multilingues</div>
+                <div class="home-card-sub">Extraits italien, allemand et espagnol du Bluebook</div>
+                <div class="home-card-tags"><span class="hct hct-blue">IT · DE · ES</span></div>
             </div>
         </div>
 
@@ -2706,7 +2936,113 @@
     </div>
 </div>
 
+<!-- ══════════════════════ PLANS BATEAUX ══════════════════════ -->
+<div class="section-panel" id="panel-boat-plans">
+    <div class="page-header">
+        <h1>🛥️ Plans bateaux — Configurations</h1>
+        <div class="subtitle">Source Bluebook : dossier “Plans bateaux”</div>
+    </div>
+    <span class="source-badge"><i class="bi bi-file-earmark-image"></i> Contenu extrait uniquement des plans présents dans le Bluebook</span>
+    <div class="info-block"><b>Utilisation commerciale :</b> ces plans servent à visualiser rapidement la différence entre les configurations cabines. Cliquez sur un plan pour l'agrandir.</div>
+    <div class="boat-plan-grid">
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/bavaria-42-3-cabines.png" alt="Bavaria 42 - 3 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Bavaria 42</h3><div class="boat-plan-meta">3 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/bavaria-46-3-cabines.png" alt="Bavaria 46 - 3 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Bavaria 46</h3><div class="boat-plan-meta">3 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/bavaria-46-4-cabines.png" alt="Bavaria 46 - 4 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Bavaria 46</h3><div class="boat-plan-meta">4 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/bavaria-46-4-cabines-bis.png" alt="Bavaria 46 - 4 cabines bis" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Bavaria 46</h3><div class="boat-plan-meta">4 cabines bis</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/oceanis-473-2-cabines.png" alt="Oceanis 473 - 2 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Oceanis 473</h3><div class="boat-plan-meta">2 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/oceanis-473-4-1-cabines.png" alt="Oceanis 473 - 4 + 1 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Oceanis 473</h3><div class="boat-plan-meta">4 + 1 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-380-3-1-cabines.png" alt="Lagoon 380 - 3 + 1 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 380</h3><div class="boat-plan-meta">3 + 1 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-380-3-2-cabines.png" alt="Lagoon 380 - 3 + 2 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 380</h3><div class="boat-plan-meta">3 + 2 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-380-4-1-cabines.png" alt="Lagoon 380 - 4 + 1 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 380</h3><div class="boat-plan-meta">4 + 1 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-380-4-2-cabines.png" alt="Lagoon 380 - 4 + 2 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 380</h3><div class="boat-plan-meta">4 + 2 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-500-3-1-cabines.png" alt="Lagoon 500 - 3 + 1 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 500</h3><div class="boat-plan-meta">3 + 1 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-500-3-cabines-environ-15-50-metres.png" alt="Lagoon 500 - 3 cabines - environ 15,50 mètres" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 500</h3><div class="boat-plan-meta">3 cabines · environ 15,50 m</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-500-5-cabines.png" alt="Lagoon 500 - 5 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon 500</h3><div class="boat-plan-meta">5 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/lagoon-3-1-cabines.png" alt="Lagoon - 3 + 1 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Lagoon</h3><div class="boat-plan-meta">3 + 1 cabines</div></div></div>
+        <div class="boat-plan-card"><img src="assets/bluebook-plans/salina-48-4-cabines.png" alt="Salina 48 - 4 cabines" onclick="openBlueLightbox(this)"><div class="boat-plan-body"><h3>Salina 48</h3><div class="boat-plan-meta">4 cabines</div></div></div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-weather-basics">
+    <div class="page-header"><h1>🌦️ Concepts de base — Marine Meteorology</h1><div class="subtitle">Source Bluebook : “Météo / Weather.docx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-word"></i> Contenu extrait du document météo Bluebook</span>
+    <div class="bb-grid">
+        <div class="bb-card"><h3>The wind / Vent</h3><p>“A flow of air particles moving in the same direction due to a difference of air pressure between 2 places.”</p></div>
+        <div class="bb-card"><h3>The swell / La houle</h3><p>“A series of mechanical waves propagating on the sea with a regular frequency.” La houle n'est pas due au vent local mais à des dépressions lointaines.</p></div>
+        <div class="bb-card"><h3>A squall / Un grain</h3><p>“A sudden, sharp increase in wind speed lasting minutes”, contrairement à une rafale qui dure quelques secondes.</p></div>
+        <div class="bb-card"><h3>A gust / Une rafale</h3><p>“A very short local acceleration of the wind.”</p></div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-competitors">
+    <div class="page-header"><h1>🧩 Nos concurrents</h1><div class="subtitle">Source Bluebook : “Nos concurrents.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Contenu extrait des slides Bluebook</span>
+    <div class="bb-grid">
+        <div class="bb-card"><h3>GlobeSailor</h3><p>Concurrent sérieux, modèle mi-agence mi-plateforme proche de Filovent, travaille exclusivement avec des loueurs professionnels.</p><p><b>Bluebook :</b> après réservation, le client est en contact seulement avec le loueur ; ce n'est pas le même service que Filovent.</p></div>
+        <div class="bb-card"><h3>Click&Boat</h3><p>Plateforme collaborative créée en 2014, modèle Airbnb, location entre particuliers et professionnels.</p><p><b>Bluebook :</b> pure plateforme de mise en relation sans service post-réservation, risque d'insatisfaction sur bateaux de particuliers.</p></div>
+        <div class="bb-card"><h3>Samboat</h3><p>Startup française basée à Bordeaux, fondée en 2014, très similaire à Click&Boat, rachetée par Dream Yacht Charter en 2018.</p><p><b>Bluebook :</b> pas une plateforme indépendante ; pousse en priorité les bateaux DYC.</p></div>
+        <div class="bb-card"><h3>Boataround</h3><p>Startup slovaque fondée en 2016, ultra digitalisée, positionnement proche de Booking.com.</p><p><b>Bluebook :</b> prix très agressifs, pas de conseil, pure plateforme de réservation, pas de service post-réservation.</p></div>
+        <div class="bb-card"><h3>Loueurs en direct</h3><p>Le Bluebook rappelle que les loueurs proposent leurs bateaux au même prix que Filovent : ce sont eux qui payent la commission, pas le client.</p></div>
+        <div class="bb-card"><h3>Avant d'argumenter</h3><p>Demander au client ce qu'il valorise chez une agence, puis relier le point fort Filovent au point faible correspondant chez le concurrent.</p></div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-fpp-canalous">
+    <div class="page-header"><h1>🚢 FPP / Les Canalous</h1><div class="subtitle">Source Bluebook : “FPP - Les Canalous - LM.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Contenu extrait de la présentation Bluebook</span>
+    <div class="bb-grid">
+        <div class="bb-card"><h3>Présentation</h3><p>France Passion Plaisance / Les Canalous est spécialisé dans le tourisme fluvial, fondé en 1982, avec siège à Digoin.</p></div>
+        <div class="bb-card"><h3>Réseau</h3><p>40 destinations dans 11 pays, surtout en France. Plus de 400 bateaux pour tous budgets.</p></div>
+        <div class="bb-card"><h3>Bateaux</h3><p>2 à 12 personnes selon modèle. Minimum 2 adultes requis. Bébés et enfants comptent comme une personne.</p></div>
+        <div class="bb-card"><h3>Extra obligatoire</h3><p>Forfait horaire moteur selon heures de navigation et modèle du bateau.</p></div>
+        <div class="bb-card"><h3>Durées</h3><p>Week-ends, mini-semaines, semaines complètes, 10 jours ou 2 semaines. Départs possibles tous les jours sauf mercredi et jeudi selon bases.</p></div>
+        <div class="bb-card"><h3>Infos pratiques</h3><p>Check-in à partir de 16h, check-out à 9h. Animaux acceptés pour 50 € chacun.</p></div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lazuli-nil">
+    <div class="page-header"><h1>🌊 Lazuli Nil</h1><div class="subtitle">Source Bluebook : “Lazuli Nil MR.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Contenu extrait de la présentation Bluebook</span>
+    <div class="bb-grid">
+        <div class="bb-card"><h3>Présentation</h3><p>Lazuli a commencé ses croisières de charme en 2001 sur le Nil. Le fondateur, Wally Aziz, était guide touristique francophone.</p></div>
+        <div class="bb-card"><h3>Contacts source</h3><p>Yasmina : yasmina@lazulinil.com / +20 100 877 7115<br>Youlyana : youlyana@lazulinil.com</p></div>
+        <div class="bb-card"><h3>5 jours / 4 nuits</h3><p>“Egypt in Dahabieh”. Départ dimanche matin, retour jeudi fin d'après-midi vers 17h après la visite du temple de Philae.</p></div>
+        <div class="bb-card"><h3>6 jours / 5 nuits</h3><p>Croisière entre Esna et Assouan. Départ dimanche matin, retour vendredi matin à 9h après le petit-déjeuner.</p></div>
+    </div>
+</div>
+
+<div class="section-panel" id="panel-lexique-italien">
+    <div class="page-header"><h1>🇮🇹 Lessico marittimo italiano</h1><div class="subtitle">Source Bluebook : “Lessico Marittimo Italiano_FM.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Extraits du lexique italien Bluebook</span>
+    <div class="bb-grid"><div class="bb-card"><h3>Termini generali</h3><p>Miglio nautico : 1852 metri. Un nodo : un miglio all'ora. Un piede : 30 cm. Monoscafo / catamarano : barca con uno o due scafi.</p></div><div class="bb-card"><h3>Ormeggio</h3><p>Ormeggiare : fermarsi in un posto, gettando l'ancora oppure agganciandosi al porto o ad una boa.</p></div><div class="bb-card"><h3>Sartiame</h3><p>Sartiame : complesso delle sartie e attrezzatura della nave. Randa : vela principale legata all'albero maestro e al boma.</p></div></div>
+</div>
+
+<div class="section-panel" id="panel-lexique-allemand">
+    <div class="page-header"><h1>🇩🇪 Deutsches nautisches Lexikon</h1><div class="subtitle">Source Bluebook : “Deutsches Nautisches Lexikon.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Extraits du lexique allemand Bluebook</span>
+    <div class="bb-grid"><div class="bb-card"><h3>Allgemeine Begriffe</h3><p>Seemeile / nautische Meile : 1 852 Meter. 1 Knoten = 1 Meile pro Stunde. Ein Fuß : 30 cm. Einrümpfer ≠ Katamaran.</p></div><div class="bb-card"><h3>Ankern</h3><p>Festmachen : an einem Ort anhalten, indem man den Anker wirft oder im Hafen oder an einer Boje festmacht.</p></div><div class="bb-card"><h3>Rigg</h3><p>Zum Rigg gehören alle Masten und Spieren sowie die Verstagung mit Wanten und Stagen. Großsegel : Hauptsegel am Mast und Baum.</p></div></div>
+</div>
+
+<div class="section-panel" id="panel-lexique-espagnol">
+    <div class="page-header"><h1>🇪🇸 Léxico marino español</h1><div class="subtitle">Source Bluebook : “Léxico náutico Español - PLB.pptx”</div></div>
+    <span class="source-badge"><i class="bi bi-file-earmark-slides"></i> Extraits du lexique espagnol Bluebook</span>
+    <div class="bb-grid"><div class="bb-card"><h3>Términos generales</h3><p>Milla náutica : 1.852 metros. 1 nudo = 1 milla por hora. Un pie : 30 cm. Monocasco ≠ catamarán.</p></div><div class="bb-card"><h3>Anclaje</h3><p>Amarrar : detenerse en un lugar echando el ancla, amarrando al puerto o a una boya.</p></div><div class="bb-card"><h3>Aparejo</h3><p>Aparejo : en un barco de vela, todos los cabos de la embarcación. Vela mayor : vela mayor unida al mástil y a la botavara.</p></div></div>
+</div>
+
 </div><!-- /#main-content -->
+
+<div id="blue-lightbox" class="blue-lightbox" aria-hidden="true">
+    <div class="blue-lightbox-bar">
+        <div>
+            <div class="blue-lightbox-title" id="blue-lightbox-title">Plan bateau</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.58);font-weight:700;margin-top:2px;">Image issue du Bluebook Filovent</div>
+        </div>
+        <button type="button" onclick="closeBlueLightbox()"><i class="bi bi-x-lg"></i> Fermer</button>
+    </div>
+    <div class="blue-lightbox-body" onclick="closeBlueLightbox()">
+        <img id="blue-lightbox-img" src="" alt="">
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -2780,11 +3116,31 @@ function showBoarding(id) {
     });
 }
 
+// ─── IMAGE LIGHTBOX ───────────────────────────────────
+function openBlueLightbox(img) {
+    const modal = document.getElementById('blue-lightbox');
+    const modalImg = document.getElementById('blue-lightbox-img');
+    const title = document.getElementById('blue-lightbox-title');
+    modalImg.src = img.currentSrc || img.src;
+    modalImg.alt = img.alt || 'Plan bateau Bluebook';
+    title.textContent = img.alt || 'Plan bateau';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBlueLightbox() {
+    const modal = document.getElementById('blue-lightbox');
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
 // ─── SEARCH ────────────────────────────────────────────
 const searchData = [];
 document.querySelectorAll('.section-panel').forEach(panel => {
     const id = panel.id.replace('panel-', '');
-    panel.querySelectorAll('h1,h3,.term-fr,.term,.faq-q,.gloss-item .term').forEach(el => {
+    panel.querySelectorAll('h1,h3,.term-fr,.term,.faq-q,.gloss-item .term,.bb-card p,.boat-plan-meta').forEach(el => {
         const text = el.textContent.trim();
         if (text.length > 2) {
             searchData.push({ title: text, section: id, context: panel.querySelector('h1')?.textContent?.trim() || id });
@@ -2824,6 +3180,7 @@ document.addEventListener('keydown', e => {
         searchInput.focus();
     }
     if (e.key === 'Escape') {
+        closeBlueLightbox();
         resultsBox.style.display = 'none';
         searchInput.value = '';
         searchInput.blur();

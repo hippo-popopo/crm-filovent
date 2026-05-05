@@ -272,6 +272,359 @@
         }
         .bg-light { background: var(--sand) !important; }
 
+        /* ─── CRM DESTINATION PILOT ───────────────── */
+        .crm-dest-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 22px;
+            color: white;
+            background:
+                linear-gradient(135deg, rgba(7,21,36,.96), rgba(18,82,117,.84)),
+                url("assets/filovent-hero-marina.png") center/cover;
+            border: 1px solid rgba(255,255,255,.14);
+            box-shadow: 0 16px 40px rgba(13,34,64,.18);
+        }
+        .crm-dest-hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -70px -110px auto;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(35,138,115,.25);
+            pointer-events: none;
+        }
+        .crm-hero-label {
+            font-size: .7rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #a8e3e0;
+            margin-bottom: 8px;
+        }
+        .crm-dest-hero h1 {
+            position: relative;
+            z-index: 1;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.8rem);
+            line-height: .96;
+            margin-bottom: 14px;
+        }
+        .crm-hero-subtitle {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            color: rgba(255,255,255,.78);
+            font-size: 1rem;
+            margin-bottom: 22px;
+        }
+        .crm-quick-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(6, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .crm-quick-card {
+            border: 1px solid rgba(255,255,255,.18);
+            background: rgba(255,255,255,.1);
+            border-radius: 12px;
+            padding: 12px;
+            min-height: 82px;
+            backdrop-filter: blur(10px);
+        }
+        .crm-quick-card span {
+            display: block;
+            font-size: .62rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.54);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .crm-quick-card strong {
+            display: block;
+            color: white;
+            font-size: .9rem;
+            line-height: 1.25;
+        }
+        .crm-dest-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .crm-panel {
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 2px 12px rgba(13,34,64,.05);
+        }
+        .crm-panel + .crm-panel { margin-top: 16px; }
+        .crm-panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            color: var(--navy);
+            font-weight: 800;
+            font-size: .98rem;
+            margin-bottom: 14px;
+        }
+        .crm-panel-title i { color: var(--wave); }
+        .crm-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .crm-card {
+            border: 1px solid var(--border);
+            background: #f8fbfc;
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .crm-card h6 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: .9rem;
+        }
+        .crm-card p,
+        .crm-card li { font-size: .84rem; margin-bottom: 0; }
+        .crm-pill-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .crm-pill {
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: .74rem;
+            font-weight: 800;
+            color: var(--ocean);
+            background: #eaf5f9;
+            border: 1px solid #cfe4ec;
+        }
+        .crm-pill.good { background: #e8f7f1; color: #116b55; border-color: #bfe7da; }
+        .crm-pill.warn { background: #fff4dc; color: #8c5b00; border-color: #f1d49b; }
+        .crm-pill.hot { background: #fdecea; color: #ae3d2d; border-color: #f2c4bc; }
+        .crm-script {
+            background: linear-gradient(135deg, #fff8eb, #ffffff);
+            border: 1px solid #efd7a8;
+            border-left: 4px solid var(--gold);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text);
+            font-size: .94rem;
+            line-height: 1.65;
+        }
+        .crm-answer {
+            border-left: 3px solid var(--seafoam);
+            background: #eefaf6;
+            border-radius: 0 10px 10px 0;
+            padding: 12px 14px;
+            margin-top: 10px;
+        }
+        .official-map-frame {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #c7dde7;
+            background: white;
+            box-shadow: 0 12px 28px rgba(13,34,64,.1);
+        }
+        .official-map-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: zoom-in;
+            transition: transform .18s ease, filter .18s ease;
+        }
+        .official-map-frame:hover img {
+            transform: scale(1.012);
+            filter: saturate(1.04) contrast(1.02);
+        }
+        .map-zoom-hint {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,.72);
+            background: rgba(7,21,36,.74);
+            color: white;
+            font-size: .72rem;
+            font-weight: 800;
+            pointer-events: none;
+            box-shadow: 0 8px 22px rgba(13,34,64,.18);
+        }
+        .official-map-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #f8fbfc;
+            border-top: 1px solid var(--border);
+            color: var(--text-3);
+            font-size: .76rem;
+            font-weight: 700;
+        }
+        .map-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            background: rgba(3,10,18,.88);
+            backdrop-filter: blur(12px);
+            padding: 24px;
+        }
+        .map-lightbox.open {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 14px;
+        }
+        .map-lightbox-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            color: white;
+            max-width: 1500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .map-lightbox-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+        .map-lightbox-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .map-lightbox-actions a,
+        .map-lightbox-actions button {
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.1);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: .82rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .map-lightbox-body {
+            min-height: 0;
+            overflow: auto;
+            display: grid;
+            place-items: start center;
+        }
+        .map-lightbox-body img {
+            width: min(1500px, 100%);
+            height: auto;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 24px 80px rgba(0,0,0,.38);
+        }
+        .crm-auto-note {
+            margin-top: 10px;
+            color: var(--text-3);
+            font-size: .78rem;
+            font-weight: 600;
+        }
+        .crm-compact-list {
+            display: grid;
+            gap: 9px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .crm-compact-list li {
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            background: #f8fbfc;
+            border-radius: 10px;
+            font-size: .84rem;
+            line-height: 1.55;
+        }
+        .crm-compact-list i {
+            color: var(--seafoam);
+            margin-top: 2px;
+        }
+        .partner-card {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: start;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            background: #f8fbfc;
+        }
+        .partner-card strong { color: var(--navy); }
+        .partner-card small {
+            display: block;
+            color: var(--text-3);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .partner-score {
+            border-radius: 999px;
+            padding: 5px 8px;
+            font-size: .66rem;
+            font-weight: 900;
+            background: #e8f7f1;
+            color: #116b55;
+            border: 1px solid #bfe7da;
+            white-space: nowrap;
+        }
+        .partner-score.warn { background: #fff4dc; color: #8c5b00; border-color: #f1d49b; }
+        .crm-timeline {
+            display: grid;
+            gap: 10px;
+        }
+        .crm-step {
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+        .crm-step-num {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--ocean);
+            color: white;
+            font-weight: 900;
+            font-size: .78rem;
+        }
+        .crm-step p { margin-bottom: 0; font-size: .84rem; }
+        @media (max-width: 1200px) {
+            .crm-quick-grid { grid-template-columns: repeat(3, minmax(120px, 1fr)); }
+            .crm-dest-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 760px) {
+            #main-content { padding: 24px 18px; }
+            .crm-dest-hero { padding: 22px; }
+            .crm-quick-grid,
+            .crm-card-grid { grid-template-columns: 1fr; }
+        }
+
         /* ─── COPY BUTTON ──────────────────────────── */
         .copy-btn {
             font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: 0.18s;
@@ -716,6 +1069,18 @@
                 </div>
             </div>
 
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colFluvial">🛶 Fluvial</button></h2>
+                <div id="colFluvial" class="accordion-collapse collapse" data-bs-parent="#menuAccordeon">
+                    <div class="accordion-body">
+                        <a href="#" class="dest-link" onclick="showDest('france-fluviale', this)">France fluviale</a>
+                        <a href="#" class="dest-link" onclick="showDest('canal-midi', this)">Canal du Midi</a>
+                        <a href="#" class="dest-link" onclick="showDest('lot-fluvial', this)">Lot</a>
+                        <a href="#" class="dest-link" onclick="showDest('camargue-fluviale', this)">Camargue</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
         
         <div class="sidebar-tools">
@@ -764,7 +1129,7 @@
             <!-- STATS -->
             <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:44px;">
                 <div style="background:var(--navy); border-radius:14px; padding:20px 22px; color:white;">
-                    <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif;">23</div>
+                    <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif;">27</div>
                     <div style="font-size:0.8rem; opacity:0.7; margin-top:2px;">destinations</div>
                 </div>
                 <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
@@ -772,7 +1137,7 @@
                     <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">loueurs référencés</div>
                 </div>
                 <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-                    <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--seafoam);">23</div>
+                    <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--seafoam);">27</div>
                     <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">fiches destination</div>
                 </div>
                 <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
@@ -996,6 +1361,40 @@
                         <div class="home-card-name">Polynésie</div>
                         <div class="home-card-sub">Raiatea · Tahiti · Moorea</div>
                         <div class="home-card-tags"><span class="hct hct-gold">Rêve absolu</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fluvial -->
+            <div style="margin-bottom:36px;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+                    <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--navy);">🛶 Fluvial</span>
+                    <div style="flex:1; height:1px; background:var(--border);"></div>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
+                    <div class="home-card" onclick="showDest('france-fluviale', null)">
+                        <div class="home-card-icon">🛶</div>
+                        <div class="home-card-name">France fluviale</div>
+                        <div class="home-card-sub">Canaux · rivières · bases Le Boat</div>
+                        <div class="home-card-tags"><span class="hct hct-green">Débutants</span></div>
+                    </div>
+                    <div class="home-card" onclick="showDest('canal-midi', null)">
+                        <div class="home-card-icon">🌳</div>
+                        <div class="home-card-name">Canal du Midi</div>
+                        <div class="home-card-sub">Écluses · villages · patrimoine</div>
+                        <div class="home-card-tags"><span class="hct hct-gold">Best-seller</span></div>
+                    </div>
+                    <div class="home-card" onclick="showDest('lot-fluvial', null)">
+                        <div class="home-card-icon">🏞</div>
+                        <div class="home-card-name">Lot</div>
+                        <div class="home-card-sub">Nature · calme · vallées</div>
+                        <div class="home-card-tags"><span class="hct hct-blue">Authentique</span></div>
+                    </div>
+                    <div class="home-card" onclick="showDest('camargue-fluviale', null)">
+                        <div class="home-card-icon">☀️</div>
+                        <div class="home-card-name">Camargue</div>
+                        <div class="home-card-sub">Étangs · Méditerranée · soleil</div>
+                        <div class="home-card-tags"><span class="hct hct-green">Facile</span></div>
                     </div>
                 </div>
             </div>
@@ -1298,135 +1697,322 @@
     </div>
 
     <div id="cotedazur" class="destination-content">
-        <div class="dest-header">
-            <div>
-                <h1 class="dest-title">France <span class="sub">| Côte d'Azur</span></h1>
-                <div class="mt-3">
-                    <span class="badge bg-primary tag-badge"><i class="bi bi-sun-fill"></i> Navigation Facile</span>
-                    <span class="badge text-bg-warning tag-badge"><i class="bi bi-wind"></i> Mistral possible</span>
-                    <span class="badge bg-success tag-badge"><i class="bi bi-train-front"></i> TGV Direct</span>
-                    <span class="badge bg-info tag-badge"><i class="bi bi-water"></i> Calanques &amp; Îles d'Hyères</span>
-                </div>
+        <div class="crm-dest-hero">
+            <div class="crm-hero-label">Fiche commerciale destination</div>
+            <h1>Côte d'Azur</h1>
+            <p class="crm-hero-subtitle">Destination France premium et rassurante : idéale pour clients qui veulent de belles escales, un accès simple en train/avion, des ports nombreux et une navigation méditerranéenne accessible.</p>
+            <div class="crm-quick-grid">
+                <div class="crm-quick-card"><span>Client idéal</span><strong>Famille, première loc, court séjour</strong></div>
+                <div class="crm-quick-card"><span>Niveau</span><strong>Facile à moyen selon Mistral</strong></div>
+                <div class="crm-quick-card"><span>Durée</span><strong>1 semaine standard, 5 jours possible</strong></div>
+                <div class="crm-quick-card"><span>À vendre</span><strong>Calanques, Hyères, Porquerolles</strong></div>
+                <div class="crm-quick-card"><span>Accès</span><strong>TGV, Marseille, Toulon, Nice</strong></div>
+                <div class="crm-quick-card"><span>Point d'attention</span><strong>CV nautique et Mistral</strong></div>
             </div>
         </div>
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-azur">1. L'Essentiel</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t2-azur">2. Navigation</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t3-azur">3. Pratique &amp; Logistique</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t4-azur">4. Aide à la Vente</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t5-azur">5. Partenaires</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t6-azur"><i class="bi bi-map-fill"></i> 6. Cartes</button></li>
-        </ul>
-        <div class="tab-content tab-content-box">
 
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-azur">Vue commerciale</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t2-azur">Carte & zones</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t3-azur">Navigation</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t4-azur">Partenaires</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t5-azur">Réponses rapides</button></li>
+        </ul>
+
+        <div class="tab-content tab-content-box">
             <div class="tab-pane fade show active" id="t1-azur">
-                <h4 class="section-title"><i class="bi bi-signpost-split-fill text-primary"></i> Zones de Croisière</h4>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded h-100 bg-light">
-                            <h6 class="fw-bold">🏔 Les Calanques (Marseille → Bandol)</h6>
-                            <p class="small">Zone de navigation assez petite mais regroupant des calanques magnifiques dans les nombreuses criques (parmi lesquelles les Calanques de Sormiou, d'En Vau et de Port-Miou). À explorer également : archipel du Frioul et vers l'archipelel de Riou.</p>
+                <div class="crm-dest-grid">
+                    <div>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-megaphone-fill"></i> Angle de vente en appel</span></div>
+                            <div class="crm-script">
+                                La Côte d'Azur est la destination la plus simple à vendre quand le client veut naviguer en France sans complexité logistique. On peut lui présenter une croisière très visuelle : Calanques, Port-Cros, Porquerolles, baie d'Agay, îles de Lérins, avec la sécurité d'avoir beaucoup de ports et de bases proches.
+                            </div>
+                            <div class="crm-pill-row mt-3">
+                                <span class="crm-pill good">Rassurant</span>
+                                <span class="crm-pill good">Accès facile</span>
+                                <span class="crm-pill">Très visuel</span>
+                                <span class="crm-pill warn">Attention Mistral</span>
+                            </div>
+                        </div>
+
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-stars"></i> Ce qu'il faut mettre en avant</span></div>
+                            <div class="crm-card-grid">
+                                <div class="crm-card">
+                                    <h6><i class="bi bi-water"></i> Paysages forts</h6>
+                                    <p>Calanques, Porquerolles, Port-Cros, Corniche d'Or et îles de Lérins donnent une croisière très simple à imaginer pour le client.</p>
+                                </div>
+                                <div class="crm-card">
+                                    <h6><i class="bi bi-train-front"></i> Logistique facile</h6>
+                                    <p>Accès par Marseille, Toulon-Hyères, Nice et TGV. C'est un argument majeur pour clients français ou européens.</p>
+                                </div>
+                                <div class="crm-card">
+                                    <h6><i class="bi bi-shield-check"></i> Destination rassurante</h6>
+                                    <p>Nombreux ports, nombreuses bases, navigation côtière lisible. Bonne destination pour une première location encadrée par un CV nautique sérieux.</p>
+                                </div>
+                                <div class="crm-card">
+                                    <h6><i class="bi bi-calendar2-week"></i> Flexibilité possible</h6>
+                                    <p>La plupart des offres restent samedi-samedi en haute saison, mais SailEazy peut aider sur des durées plus souples.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-exclamation-triangle-fill"></i> À ne pas oublier</span></div>
+                            <div class="crm-card-grid">
+                                <div class="alert-block mb-0"><b>CV nautique obligatoire :</b> pas forcément de permis demandé en France, mais l'expérience doit être cohérente avec le bateau proposé.</div>
+                                <div class="alert-block mb-0"><b>Mistral :</b> prévenir sans faire peur. Navigation facile la plupart du temps, mais un coup de Mistral peut modifier l'itinéraire.</div>
+                                <div class="price-block mb-0"><b>Ports en haute saison :</b> pour un mono 40 pieds, compter environ Marseille 40 EUR, Cassis 80 EUR, Bandol 50 EUR, Toulon 50 EUR, Lavandou 60 EUR, Grimaud 70 EUR.</div>
+                                <div class="info-block mb-0"><b>Catamaran :</b> rappeler que les places et budgets port peuvent augmenter fortement, souvent x1,5 à x2.</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded h-100 bg-light">
-                            <h6 class="fw-bold">🏖 Îles d'Hyères</h6>
-                            <p class="small">La seule vraiment peuplée, avec un super port (300 places visiteurs et 80 bouées). Porquerolles : à voir absolument ! La double page du Languedoc à l'Ouest (prenez un verre au restaurant Le Mas du Languedoc). Avec son eau émeraude et une musée d'art contemporain de la Fondation Carmignac au centre de l'île. Port-Cros : parc naturel, avec son petit port pour 42 bouées sans réservation préalable, et des circuits de plongée en apnée dans la baie de La Palud.</p>
+
+                    <aside>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-speedometer2"></i> Diagnostic rapide</span></div>
+                            <div class="crm-timeline">
+                                <div class="crm-step"><div class="crm-step-num">1</div><p><b>Client débutant :</b> vendre Hyères, Porquerolles, Port-Cros, navigation courte et ports nombreux.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">2</div><p><b>Client premium :</b> orienter vers Cannes, Golfe Juan, Saint-Raphaël, îles de Lérins, Corniche d'Or.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">3</div><p><b>Court séjour :</b> vérifier SailEazy ou partenaires flexibles avant de promettre une durée hors samedi-samedi.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">4</div><p><b>Client inquiet météo :</b> expliquer brise thermique, ports nombreux et adaptation d'itinéraire en cas de Mistral.</p></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded h-100 bg-light">
-                            <h6 class="fw-bold">🎨 La Corniche d'Or (Cannes → Nice)</h6>
-                            <p class="small">Îles de Lérins (Ste Marguerite, où le masque de Fer fut emprisonné) avec son monastère très rouge, et la baie d'Agay près de Saint-Raphaël. Les îles d'Hyères les plus belles escales sur 2 jours.</p>
+
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-pin-map-fill"></i> Bases clés</span></div>
+                            <div class="crm-pill-row">
+                                <span class="crm-pill">Marseille</span>
+                                <span class="crm-pill">Port-Pin-Rolland</span>
+                                <span class="crm-pill">Bandol</span>
+                                <span class="crm-pill">Toulon</span>
+                                <span class="crm-pill">Hyères</span>
+                                <span class="crm-pill">Bormes-les-Mimosas</span>
+                                <span class="crm-pill">Grimaud / Cogolin</span>
+                                <span class="crm-pill">Saint-Raphaël</span>
+                                <span class="crm-pill">Golfe Juan</span>
+                                <span class="crm-pill">Cannes</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded h-100 bg-light">
-                            <h6 class="fw-bold">🗺 Bases Principales</h6>
-                            <p class="small"><b>Marseille</b> (Port-Pin-Rolland) · <b>Bandol</b> · <b>Hyères</b> · <b>Grimaud/Cogolin</b> · <b>Saint-Tropez</b> · <b>Saint-Raphaël</b> · <b>Cannes</b></p>
-                            <p class="small mt-1">Aéroports : Marignane (Marseille) · Toulon-Hyères · Nice</p>
-                        </div>
-                    </div>
+                    </aside>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="t2-azur">
-                <div class="info-block"><b>Navigation assez facile</b> avec peu de vent, rarement au-dessus de force 4 (15 nœuds ou 30 km/h).</div>
-                <div class="row g-4 mt-1">
-                    <div class="col-md-6">
-                        <h4 class="section-title"><i class="bi bi-wind text-primary"></i> Vents</h4>
-                        <p>Le vent dominant est la <b>brise thermique</b> soufflant de la mer vers la terre quand il fait chaud l'après-midi. Possible tout de la vallée du Rhône (force 7, 30 nœuds ou 50 km/h) : fort vent de Nord, très froid, devant la vallée du Rhône.</p>
-                        <div class="alert-block mt-2"><b>⚠️ Mistral :</b> Risque de coup de Mistral (force 7). 30 nœuds ou 50 km/h parfois. Attention — peut arriver sans prévenir.</div>
+                <div class="crm-dest-grid">
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-map-fill"></i> Carte commerciale simplifiée</span><span class="crm-pill good">Pilotage appel</span></div>
+                        <div class="official-map-frame">
+                            <img src="assets/greenbook-maps/cotedazur.jpg" alt="Carte officielle Filovent de la Côte d'Azur avec bases, aéroports, gares TGV, zones de navigation et mouillages">
+                            <div class="map-zoom-hint"><i class="bi bi-zoom-in"></i> Agrandir</div>
+                            <div class="official-map-caption">
+                                <span>Carte officielle issue du Greenbook Filovent · cliquez pour agrandir</span>
+                                <span>Page Côte d'Azur</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h4 class="section-title"><i class="bi bi-thermometer-sun text-primary"></i> Climat</h4>
-                        <ul>
-                            <li>Nombreux mouillages dans les calanques et en été (Calanques et Esterel).</li>
-                            <li>Climate <b>chaud et sec</b>, super vent bien établi pour naviguer.</li>
-                            <li>De nombreuses criques dans les marinas et en été.</li>
-                        </ul>
-                    </div>
+
+                    <aside>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-compass-fill"></i> Zones à conseiller</span></div>
+                            <div class="crm-timeline">
+                                <div class="crm-step"><div class="crm-step-num">A</div><p><b>Calanques :</b> Marseille, Sormiou, En-Vau, Port-Miou, Frioul, Riou. Très visuel, parfait pour clients qui veulent du spectaculaire proche.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">B</div><p><b>Îles d'Hyères :</b> Porquerolles, Port-Cros, Levant. Le meilleur compromis beauté, mouillages et navigation simple.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">C</div><p><b>Corniche d'Or :</b> baie d'Agay, Saint-Raphaël, îles de Lérins, Cannes. À vendre aux clients qui aiment le côté chic et carte postale.</p></div>
+                            </div>
+                        </div>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-clock-history"></i> Itinéraire simple 7 jours</span></div>
+                            <p><b>Hyères ou Toulon</b> est souvent le plus simple pour construire une boucle rassurante : Porquerolles, Port-Cros, baie d'Agay ou Bormes selon météo. Pour Marseille, vendre plutôt Calanques et Bandol.</p>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="t3-azur">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <h4 class="section-title"><i class="bi bi-card-heading text-primary"></i> Permis & Légalité</h4>
-                        <p>Pas besoin de permis pour les locations françaises, mais un CV nautique est strictement exigé. SailEazy : le seul loueur 100% flexible en terme de durée et d'heures (même le dimanche).</p>
-                        <div class="info-block mt-2">Pour les clients Français, pas besoin de permis, mais d'une expérience nautique sur des embarcations comparables.</div>
+                <div class="crm-card-grid">
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-wind"></i> Conditions de navigation</span></div>
+                        <p>Navigation généralement facile, avec peu de vent et rarement au-dessus de force 4. La brise thermique souffle de la mer vers la terre quand il fait chaud, surtout l'après-midi.</p>
+                        <div class="alert-block mt-3"><b>Vigilance Mistral :</b> vent de nord froid et fort lié à la vallée du Rhône. Il peut atteindre force 7, autour de 30 noeuds / 50 km/h, et imposer une adaptation d'itinéraire.</div>
                     </div>
-                    <div class="col-md-6">
-                        <h4 class="section-title"><i class="bi bi-airplane text-primary"></i> Accès</h4>
-                        <ul class="small">
-                            <li>Distances en voiture : <b>Marseille → Hyères 1h40</b></li>
-                            <li>Toulon est une superbe base avec son arsenal de la marine militaire.</li>
-                            <li>Aéroport de Marignane (Marseille) · Aéroport de Nice</li>
-                            <li style="list-style:none;margin-top:8px;"><b>✈️ Google Flights :</b> <a href="https://www.google.com/travel/flights?q=flights+to+Marseille" target="_blank" style="color:var(--wave);font-weight:600;">Marseille</a> · <a href="https://www.google.com/travel/flights?q=flights+to+Nice" target="_blank" style="color:var(--wave);font-weight:600;">Nice</a> · <a href="https://www.google.com/travel/flights?q=flights+to+Toulon+Hyeres+airport" target="_blank" style="color:var(--wave);font-weight:600;">Toulon-Hyères</a></li>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-brightness-high-fill"></i> Saison & durée</span></div>
+                        <p>En juillet/août, la location se fait surtout en semaines complètes samedi-samedi. En basse ou moyenne saison, certains week-ends ou courts séjours deviennent possibles selon partenaire.</p>
+                        <div class="price-block mt-3"><b>Minimum à retenir :</b> SailEazy peut proposer des durées flexibles, minimum 5 jours, avec check-in/check-out possible tous les jours selon disponibilité.</div>
+                    </div>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-person-vcard-fill"></i> Permis / CV nautique</span></div>
+                        <p>En France, il ne faut pas vendre la destination comme “sans vérification”. Le commercial doit demander une expérience nautique cohérente : taille de bateau comparable, navigation récente, équipage capable.</p>
+                    </div>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-signpost-split-fill"></i> Accès utiles</span></div>
+                        <ul class="mb-0">
+                            <li><b>Marseille Marignane :</b> pratique pour Marseille, Calanques, Port-Pin-Rolland.</li>
+                            <li><b>Toulon-Hyères :</b> excellent pour Hyères, Porquerolles, Port-Cros.</li>
+                            <li><b>Nice :</b> pratique pour Cannes, Golfe Juan, Saint-Raphaël.</li>
+                            <li><b>Train :</b> Marseille, Toulon et Hyères sont de bons arguments pour éviter l'avion.</li>
                         </ul>
-                        <div class="info-block mt-2">Prix indicatifs des places en haute saison pour un monocoque 40 pieds (x1,5 à x2 pour un catamaran) : <b>Marseille Vieux Port 40€ · Cassis 80€ · Bandol 50€ · Toulon 50€ · Lavandou 60€ · Grimaud 70€</b></div>
                     </div>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="t4-azur">
-                <h4 class="section-title"><i class="bi bi-chat-quote text-primary"></i> Arguments de Vente</h4>
-                <div class="gold-block"><b>✨ Argument fort :</b> "La Côte d'Azur c'est la destination parfaite pour commencer la voile — navigation facile, ports nombreux, soleil garanti, et des paysages entre Calanques et Corniche d'Or absolument uniques. On est en France, pas besoin de passeport ni de change."</div>
-                <div class="info-block mt-3">
-                    <b>Client : "C'est trop touristique Saint-Tropez ?"</b><br>
-                    → "En bateau, on évite tout ça. On mouille dans les criques les plus belles, on arrive tôt le matin, et on repart avant les foules. Le bateau est la meilleure façon d'explorer la Côte d'Azur."
-                </div>
-                <div class="price-block mt-2">
-                    <b>💶 Prix indicatifs :</b> Seulement des semaines complètes (Samedi-Samedi) sauf SailEazy (qui propose aussi des week-ends et courts séjours tous les jours). En basse/moyenne saison : weekends ou courts séjours possibles.
+                <div class="crm-dest-grid">
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-star-fill"></i> Loueurs à connaître</span></div>
+                        <div class="crm-card-grid">
+                            <div class="partner-card"><div><strong>Hexavoile Diapason</strong><small>Hyères</small><p>Bon repère pour départs Îles d'Hyères.</p></div><span class="partner-score">Fort</span></div>
+                            <div class="partner-card"><div><strong>Voile et Vent / Au Fil de l'Étrave</strong><small>Hyères</small><p>Disponibilité sur demande.</p></div><span class="partner-score">Fort</span></div>
+                            <div class="partner-card"><div><strong>ACM Catamarans</strong><small>Hyères</small><p>À regarder pour clients catamaran.</p></div><span class="partner-score">Cat</span></div>
+                            <div class="partner-card"><div><strong>Set Sail</strong><small>Toulon & Bandol</small><p>Bateaux anciens mais très bien entretenus.</p></div><span class="partner-score">Fiable</span></div>
+                            <div class="partner-card"><div><strong>Arcadie Plaisance</strong><small>Grimaud</small><p>Chers, mais bons bateaux et propriétaires de leurs places de port.</p></div><span class="partner-score">Premium</span></div>
+                            <div class="partner-card"><div><strong>Dream Yacht Charter</strong><small>Marseille & Port-Pin-Rolland</small><p>Utile pour départs ouest, Calanques et Bandol.</p></div><span class="partner-score">Volume</span></div>
+                            <div class="partner-card"><div><strong>SailEazy</strong><small>Bormes-les-Mimosas</small><p>Le plus flexible : jours et durées, minimum 5 jours. Plus cher.</p></div><span class="partner-score">Flexible</span></div>
+                            <div class="partner-card"><div><strong>Kiriacoulis</strong><small>Bormes-les-Mimosas</small><p>Pas cher et flexible, service moins premium.</p></div><span class="partner-score warn">Budget</span></div>
+                            <div class="partner-card"><div><strong>Seaways Yachting</strong><small>Golfe Juan & Saint-Raphaël</small><p>Pratique pour Corniche d'Or, Cannes et îles de Lérins.</p></div><span class="partner-score">Est</span></div>
+                            <div class="partner-card"><div><strong>Locasail</strong><small>Bandol</small><p>Disponibilité sur demande.</p></div><span class="partner-score">Local</span></div>
+                        </div>
+                    </div>
+                    <aside>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-funnel-fill"></i> Comment choisir vite</span></div>
+                            <div class="crm-timeline">
+                                <div class="crm-step"><div class="crm-step-num">1</div><p><b>Flexibilité demandée :</b> regarder SailEazy en premier.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">2</div><p><b>Départ Hyères :</b> Hexavoile, Voile et Vent, ACM Catamarans.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">3</div><p><b>Client budget :</b> Kiriacoulis peut dépanner, bien cadrer le niveau de service.</p></div>
+                                <div class="crm-step"><div class="crm-step-num">4</div><p><b>Client premium :</b> Arcadie Plaisance ou zones Cannes/Golfe Juan selon besoin.</p></div>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="t5-azur">
-                <h4 class="section-title"><i class="bi bi-star-fill text-warning"></i> Meilleurs Loueurs</h4>
-                <div class="row g-3">
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Hexavoile Diapason <small class="text-muted fw-normal">— Hyères</small></h6></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Voile et Vent / Au Fil de l'Étrave <small class="text-muted fw-normal">— Hyères</small></h6><p class="small">Disponibilité sur demande.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">ACM Catamarans <small class="text-muted fw-normal">— Hyères</small></h6><p class="small">Disponibilité sur demande.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Set Sail <small class="text-muted fw-normal">— Toulon & Bandol</small></h6><p class="small">Bateaux anciens mais très bien entretenus.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Locasail <small class="text-muted fw-normal">— Bandol</small></h6><p class="small">Disponibilité sur demande.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Arcadie Plaisance <small class="text-muted fw-normal">— Grimaud</small></h6><p class="small">Chers mais très bons bateaux et propriétaires de leurs places de port.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Dream Yacht Charter <small class="text-muted fw-normal">— Marseille & Port-Pin-Rolland</small></h6></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">SailEazy <small class="text-muted fw-normal">— Bornes-les-Mimosas (Le loueur 100% flexible)</small></h6><p class="small">Le loueur le plus cher et flexible. Checkout tous les jours, minimum 5 jours, et aller et retour en Corse possibles.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Kiriacoulis <small class="text-muted fw-normal">— Bornes-les-Mimosas</small></h6><p class="small">Pas cher et flexible, mais pas le meilleur service.</p></div></div>
-                    <div class="col-md-6"><div class="p-3 border rounded bg-light h-100"><h6 class="fw-bold">Seaways Yachting <small class="text-muted fw-normal">— Golfe Juan & St Raphael</small></h6></div></div>
+                <div class="crm-dest-grid">
+                    <div>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-chat-left-quote-fill"></i> Objections fréquentes</span></div>
+                            <div class="crm-answer"><b>“La Côte d'Azur, c'est trop touristique.”</b><br>Justement, le bateau permet d'éviter la route, les plages pleines et les horaires classiques. On arrive tôt dans les criques, on mouille plus loin, et on choisit les escales selon l'affluence.</div>
+                            <div class="crm-answer"><b>“J'ai peur que ce soit compliqué pour une première location.”</b><br>On choisit une zone courte, Hyères/Porquerolles ou Marseille/Calanques, avec beaucoup de ports et un itinéraire ajustable. Le vrai point à valider est le CV nautique.</div>
+                            <div class="crm-answer"><b>“Je veux moins d'une semaine.”</b><br>En haute saison c'est rarement possible, mais on peut vérifier les partenaires flexibles comme SailEazy, surtout hors juillet/août.</div>
+                            <div class="crm-answer"><b>“Et s'il y a du Mistral ?”</b><br>On ne promet pas un parcours figé. On prévoit une zone alternative et on explique que la densité de ports permet de sécuriser la croisière.</div>
+                        </div>
+                    </div>
+                    <aside>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-check2-circle"></i> Phrase prête à dire</span></div>
+                            <div class="crm-script">“Pour votre profil, je partirais plutôt sur Hyères ou Toulon : vous avez les îles d'Hyères à portée directe, Porquerolles et Port-Cros sont très vendeurs, et si la météo bouge on garde toujours des alternatives proches.”</div>
+                        </div>
+                        <div class="crm-panel">
+                            <div class="crm-panel-title"><span><i class="bi bi-search"></i> Mots-clés recherchables</span></div>
+                            <div class="crm-pill-row">
+                                <span class="crm-pill">Porquerolles</span>
+                                <span class="crm-pill">Port-Cros</span>
+                                <span class="crm-pill">Calanques</span>
+                                <span class="crm-pill">Mistral</span>
+                                <span class="crm-pill">SailEazy</span>
+                                <span class="crm-pill">CV nautique</span>
+                                <span class="crm-pill">Hyères</span>
+                                <span class="crm-pill">Saint-Raphaël</span>
+                                <span class="crm-pill">Îles de Lérins</span>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="tab-pane fade" id="t6-azur">
-                <h4 class="section-title"><i class="bi bi-globe-europe-africa text-primary"></i> Cartes Côte d'Azur</h4>
-                <ul class="nav nav-pills mb-3" id="pills-azur" role="tablist">
-                  <li class="nav-item"><button class="nav-link active btn-sm" data-bs-toggle="pill" data-bs-target="#map-g-azur">🗺 Google Maps</button></li>
-                  <li class="nav-item"><button class="nav-link btn-sm" data-bs-toggle="pill" data-bs-target="#map-w-azur">🌬 Windy (Vents)</button></li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane fade show active" id="map-g-azur"><div class="map-container"><iframe src="https://maps.google.com/maps?q=43.05,6.2&hl=fr&z=9&output=embed" allowfullscreen></iframe></div></div>
-                  <div class="tab-pane fade" id="map-w-azur"><div class="map-container"><iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=%C2%B0C&metricWind=kt&zoom=9&overlay=wind&product=ecmwf&level=surface&lat=43.05&lon=6.2" allowfullscreen></iframe></div></div>
+    <div id="france-fluviale" class="destination-content">
+        <div class="dest-header">
+            <div>
+                <h1 class="dest-title">France <span class="sub">| Fluvial</span></h1>
+                <div class="mt-3">
+                    <span class="badge bg-success tag-badge"><i class="bi bi-check-circle"></i> Sans permis</span>
+                    <span class="badge bg-primary tag-badge"><i class="bi bi-people"></i> Famille & débutants</span>
+                    <span class="badge bg-info tag-badge"><i class="bi bi-signpost"></i> Canaux & rivières</span>
                 </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-frfl">Infos terrain</button></li>
+        </ul>
+        <div class="tab-content tab-content-box">
+            <div class="tab-pane fade show active" id="t1-frfl">
+                <h4 class="section-title"><i class="bi bi-water text-primary"></i> Logique commerciale fluviale</h4>
+                <p>La France fluviale se vend comme une expérience lente, simple et conviviale : pas besoin de permis, navigation calme, découverte de villages, gastronomie, patrimoine et nature. Idéal pour familles, couples, groupes d'amis et clients qui veulent naviguer sans stress.</p>
+                <div class="info-block"><b>À retenir :</b> l'enjeu commercial est de rassurer sur la prise en main, les écluses, les distances courtes et le rythme tranquille.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="canal-midi" class="destination-content">
+        <div class="dest-header">
+            <div>
+                <h1 class="dest-title">France fluviale <span class="sub">| Canal du Midi</span></h1>
+                <div class="mt-3">
+                    <span class="badge bg-success tag-badge"><i class="bi bi-check-circle"></i> Best-seller fluvial</span>
+                    <span class="badge bg-primary tag-badge"><i class="bi bi-tree"></i> Ombragé & patrimoine</span>
+                    <span class="badge text-bg-warning tag-badge"><i class="bi bi-arrow-left-right"></i> Beaucoup d'écluses</span>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-cmid">Infos terrain</button></li>
+        </ul>
+        <div class="tab-content tab-content-box">
+            <div class="tab-pane fade show active" id="t1-cmid">
+                <h4 class="section-title"><i class="bi bi-signpost-split-fill text-primary"></i> Canal du Midi</h4>
+                <p>Destination fluviale emblématique : platanes, villages, patrimoine UNESCO, rythme doux et navigation très accessible. Très bon choix pour une première croisière fluviale si le client accepte les écluses.</p>
+                <div class="gold-block"><b>Angle de vente :</b> vendre l'expérience vacances, pas la performance nautique : étapes courtes, marchés, restaurants, balades à vélo et vie à bord.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lot-fluvial" class="destination-content">
+        <div class="dest-header">
+            <div>
+                <h1 class="dest-title">France fluviale <span class="sub">| Lot</span></h1>
+                <div class="mt-3">
+                    <span class="badge bg-info tag-badge"><i class="bi bi-mountain"></i> Nature & vallée</span>
+                    <span class="badge bg-success tag-badge"><i class="bi bi-emoji-smile"></i> Très dépaysant</span>
+                    <span class="badge text-bg-warning tag-badge"><i class="bi bi-compass"></i> Rythme tranquille</span>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-lotfl">Infos terrain</button></li>
+        </ul>
+        <div class="tab-content tab-content-box">
+            <div class="tab-pane fade show active" id="t1-lotfl">
+                <h4 class="section-title"><i class="bi bi-water text-primary"></i> Lot</h4>
+                <p>Le Lot est à vendre aux clients qui cherchent une croisière fluviale plus nature, plus calme et plus authentique. C'est une destination de paysages, villages, falaises et navigation paisible.</p>
+                <div class="info-block"><b>Profil client :</b> couples, familles calmes, amateurs de nature, clients qui veulent éviter les axes fluviaux trop fréquentés.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="camargue-fluviale" class="destination-content">
+        <div class="dest-header">
+            <div>
+                <h1 class="dest-title">France fluviale <span class="sub">| Camargue</span></h1>
+                <div class="mt-3">
+                    <span class="badge bg-primary tag-badge"><i class="bi bi-sun"></i> Soleil & Méditerranée</span>
+                    <span class="badge bg-success tag-badge"><i class="bi bi-check-circle"></i> Facile</span>
+                    <span class="badge bg-info tag-badge"><i class="bi bi-binoculars"></i> Nature & étangs</span>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t1-camfl">Infos terrain</button></li>
+        </ul>
+        <div class="tab-content tab-content-box">
+            <div class="tab-pane fade show active" id="t1-camfl">
+                <h4 class="section-title"><i class="bi bi-brightness-high text-primary"></i> Camargue fluviale</h4>
+                <p>La Camargue se vend comme une croisière fluviale ensoleillée, facile et très vacances : étangs, chevaux, flamants roses, ambiance méditerranéenne et accès simple au sud de la France.</p>
+                <div class="price-block"><b>À positionner :</b> excellente alternative pour clients qui veulent le sud, mais pas forcément une vraie croisière en mer.</div>
             </div>
         </div>
     </div>
@@ -4068,8 +4654,382 @@
 
 </div>
 
+<div id="map-lightbox" class="map-lightbox" aria-hidden="true">
+    <div class="map-lightbox-bar">
+        <div>
+            <div class="map-lightbox-title" id="map-lightbox-title">Carte Greenbook</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.58);font-weight:700;margin-top:2px;">Image officielle Filovent en haute définition</div>
+        </div>
+        <div class="map-lightbox-actions">
+            <a id="map-lightbox-open" href="#" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ouvrir</a>
+            <button type="button" onclick="closeMapLightbox()"><i class="bi bi-x-lg"></i> Fermer</button>
+        </div>
+    </div>
+    <div class="map-lightbox-body" onclick="closeMapLightbox()">
+        <img id="map-lightbox-img" src="" alt="">
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const GREENBOOK_CRM_DESTINATIONS = {
+        bretagne: {
+            title: "Bretagne",
+            region: "France Atlantique",
+            map: "assets/greenbook-maps/bretagne.jpg",
+            subtitle: "Destination authentique pour navigateurs qui veulent du vent, des marées, des îles et une vraie expérience marine.",
+            quick: ["Navigateurs expérimentés", "Technique : marées et courants", "1 semaine idéale", "Golfe du Morbihan, Glénan, Belle-Île", "TGV + bases côtières", "Bien cadrer le niveau"],
+            sell: ["Vendre l'authenticité : paysages sauvages, lumière, ports vivants et navigation avec du caractère.", "Très bon choix pour clients qui ont déjà navigué et veulent éviter la Méditerranée classique.", "À positionner comme une destination de sensations, pas comme une croisière farniente."],
+            watch: ["Marées, courants et météo changeante doivent être annoncés clairement.", "Ne pas proposer à un débutant sans skipper ou sans expérience solide.", "Prévoir un itinéraire adaptable."]
+        },
+        corse: {
+            title: "Corse",
+            region: "France",
+            map: "assets/greenbook-maps/corse.jpg",
+            subtitle: "Une valeur sûre premium : eau claire, relief spectaculaire, gastronomie, mouillages sauvages et vraie identité insulaire.",
+            quick: ["Couples, familles, premium", "Moyen selon zone", "1 à 2 semaines", "Bonifacio, Calvi, Ajaccio, Cap Corse", "Vols + ferries", "Libeccio possible"],
+            sell: ["Mettre en avant l'île complète : criques, villages, montagnes, gastronomie et mouillages très beaux.", "Bonifacio et le sud sont extrêmement vendeurs pour clients qui veulent du spectaculaire.", "C'est plus sauvage et plus identitaire que la Côte d'Azur."],
+            watch: ["Vigilance Libeccio et effets locaux.", "Distances parfois longues selon boucle.", "Budget port et disponibilité à surveiller en haute saison."]
+        },
+        toscane: {
+            title: "Italie continentale",
+            region: "Toscane, Ligurie, Naples",
+            map: "assets/greenbook-maps/toscane.jpg",
+            subtitle: "Destination culturelle et très visuelle : Elbe, Ligurie, Naples, côte amalfitaine et îles italiennes.",
+            quick: ["Clients culture & gastronomie", "Moyen", "1 semaine", "Elbe, Naples, Capri, Pontines", "Vols Italie + train", "Ports chers au sud"],
+            sell: ["Vendre le mélange mer + culture + cuisine : villages, îles, patrimoine et paysages italiens.", "Très adapté aux clients qui veulent plus qu'une simple navigation.", "La côte amalfitaine est ultra désirable mais doit être cadrée côté budget."],
+            watch: ["Ports peu nombreux et parfois très chers au sud.", "Réserver tôt en haute saison.", "Bien vérifier base de départ et distances."]
+        },
+        sardaigne: {
+            title: "Sardaigne",
+            region: "Italie",
+            map: "assets/greenbook-maps/sardaigne.jpg",
+            subtitle: "Destination eau turquoise et premium, très forte pour vendre la Maddalena, Costa Smeralda et les mouillages sauvages.",
+            quick: ["Premium, couples, familles", "Facile à moyen", "1 semaine", "Maddalena, Bonifacio, Costa Smeralda", "Olbia pratique", "Ports premium"],
+            sell: ["Mettre en avant l'eau turquoise, les mouillages sauvages et le côté moins fréquenté que certaines zones françaises.", "Très bon argument pour clients qui veulent le beau sans partir loin.", "La Maddalena est le coeur de vente."],
+            watch: ["Budget port élevé en Costa Smeralda.", "Vent et traversées vers Corse à cadrer.", "Disponibilités premium à anticiper."]
+        },
+        sicile: {
+            title: "Sicile & Éoliennes",
+            region: "Italie",
+            map: "assets/greenbook-maps/sicile.jpg",
+            subtitle: "Destination volcanique et culturelle : Éoliennes, Stromboli, gastronomie, histoire et navigation plus aventureuse.",
+            quick: ["Culture, aventure, volcans", "Moyen", "1 semaine minimum", "Éoliennes, Trapani, Palerme", "Catane/Palerme", "Traversées à cadrer"],
+            sell: ["Stromboli, Vulcano, Lipari et les paysages volcaniques donnent un récit très fort.", "À proposer aux clients qui veulent une croisière différente et plus culturelle.", "Bonne alternative à la Grèce/Italie classique."],
+            watch: ["Traversées exposées selon météo.", "Moins adapté aux clients très débutants.", "Bien gérer les attentes sur ports et mouillages."]
+        },
+        baleares: {
+            title: "Baléares",
+            region: "Espagne",
+            map: "assets/greenbook-maps/baleares.jpg",
+            subtitle: "Destination facile et très demandée : Majorque, Ibiza, Formentera, eaux claires, criques et ambiance méditerranéenne.",
+            quick: ["Famille, amis, première Med", "Facile à moyen", "1 semaine", "Majorque, Ibiza, Formentera", "Palma / Ibiza", "Permis requis"],
+            sell: ["Vendre l'eau claire, les criques, Formentera et la simplicité logistique.", "Très bon choix pour clients qui veulent vacances, baignade et navigation courte.", "Majorque rassure, Ibiza/Formentera fait rêver."],
+            watch: ["Permis espagnol/conditions à vérifier.", "Forte demande en haute saison.", "Mouillages et bouées à anticiper."]
+        },
+        split: {
+            title: "Split / Trogir",
+            region: "Croatie",
+            map: "assets/greenbook-maps/croatie.jpg",
+            subtitle: "Le bassin croate le plus vendeur : simple, dense, beau, parfait pour première croisière en Croatie.",
+            quick: ["Familles, débutants, groupes", "Facile", "1 semaine", "Hvar, Vis, Brač, Šolta", "Aéroport Split", "Ports nombreux"],
+            sell: ["Vendre la densité des îles : peu de longues traversées, beaucoup d'options.", "Hvar et Vis donnent une forte valeur émotionnelle.", "Excellent choix pour clients qui veulent réussir leur première semaine."],
+            watch: ["Ports fréquentés en été.", "Réservations d'escales recommandées.", "Permis/skipper à cadrer."]
+        },
+        zadar: {
+            title: "Zadar / Kornati",
+            region: "Croatie",
+            map: "assets/greenbook-maps/croatie.jpg",
+            subtitle: "Croatie nature : Kornati, Šibenik, Krka, îles plus sauvages et navigation très pure.",
+            quick: ["Nature, calme, équipages curieux", "Facile à moyen", "1 semaine", "Kornati, Šibenik, Krka", "Zadar/Split", "Parcs payants"],
+            sell: ["Les Kornati sont l'argument fort : îles désertes, parc naturel, impression de bout du monde.", "À proposer si le client veut moins de foule et plus de nature.", "Très bon complément à Split pour clients déjà venus en Croatie."],
+            watch: ["Parcs et bouées payants.", "Moins de vie nocturne que Split.", "Anticiper ravitaillement et étapes."]
+        },
+        dubrovnik: {
+            title: "Dubrovnik",
+            region: "Croatie",
+            map: "assets/greenbook-maps/croatie.jpg",
+            subtitle: "Zone prestige et culturelle : Dubrovnik, Korčula, Mljet, Lastovo et atmosphère historique.",
+            quick: ["Premium, culture, couples", "Moyen", "1 semaine", "Mljet, Korčula, Elaphites", "Aéroport Dubrovnik", "Zone plus sud"],
+            sell: ["Dubrovnik est un nom qui vend tout seul : ville historique, image forte, départ premium.", "Mljet et Korčula donnent un équilibre nature/culture.", "Idéal pour clients qui veulent une Croatie plus élégante."],
+            watch: ["Disponibilités et prix premium.", "Distances à surveiller.", "Ports chargés en haute saison."]
+        },
+        ioniennes: {
+            title: "Ioniennes",
+            region: "Grèce",
+            map: "assets/greenbook-maps/grece.jpg",
+            subtitle: "La Grèce facile : îles vertes, vents plus doux, villages, mouillages et très bonne destination famille.",
+            quick: ["Familles, première Grèce", "Facile", "1 semaine", "Corfou, Lefkas, Kefalonia", "Corfou / Preveza", "Très demandé"],
+            sell: ["Positionner comme la Grèce rassurante, verte et accessible.", "Très bon choix pour clients qui veulent éviter le Meltem des Cyclades.", "Vendre villages, tavernes, baignades et étapes courtes."],
+            watch: ["Très demandé en été.", "Ports parfois chargés.", "Météo orageuse ponctuelle à surveiller."]
+        },
+        saronique: {
+            title: "Golfe Saronique",
+            region: "Grèce",
+            map: "assets/greenbook-maps/grece.jpg",
+            subtitle: "Départ Athènes pratique, navigation plus protégée, culture grecque et îles faciles à combiner.",
+            quick: ["Familles, culture, Athènes", "Facile à moyen", "1 semaine", "Égine, Hydra, Poros, Spetses", "Athènes", "Ports fréquentés"],
+            sell: ["Vendre la simplicité d'accès via Athènes et les îles iconiques proches.", "Très bonne alternative aux Cyclades si le client veut moins de vent.", "Hydra et Poros sont très faciles à projeter en appel."],
+            watch: ["Ports fréquentés.", "Hydra peut être compliquée en haute saison.", "Prévoir plan B d'escale."]
+        },
+        sporades: {
+            title: "Sporades",
+            region: "Grèce",
+            map: "assets/greenbook-maps/grece.jpg",
+            subtitle: "Grèce verte et sauvage : Skiathos, Skopelos, Alonissos, eaux claires et parc marin.",
+            quick: ["Nature, familles, calme", "Facile à moyen", "1 semaine", "Skiathos, Skopelos, Alonissos", "Skiathos", "Accès saisonnier"],
+            sell: ["Vendre la Grèce nature : pinèdes, eau claire, mouillages et ambiance plus douce.", "Parfait pour clients qui veulent une Grèce moins carte postale blanche/bleue mais plus sauvage.", "Le parc marin d'Alonissos est un argument fort."],
+            watch: ["Vols plus saisonniers.", "Moins connu, donc bien raconter la destination.", "Vérifier bases et disponibilité."]
+        },
+        cyclades: {
+            title: "Cyclades",
+            region: "Grèce",
+            map: "assets/greenbook-maps/grece.jpg",
+            subtitle: "La Grèce iconique : villages blancs, Santorin, Mykonos, Paros, mais navigation plus exigeante.",
+            quick: ["Clients expérimentés, rêve grec", "Technique en été", "1 à 2 semaines", "Paros, Naxos, Santorin, Mykonos", "Athènes / Paros", "Meltem"],
+            sell: ["C'est l'image grecque absolue : villages blancs, eau bleue, couchers de soleil.", "À vendre comme destination de rêve, mais avec un vrai cadrage météo.", "Idéal avec skipper si le niveau est incertain."],
+            watch: ["Meltem fort en été.", "Distances et ports exposés.", "Ne pas survendre à débutants sans skipper."]
+        },
+        dodecanese: {
+            title: "Dodécanèse",
+            region: "Grèce",
+            map: "assets/greenbook-maps/grece.jpg",
+            subtitle: "Grèce culturelle et dépaysante entre Rhodes, Kos, Symi, Patmos, proche de la Turquie.",
+            quick: ["Culture, plongée, dépaysement", "Moyen", "1 semaine", "Rhodes, Kos, Symi, Patmos", "Rhodes/Kos", "Effets locaux"],
+            sell: ["Vendre la Grèce moins connue : architecture, histoire, villages colorés, plongée.", "Très bon choix pour clients déjà venus dans les Cyclades.", "Symi et Rhodes sont des arguments très visuels."],
+            watch: ["Vents et accélérations locales.", "Accès à vérifier selon base.", "Distances à bien construire."]
+        },
+        martinique: {
+            title: "Martinique",
+            region: "Antilles",
+            map: "assets/greenbook-maps/antilles.jpg",
+            subtitle: "Base antillaise majeure : Le Marin, Grenadines, alizés, chaleur, mouillages tropicaux.",
+            quick: ["Hiver, soleil, groupes", "Moyen alizés", "10 jours idéal", "Le Marin, Sainte-Lucie, Grenadines", "Vol direct Fort-de-France", "Cyclones à éviter"],
+            sell: ["Vendre l'hiver au soleil, les Grenadines et les Tobago Cays.", "Le Marin rassure par la taille de la base et l'offre disponible.", "Très fort pour clients qui veulent Caraïbes accessibles depuis Paris."],
+            watch: ["Saison cyclonique août-novembre.", "Alizés parfois soutenus.", "Formalités inter-îles selon itinéraire."]
+        },
+        guadeloupe: {
+            title: "Guadeloupe",
+            region: "Antilles",
+            map: "assets/greenbook-maps/antilles.jpg",
+            subtitle: "Antilles françaises : Les Saintes, Marie-Galante, Pointe-à-Pitre, culture créole et navigation tropicale.",
+            quick: ["France, familles, soleil", "Moyen alizés", "1 à 2 semaines", "Les Saintes, Marie-Galante", "Pointe-à-Pitre", "Alizés"],
+            sell: ["Vendre la simplicité France + euro + îles variées.", "Les Saintes sont un argument très fort.", "Bonne alternative à Martinique si le client veut rester sur Antilles françaises."],
+            watch: ["Saison cyclonique.", "Alizés et mouillages à cadrer.", "Disponibilités haute saison."]
+        },
+        bvi: {
+            title: "Îles Vierges britanniques",
+            region: "Caraïbes",
+            map: "assets/greenbook-maps/antilles.jpg",
+            subtitle: "Destination premium Caraïbes : navigation courte, mouillages mythiques, beach bars et confort.",
+            quick: ["Premium, familles, amis", "Facile Caraïbes", "1 semaine", "Tortola, Virgin Gorda, Jost Van Dyke", "Tortola", "Budget élevé"],
+            sell: ["Vendre la facilité : îles proches, mouillages organisés, ambiance Caraïbes premium.", "Très bon pour clients qui veulent le rêve sans longues traversées.", "Virgin Gorda et The Baths sont des arguments forts."],
+            watch: ["Budget, taxes et formalités.", "Saison cyclonique.", "Mouillages parfois réservés."]
+        },
+        bahamas: {
+            title: "Bahamas",
+            region: "Caraïbes",
+            map: "assets/greenbook-maps/bahamas.jpg",
+            subtitle: "Eaux très claires, Exumas, bancs de sable, îles basses et sensation d'isolement.",
+            quick: ["Eau turquoise, rêve, calme", "Moyen", "1 semaine +", "Nassau, Exumas", "Nassau", "Navigation peu profonde"],
+            sell: ["Vendre l'eau incroyable, les bancs de sable et l'impression d'être seul au monde.", "Destination très forte pour photos, snorkeling et mouillages.", "Alternative premium aux Caraïbes plus classiques."],
+            watch: ["Peu de profondeur, attention tirant d'eau.", "Météo fronts froids en hiver.", "Ravitaillement et autonomie à anticiper."]
+        },
+        seychelles: {
+            title: "Seychelles",
+            region: "Océan Indien",
+            map: "assets/greenbook-maps/seychelles.jpg",
+            subtitle: "Destination prestige : granit, tortues, lagons, Mahé, Praslin, La Digue et navigation tropicale.",
+            quick: ["Premium, lune de miel, rêve", "Facile à moyen", "1 semaine", "Mahé, Praslin, La Digue", "Mahé", "Saisons à cadrer"],
+            sell: ["Vendre l'image unique : rochers de granit, eau turquoise, tortues, plages iconiques.", "Très fort pour clients qui veulent une destination vraiment exceptionnelle.", "Pas de cyclone majeur : argument rassurant."],
+            watch: ["Moussons et saisons de vent à expliquer.", "Budget premium.", "Mouillages et parcs à respecter."]
+        },
+        polynesie: {
+            title: "Polynésie",
+            region: "Pacifique",
+            map: "assets/greenbook-maps/polynesie.jpg",
+            subtitle: "Le rêve absolu : lagons, Raiatea, Bora Bora, Tahaa, montagnes vertes et navigation en eaux protégées.",
+            quick: ["Voyage de rêve, premium", "Facile lagon / moyen océan", "10 jours +", "Raiatea, Tahaa, Bora Bora", "Raiatea/Tahiti", "Long courrier"],
+            sell: ["Vendre le voyage d'une vie : lagons, raies, montagnes, Bora Bora.", "Comme c'est français, certains points réglementaires sont plus rassurants.", "Très bon pour clients premium prêts à voyager loin."],
+            watch: ["Temps de trajet important.", "Budget élevé.", "Saisons inversées et météo tropicale."]
+        },
+        "turquie-lycienne": {
+            title: "Côte Lycienne",
+            region: "Turquie",
+            map: "assets/greenbook-maps/turquie.jpg",
+            subtitle: "Turquie turquoise et premium : Göcek, Fethiye, Kas, criques, sites antiques et excellent rapport valeur.",
+            quick: ["Premium accessible, culture", "Facile à moyen", "1 semaine", "Göcek, Fethiye, Kas", "Dalaman", "Eaux noires / formalités"],
+            sell: ["Vendre la Méditerranée spectaculaire avec moins de foule et un vrai dépaysement.", "Göcek et les criques turques sont très faciles à raconter.", "Excellent rapport beauté/prix face à Italie ou Baléares."],
+            watch: ["Règles eaux noires strictes.", "Formalités si passage Grèce.", "Bien vérifier base et transferts."]
+        },
+        "turquie-carienne": {
+            title: "Côte Carienne",
+            region: "Turquie",
+            map: "assets/greenbook-maps/turquie.jpg",
+            subtitle: "Turquie culture et navigation : Bodrum, Marmaris, Datça, sites antiques, marinas modernes.",
+            quick: ["Culture, gastronomie, navigation", "Moyen", "1 semaine", "Bodrum, Marmaris, Datça", "Bodrum/Izmir", "Distances"],
+            sell: ["Vendre le mix culture antique, marinas modernes et eaux turquoises.", "Très bon pour clients qui veulent autre chose que Grèce/Italie.", "Bodrum donne une porte d'entrée très claire."],
+            watch: ["Distances selon boucle.", "Formalités Grèce si envisagée.", "Règles environnementales turques."]
+        },
+        "france-fluviale": {
+            title: "France fluviale",
+            region: "Fluvial",
+            map: "assets/greenbook-maps/france-fluviale.jpg",
+            subtitle: "Croisière sans permis, lente et conviviale : canaux, rivières, villages, gastronomie et vacances faciles.",
+            quick: ["Débutants, familles, seniors", "Très facile", "3 à 14 jours", "Canal du Midi, Lot, Camargue, Bourgogne", "Bases régionales", "Rassurer sur écluses"],
+            sell: ["Vendre l'expérience : vivre à bord, s'arrêter dans les villages, marchés, vélos, restaurants.", "Aucun permis nécessaire : idéal pour clients qui veulent naviguer sans stress.", "Très bon produit pour familles multi-générations."],
+            watch: ["Expliquer le fonctionnement des écluses.", "Ne pas promettre de longues distances.", "Bien cadrer les bases aller simple/aller-retour."]
+        },
+        "canal-midi": {
+            title: "Canal du Midi",
+            region: "Fluvial",
+            map: "assets/greenbook-maps/canal-midi.jpg",
+            subtitle: "Best-seller fluvial : platanes, patrimoine, villages du sud, écluses et rythme vacances.",
+            quick: ["Best-seller, débutants", "Facile", "1 semaine", "Homps, Carcassonne, Béziers", "Toulouse/Montpellier", "Écluses nombreuses"],
+            sell: ["Vendre patrimoine UNESCO, ombre des platanes, villages et gastronomie.", "C'est la destination la plus simple à comprendre pour un client fluvial.", "Parfait pour une première croisière sans permis."],
+            watch: ["Beaucoup d'écluses : le présenter comme une activité, pas comme une contrainte.", "Forte demande en saison.", "Chaleur estivale."]
+        },
+        "lot-fluvial": {
+            title: "Lot",
+            region: "Fluvial",
+            map: "assets/greenbook-maps/lot-fluvial.jpg",
+            subtitle: "Fluvial nature et authentique : vallées, villages, calme, falaises et rythme plus confidentiel.",
+            quick: ["Nature, couples, familles calmes", "Facile", "1 semaine", "Cahors, Luzech, villages du Lot", "Accès Sud-Ouest", "Moins animé"],
+            sell: ["Vendre le calme, les paysages et le côté authentique.", "Très bon pour clients qui veulent éviter les axes très touristiques.", "Destination idéale pour déconnexion et nature."],
+            watch: ["Moins d'animation nocturne.", "Rythme lent à assumer.", "Vérifier niveaux d'eau selon période."]
+        },
+        "camargue-fluviale": {
+            title: "Camargue",
+            region: "Fluvial",
+            map: "assets/greenbook-maps/camargue-fluviale.jpg",
+            subtitle: "Fluvial du sud : soleil, étangs, chevaux, flamants roses, ambiance méditerranéenne et navigation facile.",
+            quick: ["Familles, soleil, débutants", "Très facile", "3 à 7 jours", "Aigues-Mortes, étangs, Grau-du-Roi", "Montpellier/Nîmes", "Vent/chaleur"],
+            sell: ["Vendre le sud sans la complexité de la mer.", "Très bon pour clients qui veulent soleil, nature et baignades possibles.", "Ambiance vacances immédiate."],
+            watch: ["Vent et chaleur en été.", "Bien expliquer différence entre mer et fluvial.", "Certains secteurs peuvent être plus exposés."]
+        }
+    };
+
+    function crmList(items) {
+        return (items || []).map(item => `<li><i class="bi bi-check2-circle"></i><span>${escHtml(item)}</span></li>`).join('');
+    }
+
+    function renderCrmOverview(id, data) {
+        const quick = data.quick || [];
+        const quickCards = [
+            ["Client idéal", quick[0] || "À qualifier"],
+            ["Niveau", quick[1] || "À vérifier"],
+            ["Durée", quick[2] || "1 semaine"],
+            ["À vendre", quick[3] || "Temps forts destination"],
+            ["Accès", quick[4] || "À confirmer"],
+            ["Attention", quick[5] || "Météo et disponibilité"]
+        ].map(([label, value]) => `<div class="crm-quick-card"><span>${escHtml(label)}</span><strong>${escHtml(value)}</strong></div>`).join('');
+
+        return `
+            <div class="crm-dest-grid">
+                <div>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-megaphone-fill"></i> Angle commercial</span></div>
+                        <div class="crm-script">${escHtml(data.subtitle)}</div>
+                        <div class="crm-quick-grid mt-3">${quickCards}</div>
+                    </div>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-stars"></i> À mettre en avant</span></div>
+                        <ul class="crm-compact-list">${crmList(data.sell)}</ul>
+                    </div>
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-exclamation-triangle-fill"></i> Points de vigilance</span></div>
+                        <ul class="crm-compact-list">${crmList(data.watch)}</ul>
+                    </div>
+                </div>
+                <aside>
+                    ${data.map ? `
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-map-fill"></i> Carte officielle</span><span class="crm-pill good">Greenbook</span></div>
+                        <div class="official-map-frame">
+                            <img src="${escHtml(data.map)}" alt="Carte officielle Greenbook ${escHtml(data.title)}">
+                            <div class="map-zoom-hint"><i class="bi bi-zoom-in"></i> Agrandir</div>
+                            <div class="official-map-caption"><span>Carte officielle issue du Greenbook Filovent · cliquez pour agrandir</span><span>${escHtml(data.title)}</span></div>
+                        </div>
+                        <div class="crm-auto-note">Utilisez cette carte pour repérer bases, aéroports, gares, zones de navigation et points d'intérêt pendant l'appel.</div>
+                    </div>` : ''}
+                    <div class="crm-panel">
+                        <div class="crm-panel-title"><span><i class="bi bi-speedometer2"></i> Diagnostic rapide</span></div>
+                        <div class="crm-timeline">
+                            <div class="crm-step"><div class="crm-step-num">1</div><p><b>Qualifier :</b> niveau, équipage, durée, budget et besoin de skipper.</p></div>
+                            <div class="crm-step"><div class="crm-step-num">2</div><p><b>Rassurer :</b> proposer une zone simple et un itinéraire adaptable.</p></div>
+                            <div class="crm-step"><div class="crm-step-num">3</div><p><b>Vendre :</b> relier la destination au rêve client, pas seulement à une base de départ.</p></div>
+                        </div>
+                    </div>
+                </aside>
+            </div>`;
+    }
+
+    function applyCrmDestinationShell() {
+        Object.entries(GREENBOOK_CRM_DESTINATIONS).forEach(([id, data]) => {
+            const dest = document.getElementById(id);
+            if (!dest || dest.querySelector('.crm-dest-hero')) return;
+            const tabs = dest.querySelector(':scope > .nav-tabs');
+            const contentBox = dest.querySelector(':scope > .tab-content-box, :scope > .tab-content.tab-content-box');
+            if (!tabs || !contentBox) return;
+
+            const hero = document.createElement('div');
+            hero.className = 'crm-dest-hero';
+            hero.innerHTML = `
+                <div class="crm-hero-label">Fiche commerciale destination</div>
+                <h1>${escHtml(data.title)}</h1>
+                <p class="crm-hero-subtitle">${escHtml(data.subtitle)}</p>
+                <div class="crm-quick-grid">
+                    ${(data.quick || []).slice(0, 6).map((value, index) => {
+                        const labels = ["Client idéal", "Niveau", "Durée", "À vendre", "Accès", "Point d'attention"];
+                        return `<div class="crm-quick-card"><span>${escHtml(labels[index])}</span><strong>${escHtml(value)}</strong></div>`;
+                    }).join('')}
+                </div>`;
+            dest.insertBefore(hero, tabs);
+
+            tabs.querySelectorAll('.nav-link.active').forEach(btn => btn.classList.remove('active'));
+            contentBox.querySelectorAll(':scope > .tab-pane.show, :scope > .tab-pane.active').forEach(pane => pane.classList.remove('show', 'active'));
+
+            const overviewId = `crm-${id}`;
+            tabs.insertAdjacentHTML('afterbegin', `<li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#${overviewId}">Vue commerciale</button></li>`);
+            contentBox.insertAdjacentHTML('afterbegin', `<div class="tab-pane fade show active" id="${overviewId}">${renderCrmOverview(id, data)}</div>`);
+        });
+    }
+
+    function initMapLightbox() {
+        document.querySelectorAll('.official-map-frame img').forEach(img => {
+            if (img.dataset.lightboxReady === '1') return;
+            img.dataset.lightboxReady = '1';
+            img.addEventListener('click', event => {
+                event.stopPropagation();
+                openMapLightbox(img.currentSrc || img.src, img.alt || 'Carte Greenbook');
+            });
+        });
+    }
+
+    function openMapLightbox(src, title) {
+        const modal = document.getElementById('map-lightbox');
+        const img = document.getElementById('map-lightbox-img');
+        const link = document.getElementById('map-lightbox-open');
+        document.getElementById('map-lightbox-title').textContent = title.replace(/^Carte officielle Greenbook\s*/i, '').replace(/^Carte officielle Filovent\s*/i, '') || 'Carte Greenbook';
+        img.src = src;
+        img.alt = title;
+        link.href = src;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMapLightbox() {
+        const modal = document.getElementById('map-lightbox');
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeMapLightbox();
+    });
+
     /* ── Navigation ── */
 
     function showHome(element) {
@@ -4145,7 +5105,7 @@
                           || destId;
 
             // Parcourir chaque bloc de contenu texte significatif
-            destEl.querySelectorAll('.tab-content-box, .info-block, .alert-block, .price-block, .gold-block, p, li, h4, h6, .mail-body, .mail-card-title').forEach(el => {
+            destEl.querySelectorAll('.tab-content-box, .info-block, .alert-block, .price-block, .gold-block, .crm-script, .crm-answer, .crm-pill, .crm-quick-card, .partner-card, .crm-step, p, li, h4, h6, .mail-body, .mail-card-title').forEach(el => {
                 const text = el.textContent.trim();
                 if (text.length < 15) return;
 
@@ -4259,7 +5219,7 @@
         }
 
         let first = null;
-        destEl.querySelectorAll('p, li, h4, h6, .info-block, .alert-block, .price-block, .gold-block, .mail-body').forEach(el => {
+        destEl.querySelectorAll('p, li, h4, h6, .info-block, .alert-block, .price-block, .gold-block, .crm-script, .crm-answer, .crm-pill, .crm-quick-card, .partner-card, .crm-step, .mail-body').forEach(el => {
             if (!el.textContent.toLowerCase().includes(q)) return;
             highlightTextInNode(el, q);
             if (!first) first = el.querySelector('mark.search-hl');
@@ -4400,8 +5360,17 @@
         }
     });
 
-    // Construire l'index au chargement
-    window.addEventListener('load', buildSearchIndex);
+    // Construire les fiches CRM puis l'index dès que le DOM est prêt.
+    function initGreenbookCrm() {
+        applyCrmDestinationShell();
+        initMapLightbox();
+        buildSearchIndex();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initGreenbookCrm);
+    } else {
+        initGreenbookCrm();
+    }
 
     function filterMenu() {} // kept for compatibility
 

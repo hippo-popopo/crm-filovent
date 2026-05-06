@@ -179,44 +179,782 @@
         .tag-red { background: rgba(217,79,61,0.12); color: var(--coral); }
         .tag-gold { background: rgba(201,145,58,0.12); color: var(--gold); }
 
-        /* ─── ITINERARY CARDS ─────────────────────────── */
-        .iti-card {
+        /* ─── ITINERARY EXPERIENCE ───────────────────── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 34px;
+        }
+        .zone-card {
+            position: relative;
+            min-height: 220px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(7,21,36,0.08);
+            background:
+                radial-gradient(circle at top left, rgba(42,168,196,0.18), transparent 38%),
+                linear-gradient(180deg, #ffffff 0%, #f6fbfc 100%);
+            box-shadow: 0 16px 40px rgba(7,21,36,0.1);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+        .zone-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 44px rgba(7,21,36,0.16);
+            border-color: rgba(23,106,156,0.22);
+        }
+        .zone-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(23,106,156,0.05), transparent 48%);
+            z-index: 1;
+        }
+        .zone-card-body {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 10px;
+            min-height: 220px;
+            padding: 20px;
+            color: var(--navy);
+        }
+        .zone-card-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(23,106,156,0.08);
+            border: 1px solid rgba(23,106,156,0.14);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .zone-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            line-height: 1.05;
+            margin: 0;
+        }
+        .zone-card p {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-2);
+            margin: 0;
+        }
+        .zone-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .zone-card-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: white;
+            border: 1px solid var(--border);
+            font-size: 0.69rem;
+            font-weight: 700;
+            color: var(--text-2);
+        }
+        .quick-picks {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .quick-pick {
+            background: linear-gradient(180deg, #ffffff, #f7fbfc);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 18px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .quick-pick:hover {
+            transform: translateY(-2px);
+            border-color: rgba(23,106,156,0.26);
+            box-shadow: 0 16px 30px rgba(7,21,36,0.08);
+        }
+        .quick-pick strong {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.92rem;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        .quick-pick span {
+            display: block;
+            font-size: 0.77rem;
+            color: var(--text-3);
+            line-height: 1.45;
+        }
+        .iti-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            min-height: 0;
+            margin-bottom: 22px;
+            background:
+                radial-gradient(circle at top left, rgba(42,168,196,0.16), transparent 28%),
+                linear-gradient(180deg, #ffffff 0%, #f6fbfc 100%);
+            border: 1px solid rgba(7,21,36,0.08);
+            box-shadow: 0 18px 48px rgba(7,21,36,0.14);
+        }
+        .iti-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(23,106,156,0.05), transparent 52%);
+            z-index: 1;
+        }
+        .iti-hero-body {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 22px;
+            min-height: 0;
+            padding: 26px;
+            color: var(--navy);
+        }
+        .iti-hero-copy {
+            max-width: 620px;
+        }
+        .iti-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(23,106,156,0.08);
+            border: 1px solid rgba(23,106,156,0.14);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .iti-hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.1rem;
+            line-height: 1.02;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .iti-hero p {
+            margin: 0;
+            max-width: 560px;
+            font-size: 0.96rem;
+            line-height: 1.65;
+            color: var(--text-2);
+        }
+        .iti-hero-side {
+            width: 260px;
+            flex-shrink: 0;
+            padding: 16px;
+            border-radius: 16px;
+            background: white;
+            border: 1px solid var(--border);
+        }
+        .iti-hero-side-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .iti-hero-side strong {
+            display: block;
+            font-size: 1.02rem;
+            line-height: 1.35;
+            color: var(--navy);
+        }
+        .iti-hero-side p {
+            font-size: 0.79rem;
+            line-height: 1.55;
+            color: var(--text-2);
+            margin-top: 8px;
+        }
+        .route-preview {
+            margin-top: 18px;
+            display: grid;
+            gap: 10px;
+        }
+        .route-preview-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 800;
+        }
+        .route-preview-track {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+        .route-stop {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 11px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.77rem;
+            font-weight: 700;
+            color: var(--text-2);
+            max-width: 220px;
+        }
+        .route-stop-index {
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            display: inline-grid;
+            place-items: center;
+            background: var(--navy);
+            color: white;
+            font-size: 0.67rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .route-link {
+            width: 26px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(23,106,156,0.45), rgba(23,106,156,0.15));
+            margin: 0 6px;
+            border-radius: 999px;
+        }
+        .iti-map-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 28px rgba(7,21,36,0.05);
+        }
+        .iti-map-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .iti-map-head h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            color: var(--navy);
+            margin: 0;
+        }
+        .iti-map-head p {
+            margin: 6px 0 0 0;
+            font-size: 0.79rem;
+            line-height: 1.5;
+            color: var(--text-3);
+            max-width: 560px;
+        }
+        .iti-map-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #f7fbfc;
+            color: var(--navy);
+            padding: 8px 11px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .iti-map-frame {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #dff4fb;
+        }
+        .iti-map-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: zoom-in;
+        }
+        .iti-map-caption {
+            margin-top: 10px;
+            font-size: 0.76rem;
+            line-height: 1.5;
+            color: var(--text-3);
+        }
+        .map-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 3200;
+            display: none;
+            padding: 24px;
+            background: rgba(7,21,36,0.88);
+            backdrop-filter: blur(10px);
+        }
+        .map-lightbox.open {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 14px;
+        }
+        .map-lightbox-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            color: white;
+        }
+        .map-lightbox-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+        .map-lightbox button {
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        .map-lightbox-body {
+            overflow: auto;
+            display: grid;
+            place-items: start center;
+        }
+        .map-lightbox-body img {
+            max-width: min(1320px, 100%);
+            height: auto;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.34);
+        }
+        .iti-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .iti-stat {
             background: white;
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 22px 24px;
-            margin-bottom: 16px;
-            transition: all 0.18s;
-            border-left: 4px solid var(--coral);
+            padding: 16px 18px;
         }
-        .iti-card:hover {
-            box-shadow: 0 4px 20px rgba(13,34,64,0.08);
-            border-color: var(--coral);
+        .iti-stat-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .iti-stat-value {
+            font-family: 'Syne', sans-serif;
+            color: var(--navy);
+            font-size: 1.01rem;
+            line-height: 1.28;
+            font-weight: 800;
+        }
+        .iti-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.95fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .iti-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 28px rgba(7,21,36,0.05);
         }
         .iti-card h3 {
             font-family: 'Syne', sans-serif;
-            font-weight: 800; font-size: 1.05rem;
-            color: var(--navy); margin-bottom: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 14px;
         }
-        .iti-meta {
-            display: flex; flex-wrap: wrap; gap: 8px;
-            margin-bottom: 12px;
+        .iti-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        .iti-tag {
-            font-size: 0.7rem; font-weight: 600;
-            padding: 3px 10px; border-radius: 12px;
+        .iti-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #f6fafc;
+            border: 1px solid var(--border);
+            color: var(--text-2);
+        }
+        .iti-chip strong {
+            color: var(--navy);
+            font-weight: 800;
+        }
+        .escales-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .escale-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 13px;
+            border-radius: 12px;
+            background: #f7fbfc;
             border: 1px solid var(--border);
         }
-        .iti-tag.depart { background: #e3eeff; color: #1a4a9a; border-color: #c3d0ee; }
-        .iti-tag.duree { background: #e3f6ef; color: #1a7a53; border-color: #b8e0d0; }
-        .iti-tag.bateau { background: #fef3cd; color: #9a6700; border-color: #eedea0; }
-        .iti-info {
-            font-size: 0.84rem; color: var(--text-2); line-height: 1.65;
+        .escale-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 5px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, var(--coral), #f29b77);
+            box-shadow: 0 0 0 4px rgba(216,93,74,0.08);
         }
-        .iti-escales {
-            font-size: 0.8rem; color: var(--text-3); margin-top: 8px;
+        .escale-item span {
+            font-size: 0.81rem;
+            line-height: 1.48;
+            color: var(--text-2);
         }
-        .iti-escales strong { color: var(--text-2); }
+        .iti-source {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff, #f6fbfc);
+            border: 1px solid var(--border);
+        }
+        .iti-source p {
+            margin: 0;
+            font-size: 0.79rem;
+            line-height: 1.5;
+            color: var(--text-3);
+            max-width: 520px;
+        }
+        .iti-source a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: var(--navy);
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        .iti-source a:hover {
+            background: var(--ocean);
+        }
+        .detail-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0;
+            margin: 0;
+            background: none;
+            border: 0;
+            text-align: left;
+            color: inherit;
+        }
+        .detail-toggle .toggle-copy strong {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            color: var(--navy);
+        }
+        .detail-toggle .toggle-copy span {
+            display: block;
+            font-size: 0.77rem;
+            color: var(--text-3);
+            margin-top: 5px;
+            line-height: 1.45;
+        }
+        .detail-toggle i {
+            color: var(--wave);
+            font-size: 0.95rem;
+            transition: transform 0.16s ease;
+        }
+        .detail-toggle[aria-expanded="true"] i {
+            transform: rotate(180deg);
+        }
+        .detail-body {
+            display: none;
+            margin-top: 16px;
+        }
+        .detail-body.open {
+            display: block;
+        }
+        .timeline {
+            display: grid;
+            gap: 12px;
+        }
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 82px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+            padding: 13px 14px;
+            border-radius: 12px;
+            background: #f7fbfc;
+            border: 1px solid var(--border);
+        }
+        .timeline-step strong {
+            color: var(--navy);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .timeline-step div {
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-2);
+        }
+        .tips-list {
+            display: grid;
+            gap: 10px;
+        }
+        .tip-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: #f7fbfc;
+            border: 1px solid var(--border);
+            font-size: 0.81rem;
+            line-height: 1.55;
+            color: var(--text-2);
+        }
+        .tip-item i {
+            color: var(--seafoam);
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        .iti-notes {
+            display: grid;
+            gap: 10px;
+        }
+        .iti-note {
+            padding: 12px 13px;
+            border-radius: 12px;
+            background: #f7fbfc;
+            border: 1px solid var(--border);
+        }
+        .iti-note-label {
+            font-size: 0.67rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .iti-note-value {
+            font-size: 0.82rem;
+            line-height: 1.52;
+            color: var(--text-2);
+        }
+        .sidebar-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            padding: 10px 10px 4px;
+        }
+        .sidebar-summary-card {
+            padding: 10px 11px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .sidebar-summary-card strong {
+            display: block;
+            color: white;
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        .sidebar-summary-card span {
+            display: block;
+            color: rgba(255,255,255,0.58);
+            font-size: 0.68rem;
+            line-height: 1.4;
+        }
+        .sidebar-section-title {
+            padding: 12px 14px 4px;
+            color: rgba(255,255,255,0.42);
+            font-size: 0.64rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .sidebar-zone-group {
+            padding: 8px 10px 2px;
+        }
+        .sidebar-zone-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-align: left;
+        }
+        .sidebar-zone-button small {
+            color: rgba(255,255,255,0.52);
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+        .sidebar-zone-list {
+            display: grid;
+            gap: 4px;
+            padding: 8px 0 2px 0;
+        }
+        .sidebar-zone-list .dest-link {
+            padding-left: 14px;
+            margin-right: 0;
+        }
+        .sidebar-zone-list .dest-link::before {
+            display: none;
+        }
+        .home-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            min-height: 320px;
+            margin-bottom: 24px;
+            background: #0f2235;
+            border: 1px solid rgba(7,21,36,0.08);
+            box-shadow: 0 24px 54px rgba(7,21,36,0.12);
+        }
+        .home-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(7,21,36,0.22) 0%, rgba(7,21,36,0.12) 28%, rgba(7,21,36,0.8) 76%),
+                linear-gradient(180deg, rgba(7,21,36,0.08) 0%, rgba(7,21,36,0.58) 100%);
+            z-index: 1;
+        }
+        .home-hero img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .home-hero-body {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            min-height: 320px;
+            padding: 28px;
+            color: white;
+        }
+        .home-hero-copy {
+            max-width: 650px;
+        }
+        .home-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.16);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+        }
+        .home-hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            line-height: 1.02;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .home-hero p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.82);
+            max-width: 560px;
+        }
+        .home-hero-side {
+            width: 290px;
+            flex-shrink: 0;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(10px);
+        }
+        .home-hero-side .label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.62);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .home-hero-side strong {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.02rem;
+            line-height: 1.35;
+            margin-bottom: 8px;
+        }
+        .home-hero-side p {
+            font-size: 0.79rem;
+            line-height: 1.55;
+            color: rgba(255,255,255,0.74);
+        }
 
         /* ─── ZONE HEADER ─────────────────────────────── */
         .zone-header {
@@ -267,6 +1005,61 @@
             font-size: 0.85rem; color: var(--text-2); margin-bottom: 16px;
         }
         .alert-tip strong { color: var(--navy); }
+
+        @media (max-width: 1180px) {
+            .overview-grid,
+            .quick-picks,
+            .iti-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .iti-layout {
+                grid-template-columns: 1fr;
+            }
+            .iti-hero-body {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .iti-hero-side {
+                width: 100%;
+            }
+            .home-hero-body {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .home-hero-side {
+                width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            .overview-grid,
+            .quick-picks,
+            .iti-stats,
+            .escales-grid {
+                grid-template-columns: 1fr;
+            }
+            .iti-hero-body {
+                padding: 20px;
+            }
+            .iti-hero h1 {
+                font-size: 1.7rem;
+            }
+            .home-hero h1 {
+                font-size: 1.75rem;
+            }
+            .home-hero {
+                min-height: 360px;
+            }
+            .home-hero-body {
+                min-height: 360px;
+                padding: 20px;
+            }
+            .timeline-step {
+                grid-template-columns: 1fr;
+            }
+            .iti-map-head {
+                flex-direction: column;
+            }
+        }
     </style>
     <link rel="stylesheet" href="assets/resource-shell.css">
 </head>
@@ -298,141 +1091,15 @@
     </div>
 
     <div class="sidebar-body">
-
-        <!-- Accueil link -->
         <div style="padding: 8px 10px 4px;">
-            <a href="#" id="home-link" data-section="home" style="
-                display:flex; align-items:center; gap:9px;
-                padding: 9px 14px;
-                background: rgba(217,79,61,0.28);
-                border-radius: 9px; color: white;
-                text-decoration: none; font-size: 0.84rem;
-                font-weight: 600; font-family: 'Inter', sans-serif;
-                border: 1px solid rgba(217,79,61,0.4);
-                transition: background 0.15s;
-            " onmouseover="this.style.background='rgba(217,79,61,0.42)'" onmouseout="this.style.background='rgba(217,79,61,0.28)'">
-                <i class="bi bi-house-fill" style="font-size:0.88rem; color:#f0a090;"></i>
+            <a href="#" id="home-link" data-section="home">
+                <i class="bi bi-house-fill" style="font-size:0.88rem;"></i>
                 Vue d'ensemble
             </a>
         </div>
-
-        <div style="height:4px;"></div>
-
-        <div class="accordion" id="sidebarAccordion">
-            <!-- Méditerranée -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc1">🌊 Méditerranée</button>
-                </h2>
-                <div id="acc1" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="med-corse-sud">Corse du Sud · Ajaccio</a>
-                        <a href="#" class="dest-link" data-section="med-tour-corse">Tour de Corse · 2 sem.</a>
-                        <a href="#" class="dest-link" data-section="med-sardaigne-nord">Sardaigne Nord · Portisco</a>
-                        <a href="#" class="dest-link" data-section="med-sardaigne-sud">Sardaigne Sud · Cagliari</a>
-                        <a href="#" class="dest-link" data-section="med-sardaigne-corse">Sardaigne-Corse · Olbia</a>
-                        <a href="#" class="dest-link" data-section="med-cote-azur">Côte d'Azur / Italie</a>
-                        <a href="#" class="dest-link" data-section="med-cyclades-lavrio">Cyclades · Lavrio</a>
-                        <a href="#" class="dest-link" data-section="med-cyclades-athenes">Cyclades · Athènes</a>
-                        <a href="#" class="dest-link" data-section="med-cyclades-syros">Cyclades · Syros</a>
-                        <a href="#" class="dest-link" data-section="med-cyclades-paros">Cyclades · Paros · 3 sem.</a>
-                        <a href="#" class="dest-link" data-section="med-ioniennes">Îles Ioniennes · Lefkas</a>
-                        <a href="#" class="dest-link" data-section="med-sporades">Sporades · Skopelos</a>
-                        <a href="#" class="dest-link" data-section="med-dodecanese">Dodécanèse · Kos</a>
-                        <a href="#" class="dest-link" data-section="med-croatie-dalmatie">Croatie · Marina Agana</a>
-                        <a href="#" class="dest-link" data-section="med-kornati">Kornati / Dalmatie · Biograd</a>
-                        <a href="#" class="dest-link" data-section="med-slovenie">Slovénie / Croatie · Izola</a>
-                        <a href="#" class="dest-link" data-section="med-baleares">Baléares · Ibiza</a>
-                        <a href="#" class="dest-link" data-section="med-baleares2">Ibiza · Talamanca</a>
-                        <a href="#" class="dest-link" data-section="med-turquie">Turquie · Fethiye</a>
-                        <a href="#" class="dest-link" data-section="med-algarve">Algarve · Portimão</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Atlantique -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2">🌬️ Atlantique</button>
-                </h2>
-                <div id="acc2" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="atl-bretagne-sud">Bretagne Sud · Quiberon</a>
-                        <a href="#" class="dest-link" data-section="atl-bretagne-trinite">Bretagne · La Trinité-sur-Mer</a>
-                        <a href="#" class="dest-link" data-section="atl-acores">Açores · São Miguel</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Caraïbes -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3">🏝️ Caraïbes</button>
-                </h2>
-                <div id="acc3" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="car-martinique">Martinique · Le Marin</a>
-                        <a href="#" class="dest-link" data-section="car-grenadines10">Grenadines · 10 jours</a>
-                        <a href="#" class="dest-link" data-section="car-grenadines14">Grenadines · 2 semaines</a>
-                        <a href="#" class="dest-link" data-section="car-guadeloupe">Guadeloupe · Pointe-à-Pitre</a>
-                        <a href="#" class="dest-link" data-section="car-saint-martin">Saint-Martin</a>
-                        <a href="#" class="dest-link" data-section="car-bahamas">Bahamas · Abacos</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Océan Indien -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc4">🐚 Océan Indien</button>
-                </h2>
-                <div id="acc4" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="oi-seychelles1">Seychelles · Location</a>
-                        <a href="#" class="dest-link" data-section="oi-seychelles2">Seychelles · Cabine</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pacifique -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc5">🌴 Pacifique</button>
-                </h2>
-                <div id="acc5" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="pac-nouvelle-caledonie">Nouvelle Calédonie · Nouméa</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fluvial & Fleuves -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc6">🚢 Fluvial & Fleuves</button>
-                </h2>
-                <div id="acc6" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="flu-canal-midi">Canal du Midi</a>
-                        <a href="#" class="dest-link" data-section="flu-nil">Nil · Louxor</a>
-                        <a href="#" class="dest-link" data-section="flu-mekong4">Mékong · 4 jours</a>
-                        <a href="#" class="dest-link" data-section="flu-mekong16">Mékong / Asie · 16 jours</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Expédition -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc7">🧊 Expédition</button>
-                </h2>
-                <div id="acc7" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="#" class="dest-link" data-section="exp-norvege">Fjords · Bergen → Kirkenes</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="sidebar-summary" id="sidebarSummary"></div>
+        <div class="sidebar-section-title">Destinations</div>
+        <div id="sidebarAccordion"></div>
     </div>
 </div>
 
@@ -441,88 +1108,7 @@
 
 <!-- ══════════════════════ ACCUEIL ══════════════════════ -->
 <div class="section-panel active" id="panel-home">
-
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:40px; flex-wrap:wrap;">
-        <div>
-            <div style="font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--coral); margin-bottom:6px;">Base Itinéraires</div>
-            <h1 style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--navy); line-height:1.2; margin-bottom:10px;">🧭 Itinéraires Filovent</h1>
-            <p style="color:var(--text-2); font-size:0.97rem; max-width:580px; line-height:1.7;">37 itinéraires de navigation détaillés, compilés depuis le magazine Filovent. Destinations, durées, escales et points forts pour conseiller vos clients.</p>
-        </div>
-    </div>
-
-    <!-- STATS -->
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:44px;">
-        <div style="background:var(--navy); border-radius:14px; padding:20px 22px; color:white;">
-            <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif;">37</div>
-            <div style="font-size:0.8rem; opacity:0.7; margin-top:2px;">itinéraires</div>
-        </div>
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-            <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--coral);">8</div>
-            <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">zones géographiques</div>
-        </div>
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-            <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--seafoam);">20</div>
-            <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">en Méditerranée</div>
-        </div>
-        <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px 22px;">
-            <div style="font-size:2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--gold);">6</div>
-            <div style="font-size:0.8rem; color:var(--text-3); margin-top:2px;">aux Caraïbes</div>
-        </div>
-    </div>
-
-    <!-- ZONES -->
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-        <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--navy);">🗺️ Zones de navigation</span>
-        <div style="flex:1; height:1px; background:var(--border);"></div>
-    </div>
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:40px;">
-        <div class="home-card" onclick="showSection('med-corse-sud')" style="border-left:3px solid var(--coral);">
-            <div class="home-card-icon">🌊</div>
-            <div class="home-card-name">Méditerranée</div>
-            <div class="home-card-sub">Corse, Sardaigne, Grèce, Croatie, Baléares, Turquie, Portugal</div>
-            <div class="home-card-tags"><span class="hct hct-red">20 itinéraires</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('atl-bretagne-sud')" style="border-left:3px solid var(--wave);">
-            <div class="home-card-icon">🌬️</div>
-            <div class="home-card-name">Atlantique</div>
-            <div class="home-card-sub">Bretagne Sud, La Trinité-sur-Mer, Açores</div>
-            <div class="home-card-tags"><span class="hct hct-blue">3 itinéraires</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('car-martinique')" style="border-left:3px solid var(--seafoam);">
-            <div class="home-card-icon">🏝️</div>
-            <div class="home-card-name">Caraïbes</div>
-            <div class="home-card-sub">Martinique, Grenadines, Guadeloupe, Saint-Martin, Bahamas</div>
-            <div class="home-card-tags"><span class="hct hct-green">6 itinéraires</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('oi-seychelles1')" style="border-left:3px solid var(--gold);">
-            <div class="home-card-icon">🐚</div>
-            <div class="home-card-name">Océan Indien</div>
-            <div class="home-card-sub">Seychelles : location & croisière cabine</div>
-            <div class="home-card-tags"><span class="hct hct-gold">2 itinéraires</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('flu-nil')" style="border-left:3px solid var(--gold);">
-            <div class="home-card-icon">🚢</div>
-            <div class="home-card-name">Fluvial & Fleuves</div>
-            <div class="home-card-sub">Canal du Midi, Nil en dahabieh, Mékong</div>
-            <div class="home-card-tags"><span class="hct hct-gold">4 itinéraires</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('exp-norvege')" style="border-left:3px solid var(--wave);">
-            <div class="home-card-icon">🧊</div>
-            <div class="home-card-name">Expédition</div>
-            <div class="home-card-sub">Fjords de Norvège, Bergen → Kirkenes, Express Côtier</div>
-            <div class="home-card-tags"><span class="hct hct-blue">1 itinéraire</span></div>
-        </div>
-        <div class="home-card" onclick="showSection('pac-nouvelle-caledonie')" style="border-left:3px solid var(--seafoam);">
-            <div class="home-card-icon">🌴</div>
-            <div class="home-card-name">Pacifique</div>
-            <div class="home-card-sub">Nouvelle Calédonie depuis Nouméa</div>
-            <div class="home-card-tags"><span class="hct hct-green">1 itinéraire</span></div>
-        </div>
-    </div>
-
-    <div class="alert-tip">
-        <strong>💡 Source :</strong> Ces itinéraires sont compilés depuis le <a href="https://www.filovent.com/magazine/tags/itineraires-navigation" target="_blank" style="color:var(--wave);">magazine Filovent</a>. Chaque fiche correspond à un récit de navigation publié, avec le retour d'expérience de vrais clients ou conseillers Filovent.
-    </div>
+    <div id="homeOverview"></div>
 </div>
 
 <!-- ═══════════ PANELS ITINÉRAIRES ═══════════ -->
@@ -642,62 +1228,420 @@ const ITI = [
     jours:"<strong>J1</strong> Bergen « pays des trolls, statues 3m ! ». Check-in 16h, cabines 18h, réunion sécurité · <strong>J2</strong> Escales rapides (10-15 min) Florø/Måløy/Torvik → Hjørundfjord → Ålesund (Art Nouveau, funiculaire). « À Pâques, Norvégiens en cabane montagne = très calme » · <strong>J3</strong> → Trondheim (ville millénaire) · <strong>J4-J6</strong> Remontée nord, Lofoten · <strong>J7-J8</strong> Tromsø, Hammerfest · <strong>J9</strong> Cap Nord · <strong>J10</strong> Kirkenes. Aurores boréales possibles",
     tips:"Avril = basse saison : 200/590 passagers = « génial » · 3 restaurants (Torget : buffet matin/midi, service 5 soirs/7) · Seul navire aussi près des côtes · « Escales courtes mais bien faites » · Réunions d'info quotidiennes · Poisson local, « bonnes alternatives pour ceux qui n'en mangent pas »" },
 ];
+
+const ITI_MAPS = {
+  "med-corse-sud": { src: "assets/itinerary-maps/med-corse-sud.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-tour-corse": { src: "assets/itinerary-maps/med-tour-corse.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-sardaigne-corse": { src: "assets/itinerary-maps/med-sardaigne-corse.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-cyclades-lavrio": { src: "assets/itinerary-maps/med-cyclades-lavrio.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-cyclades-athenes": { src: "assets/itinerary-maps/med-cyclades-athenes.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-slovenie": { src: "assets/itinerary-maps/med-slovenie.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-baleares": { src: "assets/itinerary-maps/med-baleares.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "med-baleares2": { src: "assets/itinerary-maps/med-baleares2.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "atl-acores": { src: "assets/itinerary-maps/atl-acores.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "car-guadeloupe": { src: "assets/itinerary-maps/car-guadeloupe.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." },
+  "car-saint-martin": { src: "assets/itinerary-maps/car-saint-martin.webp", caption: "Carte d’itinéraire Filovent extraite de l’article d’origine." }
+};
 </script>
 
 <!-- Generate enriched panels dynamically -->
 <script>
-const mainContent = document.getElementById('main-content');
-ITI.forEach(it => {
-    const panel = document.createElement('div');
-    panel.className = 'section-panel';
-    panel.id = 'panel-' + it.id;
-    panel.innerHTML = `
-        <div class="dest-header">
-            <div style="font-size:0.75rem;font-weight:600;color:var(--coral);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">${it.zone}</div>
-            <h1>${it.icon} ${it.title}</h1>
-            <p>Itinéraire de navigation · ${it.duree}</p>
-        </div>
+const ZONE_META = [
+    { key: 'Méditerranée', icon: '🌊', color: 'var(--coral)', image: 'assets/greenbook-maps/grece.jpg', intro: 'Les routes les plus demandées pour l’été : Corse, Grèce, Croatie, Baléares et côte italienne.' },
+    { key: 'Atlantique', icon: '🌬️', color: 'var(--wave)', image: 'assets/greenbook-maps/bretagne.jpg', intro: 'Des navigations plus sportives, plus marquées par la marée et le rythme océanique.' },
+    { key: 'Caraïbes', icon: '🏝️', color: 'var(--seafoam)', image: 'assets/greenbook-maps/antilles.jpg', intro: 'Eaux chaudes, mouillages carte postale et formats d’une à deux semaines pour vendre du rêve vite.' },
+    { key: 'Océan Indien', icon: '🐚', color: 'var(--gold)', image: 'assets/greenbook-maps/seychelles.jpg', intro: 'Des itinéraires premium, snorkeling et ambiance lagon, idéals pour lune de miel et beaux voyages.' },
+    { key: 'Pacifique', icon: '🌴', color: 'var(--seafoam)', image: 'assets/greenbook-maps/polynesie.jpg', intro: 'Grand voyage, navigation bout du monde et escales qui doivent immédiatement faire rêver le client.' },
+    { key: 'Fluvial', icon: '🚢', color: 'var(--gold)', image: 'assets/greenbook-maps/canal-midi.jpg', intro: 'Parcours sans pression, souvent sans permis, parfaits pour les profils famille et découverte douce.' },
+    { key: 'Fleuve', icon: '🛶', color: 'var(--gold)', image: 'assets/greenbook-maps/france-fluviale.jpg', intro: 'Croisières culturelles et immersives, vendues autant pour le voyage que pour le bateau.' },
+    { key: 'Expédition', icon: '🧊', color: 'var(--wave)', image: 'assets/filovent-hero-marina.png', intro: 'Voyages de caractère, plus narratifs, qui se vendent sur l’expérience globale.' }
+];
 
-        <div class="iti-card" style="border-left-color:var(--coral);">
-            <h3>📍 Informations pratiques</h3>
-            <div class="iti-meta">
-                <span class="iti-tag depart">⛵ ${it.depart}</span>
-                <span class="iti-tag duree">⏱️ ${it.duree}</span>
-                <span class="iti-tag bateau">🚤 ${it.bateau}</span>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
-                <div style="font-size:0.82rem;color:var(--text-2);"><strong style="color:var(--navy);">Distance :</strong> ${it.distance}</div>
-                <div style="font-size:0.82rem;color:var(--text-2);"><strong style="color:var(--navy);">Équipage :</strong> ${it.equipe}</div>
-            </div>
-            <div class="iti-escales" style="margin-top:12px;"><strong>Escales :</strong> ${it.escales}</div>
-        </div>
+const ZONE_LOOKUP = Object.fromEntries(ZONE_META.map(zone => [zone.key, zone]));
+const ITI_BY_ZONE = ZONE_META.map(zone => ({
+    ...zone,
+    items: ITI.filter(it => it.zone === zone.key)
+})).filter(zone => zone.items.length);
 
-        <div class="iti-card" style="border-left-color:var(--wave);">
-            <h3>🗓️ Itinéraire jour par jour</h3>
-            <div class="iti-info">${it.jours}</div>
-        </div>
+function getZoneMeta(zoneName) {
+    return ZONE_LOOKUP[zoneName] || {
+        key: zoneName,
+        icon: '🧭',
+        color: 'var(--wave)',
+        image: 'assets/filovent-hero-marina.png',
+        intro: 'Sélection d’itinéraires Filovent.'
+    };
+}
 
-        <div class="iti-card" style="border-left-color:var(--seafoam);">
-            <h3>💡 Conseils & astuces</h3>
-            <div class="iti-info">${it.tips}</div>
-        </div>
+function getHeroImage(it) {
+    const title = `${it.title} ${it.depart} ${it.zone}`.toLowerCase();
+    if (title.includes('corse')) return 'assets/greenbook-maps/corse.jpg';
+    if (title.includes('sardaigne')) return 'assets/greenbook-maps/sardaigne.jpg';
+    if (title.includes('croatie') || title.includes('kornati') || title.includes('izola')) return 'assets/greenbook-maps/croatie.jpg';
+    if (title.includes('cyclades') || title.includes('ioniennes') || title.includes('sporades') || title.includes('dodécanèse') || title.includes('grèce') || title.includes('kos') || title.includes('lefkas')) return 'assets/greenbook-maps/grece.jpg';
+    if (title.includes('baléares') || title.includes('ibiza') || title.includes('formentera')) return 'assets/greenbook-maps/baleares.jpg';
+    if (title.includes('bahamas')) return 'assets/greenbook-maps/bahamas.jpg';
+    if (title.includes('martinique') || title.includes('grenadines') || title.includes('guadeloupe') || title.includes('saint-martin')) return 'assets/greenbook-maps/antilles.jpg';
+    if (title.includes('seychelles')) return 'assets/greenbook-maps/seychelles.jpg';
+    if (title.includes('canal du midi') || title.includes('cassafières')) return 'assets/greenbook-maps/canal-midi.jpg';
+    if (title.includes('fluvial')) return 'assets/greenbook-maps/france-fluviale.jpg';
+    if (title.includes('turquie')) return 'assets/greenbook-maps/turquie.jpg';
+    if (title.includes('bretagne') || title.includes('trinité') || title.includes('quiberon')) return 'assets/greenbook-maps/bretagne.jpg';
+    if (title.includes('nouvelle calédonie')) return 'assets/greenbook-maps/polynesie.jpg';
+    return getZoneMeta(it.zone).image;
+}
 
-        <div style="margin-top:20px;">
-            <a href="${it.url}" target="_blank" style="
-                display:inline-flex;align-items:center;gap:6px;
-                font-size:0.82rem;color:var(--wave);font-weight:600;text-decoration:none;
-                padding:8px 16px;border-radius:8px;border:1px solid var(--wave);
-                transition:all 0.15s;
-            " onmouseover="this.style.background='var(--sky)'" onmouseout="this.style.background='transparent'">
-                <i class="bi bi-box-arrow-up-right"></i> Lire l'article complet sur Filovent Magazine
-            </a>
+function splitEscales(escales) {
+    return escales.split(',').map(item => item.trim()).filter(Boolean);
+}
+
+function pickHighlights(it) {
+    return splitEscales(it.escales).slice(0, 4);
+}
+
+function stripTags(text) {
+    return text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function buildTimeline(it) {
+    const cleaned = it.jours
+        .replace(/<em>/g, '')
+        .replace(/<\/em>/g, '')
+        .split(/·/g)
+        .map(item => item.trim())
+        .filter(Boolean);
+
+    return cleaned.map((step, index) => {
+        const labelMatch = step.match(/^(J\d+|Sem\.\s*\d+)/i);
+        const label = labelMatch ? labelMatch[0] : `Étape ${index + 1}`;
+        const body = step
+            .replace(/<strong>|<\/strong>/g, '')
+            .replace(label, '')
+            .trim()
+            .replace(/^[-:–]\s*/, '');
+
+        return { label, body: body || stripTags(step) };
+    }).slice(0, 10);
+}
+
+function buildTips(it) {
+    return it.tips.split('·').map(item => stripTags(item)).filter(Boolean).slice(0, 6);
+}
+
+function buildComfortLabel(distance, duree) {
+    const text = `${distance} ${duree}`.toLowerCase();
+    if (text.includes('sportif') || text.includes('240 milles') || text.includes('3 semaines') || text.includes('2 semaines')) return 'Parcours dense';
+    if (text.includes('sans permis') || text.includes('2-3h/jour') || text.includes('3-4h/jour')) return 'Rythme facile';
+    return 'Rythme équilibré';
+}
+
+function buildSalesAngle(it) {
+    const title = `${it.title} ${it.zone}`.toLowerCase();
+    if (title.includes('grenadines') || title.includes('seychelles') || title.includes('bahamas')) return 'À vendre sur la beauté des mouillages et l’effet wow immédiat.';
+    if (title.includes('canal du midi') || title.includes('fluvial')) return 'À vendre sur la simplicité, la déconnexion et l’accessibilité.';
+    if (title.includes('norvège') || title.includes('nil') || title.includes('mékong')) return 'À vendre comme expérience de voyage complète, pas seulement comme navigation.';
+    if (title.includes('cyclades') || title.includes('corse') || title.includes('croatie') || title.includes('baléares')) return 'À vendre sur l’équilibre entre belles escales, vie à bord et logistique simple.';
+    return 'À vendre sur le décor, la variété des escales et la promesse d’un vrai voyage.';
+}
+
+function renderSidebar() {
+    const summary = document.getElementById('sidebarSummary');
+    const accordion = document.getElementById('sidebarAccordion');
+
+    summary.innerHTML = `
+        <div class="sidebar-summary-card">
+            <strong>${ITI.length}</strong>
+            <span>itinéraires utiles</span>
+        </div>
+        <div class="sidebar-summary-card">
+            <strong>${ITI_BY_ZONE.length}</strong>
+            <span>grandes zones</span>
         </div>
     `;
-    mainContent.appendChild(panel);
-});
+
+    accordion.innerHTML = ITI_BY_ZONE.map((zone, index) => `
+        <div class="sidebar-zone-group">
+            <button class="sidebar-zone-button accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#zone-${index}" aria-expanded="false">
+                <span>${zone.icon} ${zone.key}</span>
+                <small>${zone.items.length}</small>
+            </button>
+            <div id="zone-${index}" class="accordion-collapse collapse">
+                <div class="sidebar-zone-list">
+                    ${zone.items.map(it => `<a href="#" class="dest-link" data-section="${it.id}">${it.title}</a>`).join('')}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderHome() {
+    const home = document.getElementById('homeOverview');
+    const featured = [
+        ITI.find(it => it.id === 'med-corse-sud'),
+        ITI.find(it => it.id === 'car-grenadines10'),
+        ITI.find(it => it.id === 'flu-canal-midi'),
+        ITI.find(it => it.id === 'exp-norvege')
+    ].filter(Boolean);
+
+    home.innerHTML = `
+        <div class="home-hero">
+            <img src="assets/filovent-hero-marina.png" alt="">
+            <div class="home-hero-body">
+                <div class="home-hero-copy">
+                    <div class="home-kicker">Base itinéraires commerciale</div>
+                    <h1>Des fiches claires pour vendre la bonne route au bon client.</h1>
+                    <p>Chaque itinéraire met désormais en avant l’essentiel d’abord : zone, rythme, départ, escales phares, angle de vente et détail exploitable seulement quand on en a besoin.</p>
+                </div>
+                <div class="home-hero-side">
+                    <div class="label">Lecture rapide</div>
+                    <strong>Utilise cette page comme un catalogue d’arguments, pas comme une base de texte brute.</strong>
+                    <p>La navigation latérale te mène directement à une destination. Chaque fiche te donne un aperçu immédiat puis un déroulé plus complet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="iti-stats">
+            <div class="iti-stat">
+                <div class="iti-stat-label">Itinéraires</div>
+                <div class="iti-stat-value">${ITI.length}</div>
+            </div>
+            <div class="iti-stat">
+                <div class="iti-stat-label">Zones</div>
+                <div class="iti-stat-value">${ITI_BY_ZONE.length} univers</div>
+            </div>
+            <div class="iti-stat">
+                <div class="iti-stat-label">Méditerranée</div>
+                <div class="iti-stat-value">${ITI.filter(it => it.zone === 'Méditerranée').length} parcours</div>
+            </div>
+            <div class="iti-stat">
+                <div class="iti-stat-label">Formats longs</div>
+                <div class="iti-stat-value">${ITI.filter(it => /2 semaines|3 semaines|16 jours|10 jours/i.test(it.duree)).length} dossiers</div>
+            </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--navy);">Zones à proposer</span>
+            <div style="flex:1; height:1px; background:var(--border);"></div>
+        </div>
+        <div class="overview-grid">
+            ${ITI_BY_ZONE.map(zone => `
+                <div class="zone-card" onclick="showSection('${zone.items[0].id}')">
+                    <div class="zone-card-body">
+                        <div class="zone-card-kicker">${zone.icon} ${zone.key}</div>
+                        <h3>${zone.key}</h3>
+                        <p>${zone.intro}</p>
+                        <div class="zone-card-meta">
+                            <span><i class="bi bi-compass"></i>${zone.items.length} itinéraires</span>
+                            <span><i class="bi bi-geo-alt"></i>${zone.items[0].depart}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--navy);">Accès rapides</span>
+            <div style="flex:1; height:1px; background:var(--border);"></div>
+        </div>
+        <div class="quick-picks">
+            ${featured.map(it => `
+                <div class="quick-pick" onclick="showSection('${it.id}')">
+                    <strong>${it.icon} ${it.title}</strong>
+                    <span>${it.depart} · ${it.duree} · ${buildComfortLabel(it.distance, it.duree)}</span>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="alert-tip">
+            <strong>Source :</strong> les fiches sont construites à partir des récits d’itinéraires du <a href="https://www.filovent.com/magazine/tags/itineraires-navigation" target="_blank" style="color:var(--wave);">magazine Filovent</a>. L’idée est d’aider le commercial à orienter vite, puis à approfondir seulement si besoin.
+        </div>
+    `;
+}
+
+function renderPanels() {
+    const mainContent = document.getElementById('main-content');
+
+    ITI.forEach(it => {
+        const zone = getZoneMeta(it.zone);
+        const stops = splitEscales(it.escales);
+        const highlights = pickHighlights(it);
+        const timeline = buildTimeline(it);
+        const tips = buildTips(it);
+        const map = ITI_MAPS[it.id];
+        const panel = document.createElement('div');
+        panel.className = 'section-panel';
+        panel.id = 'panel-' + it.id;
+        panel.innerHTML = `
+            <div class="iti-hero">
+                <div class="iti-hero-body">
+                    <div class="iti-hero-copy">
+                        <div class="iti-kicker">${zone.icon} ${it.zone}</div>
+                        <h1>${it.icon} ${it.title}</h1>
+                        <p>${buildSalesAngle(it)}</p>
+                        <div class="route-preview">
+                            <div class="route-preview-label">Aperçu du parcours</div>
+                            <div class="route-preview-track">
+                                ${stops.slice(0, 5).map((stop, index) => `
+                                    <span class="route-stop">
+                                        <span class="route-stop-index">${index + 1}</span>
+                                        ${stop}
+                                    </span>
+                                    ${index < Math.min(stops.length, 5) - 1 ? '<span class="route-link"></span>' : ''}
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iti-hero-side">
+                        <div class="iti-hero-side-label">Départ conseillé</div>
+                        <strong>${it.depart}</strong>
+                        <p>${it.duree} · ${buildComfortLabel(it.distance, it.duree)} · ${stops.length} escales repères.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="iti-stats">
+                <div class="iti-stat">
+                    <div class="iti-stat-label">Durée</div>
+                    <div class="iti-stat-value">${it.duree}</div>
+                </div>
+                <div class="iti-stat">
+                    <div class="iti-stat-label">Distance / rythme</div>
+                    <div class="iti-stat-value">${it.distance}</div>
+                </div>
+                <div class="iti-stat">
+                    <div class="iti-stat-label">Bateau</div>
+                    <div class="iti-stat-value">${it.bateau}</div>
+                </div>
+                <div class="iti-stat">
+                    <div class="iti-stat-label">Équipage source</div>
+                    <div class="iti-stat-value">${it.equipe}</div>
+                </div>
+            </div>
+
+            ${map ? `
+                <div class="iti-map-card">
+                    <div class="iti-map-head">
+                        <div>
+                            <h3>Carte d’itinéraire Filovent</h3>
+                            <p>Quand la carte d’origine existe dans l’article Filovent, elle est intégrée ici pour donner une lecture visuelle immédiate du parcours.</p>
+                        </div>
+                        <button type="button" class="iti-map-button" onclick="openMapLightbox('${it.id}')">
+                            <i class="bi bi-arrows-fullscreen"></i> Agrandir
+                        </button>
+                    </div>
+                    <div class="iti-map-frame">
+                        <img src="${map.src}" alt="Carte d’itinéraire ${it.title}" onclick="openMapLightbox('${it.id}')">
+                    </div>
+                    <div class="iti-map-caption">${map.caption}</div>
+                </div>
+            ` : ''}
+
+            <div class="iti-layout">
+                <div>
+                    <div class="iti-card">
+                        <h3>Aperçu commercial</h3>
+                        <div class="iti-chip-list">
+                            <span class="iti-chip"><i class="bi bi-geo-alt"></i><strong>Départ</strong> ${it.depart}</span>
+                            <span class="iti-chip"><i class="bi bi-clock"></i><strong>Format</strong> ${it.duree}</span>
+                            <span class="iti-chip"><i class="bi bi-speedometer2"></i><strong>Rythme</strong> ${buildComfortLabel(it.distance, it.duree)}</span>
+                            <span class="iti-chip"><i class="bi bi-signpost-split"></i><strong>Escales</strong> ${stops.length} repères</span>
+                        </div>
+                    </div>
+
+                    <div class="iti-card">
+                        <h3>Escales à mettre en avant</h3>
+                        <div class="escales-grid">
+                            ${highlights.map(stop => `
+                                <div class="escale-item">
+                                    <div class="escale-dot"></div>
+                                    <span>${stop}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="iti-card">
+                        <button type="button" class="detail-toggle" onclick="toggleDetail('${it.id}', this)" aria-expanded="false">
+                            <div class="toggle-copy">
+                                <strong>Déroulé détaillé de l’itinéraire</strong>
+                                <span>Ouvre la séquence jour par jour quand tu as besoin d’entrer plus loin dans le conseil.</span>
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="detail-body" id="detail-${it.id}">
+                            <div class="timeline">
+                                ${timeline.map(step => `
+                                    <div class="timeline-step">
+                                        <strong>${step.label}</strong>
+                                        <div>${step.body}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="iti-card">
+                        <h3>Conseils de vente</h3>
+                        <div class="tips-list">
+                            ${tips.map(tip => `
+                                <div class="tip-item">
+                                    <i class="bi bi-check2-circle"></i>
+                                    <span>${tip}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="iti-card">
+                        <h3>Fiche repère</h3>
+                        <div class="iti-notes">
+                            <div class="iti-note">
+                                <div class="iti-note-label">Promesse client</div>
+                                <div class="iti-note-value">${buildSalesAngle(it)}</div>
+                            </div>
+                            <div class="iti-note">
+                                <div class="iti-note-label">Escales complètes</div>
+                                <div class="iti-note-value">${stops.join(' · ')}</div>
+                            </div>
+                            <div class="iti-note">
+                                <div class="iti-note-label">Lecture source</div>
+                                <div class="iti-note-value">Retour d’expérience Filovent compilé depuis le magazine, utile pour nourrir un échange commercial plus incarné.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="iti-source">
+                        <p>Tu peux ouvrir la version éditoriale complète pour récupérer plus de détails, un ton plus narratif ou vérifier une escale précise.</p>
+                        <a href="${it.url}" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Ouvrir l’article</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        mainContent.appendChild(panel);
+    });
+}
+
+renderSidebar();
+renderHome();
+renderPanels();
 </script>
 
 </div><!-- /#main-content -->
+
+<div id="mapLightbox" class="map-lightbox" aria-hidden="true">
+    <div class="map-lightbox-bar">
+        <div>
+            <div class="map-lightbox-title" id="mapLightboxTitle">Carte d’itinéraire</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.6);font-weight:700;margin-top:3px;">Source Filovent Magazine</div>
+        </div>
+        <button type="button" onclick="closeMapLightbox()"><i class="bi bi-x-lg"></i> Fermer</button>
+    </div>
+    <div class="map-lightbox-body" onclick="closeMapLightbox()">
+        <img id="mapLightboxImg" src="" alt="">
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -721,6 +1665,36 @@ function showSection(id) {
     window.scrollTo(0, 0);
 }
 
+function toggleDetail(id, button) {
+    const detail = document.getElementById('detail-' + id);
+    if (!detail) return;
+    const isOpen = detail.classList.contains('open');
+    detail.classList.toggle('open', !isOpen);
+    button.setAttribute('aria-expanded', String(!isOpen));
+}
+
+function openMapLightbox(id) {
+    const map = ITI_MAPS[id];
+    if (!map) return;
+    const itinerary = ITI.find(item => item.id === id);
+    const modal = document.getElementById('mapLightbox');
+    const modalImg = document.getElementById('mapLightboxImg');
+    const title = document.getElementById('mapLightboxTitle');
+    modalImg.src = map.src;
+    modalImg.alt = itinerary ? `Carte d’itinéraire ${itinerary.title}` : 'Carte d’itinéraire';
+    title.textContent = itinerary ? `Carte · ${itinerary.title}` : 'Carte d’itinéraire';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMapLightbox() {
+    const modal = document.getElementById('mapLightbox');
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
 // Home link
 document.getElementById('home-link').addEventListener('click', function(e) {
     e.preventDefault();
@@ -739,6 +1713,7 @@ const searchData = [];
 ITI.forEach(it => {
     searchData.push({ title: it.title, section: it.id, context: it.zone + ' · ' + it.depart });
     searchData.push({ title: it.depart, section: it.id, context: it.title });
+    searchData.push({ title: it.zone, section: it.id, context: it.title });
     it.escales.split(', ').forEach(e => {
         if (e.length > 3) searchData.push({ title: e.trim(), section: it.id, context: it.title });
     });
@@ -776,6 +1751,7 @@ document.addEventListener('keydown', e => {
         searchInput.focus();
     }
     if (e.key === 'Escape') {
+        closeMapLightbox();
         resultsBox.style.display = 'none';
         searchInput.value = '';
         searchInput.blur();

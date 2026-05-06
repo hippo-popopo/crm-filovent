@@ -179,7 +179,7 @@ function saveSave(){localStorage.setItem('filo-game-save',JSON.stringify(save));
 
 const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
-let W,H,gameRunning=false,gamePaused=false;
+let W,H,gameRunning=false,gamePaused=false,gameLoopRaf=null,idleLoopRaf=null;
 let boat,obstacles,coins,particles,score,speed,frame,lives,mapData,skinData,abilityData;
 let abilityCooldown=0,abilityActive=0,abilityUsed=false;
 const keys={};
@@ -208,6 +208,7 @@ function openScreen(id){
     });
     document.getElementById(id).style.display='flex';
     document.getElementById('hud').style.display='none';
+    if(id!=='gameover-screen' && !gameRunning && !idleLoopRaf) drawIdle();
     if(id==='menu-screen') updateMenuUI();
     if(id==='skin-screen') buildSkinGrid();
     if(id==='ability-screen') buildAbilityGrid();
@@ -277,6 +278,8 @@ function buildAbilityGrid(){
 // GAME
 // ═══════════════════════════════════════
 function startFromMap(){
+    if(gameLoopRaf){cancelAnimationFrame(gameLoopRaf);gameLoopRaf=null;}
+    if(idleLoopRaf){cancelAnimationFrame(idleLoopRaf);idleLoopRaf=null;}
     mapData=MAPS.find(m=>m.id===save.selectedMap)||MAPS[0];
     skinData=SKINS.find(s=>s.id===save.selectedSkin)||SKINS[0];
     abilityData=ABILITIES.find(a=>a.id===save.selectedAbility)||ABILITIES[0];
@@ -312,7 +315,7 @@ function loop(){
     if(!gameRunning)return;
     update();
     draw();
-    requestAnimationFrame(loop);
+    gameLoopRaf=requestAnimationFrame(loop);
 }
 
 function update(){
@@ -511,6 +514,7 @@ function spawnParticles(x,y,color,count){
 
 function gameOver(){
     gameRunning=false;
+    if(gameLoopRaf){cancelAnimationFrame(gameLoopRaf);gameLoopRaf=null;}
     save.coins+=score;
     const newRecord=score>save.best;
     if(newRecord)save.best=score;
@@ -528,7 +532,7 @@ function gameOver(){
 openScreen('menu-screen');
 // Draw idle ocean
 function drawIdle(){
-    if(gameRunning)return;
+    if(gameRunning){idleLoopRaf=null;return;}
     ctx.fillStyle=MAPS[0].color;ctx.fillRect(0,0,W,H);
     const f=Date.now()*0.001;
     for(let y=0;y<H;y+=50){
@@ -536,7 +540,7 @@ function drawIdle(){
         for(let x=0;x<W;x+=3)ctx.lineTo(x,y+Math.sin((x+f*80)*0.03)*6);
         ctx.stroke();
     }
-    requestAnimationFrame(drawIdle);
+    idleLoopRaf=requestAnimationFrame(drawIdle);
 }
 drawIdle();
 </script>

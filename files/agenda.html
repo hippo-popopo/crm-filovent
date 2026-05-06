@@ -1039,12 +1039,13 @@ function openSkipperGame(){
 }
 function closeSkipperGame(){
   skipperGame.running=false;
-  if(skipperGame.raf)cancelAnimationFrame(skipperGame.raf);
+  if(skipperGame.raf){cancelAnimationFrame(skipperGame.raf);skipperGame.raf=null;}
   closeModal('modal-skipper');
 }
 function skipperHold(dir){skipperGame.hold=dir;}
 function resetSkipperGame(clearBest=false){
   const g=skipperGame;
+  if(g.raf){cancelAnimationFrame(g.raf);g.raf=null;}
   g.running=false;g.score=0;g.level=1;g.lives=3;g.t=0;g.speed=2.4;g.spawn=0;g.bonusSpawn=60;g.invincible=0;
   g.boat={x:260,y:294,w:34,h:46};g.rocks=[];g.stars=[];g.foam=[];
   if(clearBest){g.best=0;localStorage.removeItem('filo_sailing_sprint_best');}
@@ -1053,6 +1054,7 @@ function resetSkipperGame(clearBest=false){
 }
 function startSkipperGame(){
   resetSkipperGame();
+  if(skipperGame.raf){cancelAnimationFrame(skipperGame.raf);skipperGame.raf=null;}
   skipperGame.running=true;
   document.getElementById('skipper-overlay')?.classList.add('hidden');
   skipperLoop();
@@ -1130,6 +1132,7 @@ function burstFoam(x,y,color){
 }
 function endSkipperGame(){
   const g=skipperGame;g.running=false;
+  if(g.raf){cancelAnimationFrame(g.raf);g.raf=null;}
   if(g.score>g.best){g.best=Math.floor(g.score);localStorage.setItem('filo_sailing_sprint_best',g.best);}
   updateSkipperHud();
   showSkipperOverlay('Course terminée',`Score ${Math.floor(g.score)}. La mer devient plus rude à chaque niveau : retente le run pour battre le record.`,`Rejouer`);

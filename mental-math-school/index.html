@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ardoise Express - Calcul mental</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-board" aria-label="Jeu de calcul mental">
+        <div class="top-bar">
+          <div class="brand-lockup">
+            <img class="brand-mark" src="assets/icon-slate.png" alt="" />
+            <div>
+              <p class="eyebrow">Calcul mental</p>
+              <h1>Ardoise Express</h1>
+            </div>
+          </div>
+          <div class="quick-actions" aria-label="Actions rapides">
+            <button class="ghost-action" id="settingsButton" type="button" aria-controls="settingsDrawer" aria-expanded="false">
+              <img src="assets/icon-chalk.png" alt="" />
+              Réglages
+            </button>
+            <button class="ghost-action" id="notebookButton" type="button" aria-controls="notebookDrawer" aria-expanded="false">
+              <img src="assets/icon-star.png" alt="" />
+              Cahier
+            </button>
+          </div>
+        </div>
+
+        <div class="game-grid" id="gameArea">
+          <section class="play-stage" aria-label="Tableau de jeu">
+            <div class="chalk-status">
+              <span id="statusText">Prépare ton ardoise mentale.</span>
+              <span id="progressText">0 / 0</span>
+            </div>
+
+            <div class="number-window" id="numberWindow">
+              <span class="number-ghost">?</span>
+              <strong id="currentNumber">Prêt</strong>
+            </div>
+
+            <form class="answer-form" id="answerForm">
+              <label for="answerInput">Ta somme</label>
+              <div class="answer-row">
+                <input id="answerInput" type="number" inputmode="numeric" placeholder="Résultat" disabled />
+                <button id="checkButton" type="submit" disabled>Valider</button>
+              </div>
+            </form>
+
+            <div class="result-slate" id="resultSlate" hidden>
+              <span>Résultat</span>
+              <strong id="resultValue">0</strong>
+              <p id="resultMessage"></p>
+            </div>
+
+            <button class="primary-action stage-start" id="startButton" type="button">
+              <span aria-hidden="true">▶</span>
+              Lancer la série
+            </button>
+          </section>
+        </div>
+
+        <aside class="drawer drawer-left" id="settingsDrawer" aria-label="Réglages de la partie" hidden>
+          <div class="settings-panel">
+            <div class="panel-title">
+              <img class="panel-icon" src="assets/icon-chalk.png" alt="" />
+              <h2>Réglages</h2>
+            </div>
+
+            <label class="field-group">
+              <span>Niveau</span>
+              <select id="levelSelect">
+                <option value="easy">CP - Doux</option>
+                <option value="medium" selected>CE1/CE2 - Agile</option>
+                <option value="hard">CM1/CM2 - Rapide</option>
+              </select>
+            </label>
+
+            <label class="field-group">
+              <span>Nombre de chiffres</span>
+              <input id="lengthInput" type="range" min="4" max="14" value="7" />
+              <output id="lengthValue">7</output>
+            </label>
+
+            <label class="field-group">
+              <span>Vitesse</span>
+              <input id="speedInput" type="range" min="450" max="1800" step="50" value="1000" />
+              <output id="speedValue">1.0 s</output>
+            </label>
+
+            <label class="toggle-row">
+              <input id="negativeToggle" type="checkbox" />
+              <span>Inclure des nombres négatifs</span>
+            </label>
+          </div>
+        </aside>
+
+        <aside class="drawer drawer-right" id="notebookDrawer" aria-label="Progression" hidden>
+          <div class="notebook-panel">
+            <div class="panel-title">
+              <img class="panel-icon" src="assets/icon-star.png" alt="" />
+              <h2>Cahier</h2>
+            </div>
+
+            <div class="stats-list">
+              <div>
+                <span>Série</span>
+                <strong id="roundCount">0</strong>
+              </div>
+              <div>
+                <span>Bonnes réponses</span>
+                <strong id="correctCount">0</strong>
+              </div>
+              <div>
+                <span>Meilleure série</span>
+                <strong id="bestStreak">0</strong>
+              </div>
+              <div>
+                <span>Dernier total</span>
+                <strong id="lastTotal">-</strong>
+              </div>
+            </div>
+
+            <div class="history-block">
+              <h3>Derniers essais</h3>
+              <ol id="historyList"></ol>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
